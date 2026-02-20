@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="th">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <!-- ✅ PWA Support -->
+  <meta name="theme-color" content="#1f293a">
+  <meta name="msapplication-navbutton-color" content="#1f293a">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ระบบลงเวลาปฏิบัติงาน">
+  <meta name="application-name" content="ระบบลงเวลาปฏิบัติงาน">
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://lh5.googleusercontent.com/d/15oBJkXkg-WVElsZb6a-BlRx8CyPP0_Q5">
+  <link rel="shortcut icon" href="https://lh5.googleusercontent.com/d/15oBJkXkg-WVElsZb6a-BlRx8CyPP0_Q5">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="request.css" />
+  <link rel="stylesheet" href="loading.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-wordpress-admin/wordpress-admin.css" />
+
+  <title>บันทึกคำขอลงเวลาปฏิบัติงาน</title>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-xs navbar-dark fixed-top">
+    <button type="button" class="navbar-toggler mr-auto" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <a class="navbar-brand" href="javascript:void(0);" onclick="editpic()">
+      <img src="default-avatar.png" alt="ลงเวลา" id="avatar" class="d-inline-block align-top" />
+    </a>
+
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="javascript:void(0);" onclick="checkMap()"><i class="fas fa-map-marker-alt"></i> ตรวจสอบพิกัด</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:void(0);" onclick="canceltoday()"><i class="fas fa-xmark"></i> ยกเลิกการลงเวลาในวันนี้</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:void(0);" onclick="openWebAdmin()"><i class="fas fa-chart-bar"></i> รายงานและการจัดการ</a></li>
+        <li class="nav-item"><a class="nav-link" href="authen.html"><i class="fab fa-telegram"></i> เชื่อมต่อ Telegram</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:void(0);" onclick="openWeb5s()"><i class="fas fa-folder"></i> งาน 5ส.</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:void(0);" onclick="aboutme()"><i class="fas fa-user"></i> ข้อมูลส่วนตัว</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:void(0);" onclick="editpic()"><i class="fas fa-image"></i> อัปเดตโปรไฟล์</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:void(0);" onclick="clearLocal()"><i class="fas fa-sync-alt"></i> ออกจากระบบ</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="login-box">
+      <h3>คำขอลงเวลาปฏิบัติงาน</h3>
+      <form>
+        <div class="text-center">
+          <input type="datetime-local" id="daytime" class="daytime" name="daytime" required>
+        </div>
+
+        <select id="typea" class="btn2">
+          <option value="ปกติ">ปฏิบัติงานตามปกติ</option>
+          <option value="นอกสถานที่">ปฏิบัติงานนอกสถานที่</option>
+          <option value="วันหยุด">ปฏิบัติงานในวันหยุดเสาร์ อาทิตย์ และวันหยุดราชการ</option>
+          <option value="ไปราชการ">ไปราชการ (ประชุม อบรมฯ)</option>
+          <option value="อื่นๆ">อื่นๆ โปรดระบุเพิ่มเติม</option>
+        </select>
+
+    <div class="input-box">
+  <input id="nte" name="nte" type="text" placeholder="รายละเอียด" list="nte-suggestions" autofocus>
+  <label>บันทึกเพิ่มเติม</label>
+</div>
+
+<datalist id="nte-suggestions">
+  <!-- หมวด: สุขภาพส่วนตัว -->
+  <option value="ป่วยกะทันหัน">
+  <option value="ออกไปพบแพทย์/ตรวจสุขภาพ">
+  <option value="มีอาการข้างเคียงหลังการฉีดวัคซีน">
+
+  <!-- หมวด: ครอบครัว/ส่วนตัว -->
+  <option value="ต้องดูแลเด็ก/ผู้สูงอายุ">
+  <option value="มีเหตุการณ์ครอบครัวฉุกเฉิน">
+  <option value="ต้องพาเด็กไปโรงพยาบาล/รับส่งโรงเรียนฉุกเฉิน">
+  <option value="ต้องดูแลสัตว์เลี้ยงฉุกเฉิน">
+  <option value="เข้าร่วมพิธีศพหรืองานสำคัญครอบครัว">
+  <option value="มีเหตุการณ์ส่วนตัวฉุกเฉิน">
+    <option value="ต้องดูแลผู้ป่วย/ผู้สูงอายุ"> 
+
+  <!-- หมวด: การเดินทาง/ระบบขนส่ง -->
+  <option value="ตื่นสาย">
+  <option value="รถติด/ระบบขนส่งล่าช้า">
+  <option value="ยานพาหนะเสียกลางทาง">
+  <option value="ยางแตก/แบตเตอรี่รถหมด">
+  <option value="หลงทาง/สับสนเส้นทาง">
+  <option value="ปัญหาเกี่ยวกับการเดินทางสาธารณะ (ยกเลิก/ประท้วง)">
+  <option value="การจราจรจากเหตุการณ์ฉุกเฉินบนถนน">
+  <option value="สภาพอากาศไม่เอื้ออำนวย">
+
+  <!-- หมวด: ระบบ/เทคนิค -->
+  <option value="ระบบลงเวลาไม่ทำงาน">
+  <option value="ปัญหาเทคนิคกับคอมพิวเตอร์หรือโทรศัพท์">
+  <option value="ลืมโทรศัพท์ที่บ้าน">
+  <option value="มาออกจากบ้านแล้วลืมของไว้ที่บ้าน">
+  <option value="กลับไปเอาของที่บ้าน"> 
+  <option value="โทรศัพท์แบตหมด/เครื่องรวน">
+  <option value="แอปลงเวลาขัดข้อง/อัปเดตระบบ">
+  <option value="ลืมรหัสผ่าน/ล็อกอินไม่ได้">
+  <option value="ปัญหาเครือข่ายอินเทอร์เน็ต">
+  <option value="ปัญหาเกี่ยวกับการเชื่อมต่อ VPN">
+  <option value="ไม่มีสัญญาณโทรศัพท์">
+  <option value="เชื่อมต่ออินเทอร์เน็ตไม่ได้">
+
+  <!-- หมวด: งานด่วน/ภารกิจ -->
+  <option value="ติดงานเอกสารหรือรายงาน">
+  <option value="ประชุมต่อเนื่อง">
+  <option value="งานด่วนหรือภารกิจเร่งด่วน">
+  <option value="ต้องรอการอนุมัติการลา/เปลี่ยนกะที่ยังไม่เสร็จ">
+  <option value="ลืมเวลาลงเวลาปฏิบัติงาน">
+  <option value="กลับบ้านช้า">
+
+  <!-- หมวด: งานสาธารณสุข (เฉพาะเจ้าหน้าที่สาธารณสุข) -->
+  <option value="ออกปฏิบัติงานนอกสถานที่ (ลงพื้นที่ชุมชน)">
+  <option value="ไปตรวจเยี่ยมผู้ป่วยที่บ้าน/ติดตามอาการ">
+  <option value="ให้บริการฉีดวัคซีน/ตรวจสุขภาพประชาชน">
+  <option value="ร่วมงานรณรงค์สุขภาพ/โครงการสาธารณสุข">
+  <option value="เข้าร่วมปฏิบัติการควบคุมโรคระบาด">
+  <option value="ต้องปฏิบัติหน้าที่ฉุกเฉินในโรงพยาบาล/ศูนย์สุขภาพ">
+  <option value="ติดภารกิจช่วยเหลือผู้ป่วยฉุกเฉิน">
+  <option value="เข้าร่วมประชุม/สัมมนาสุขภาพด่วน">
+  <option value="ตรวจสอบ/รายงานข้อมูลผู้ป่วยและสถิติสุขภาพ">
+  <option value="ลงพื้นที่ฉีดวัคซีน/แจกเวชภัณฑ์ฉุกเฉิน">
+  <option value="ต้องรายงานเหตุการณ์สุขภาพฉุกเฉินต่อหัวหน้า">
+  <option value="ติดภารกิจอบรม/ฝึกซ้อมสถานการณ์ฉุกเฉิน">
+  <option value="ติดตามผู้ป่วยหรือผู้สูงอายุที่อยู่บ้าน">
+  <option value="ช่วยเหลือประชาชนในกรณีภัยพิบัติ/อุบัติเหตุหมู่">
+  <option value="ปฏิบัติหน้าที่เวร On-call ในชุมชน/โรงพยาบาล">
+  <option value="ปฏิบัติงานร่วมกับหน่วยงานอื่นเพื่อแก้ปัญหาสุขภาพ">
+
+    <!-- หมวด: ชายแดน/พื้นที่ห่างไกล -->
+  <option value="ออกปฏิบัติงานพื้นที่ชายแดน/หมู่บ้านห่างไกล">
+  <option value="ตรวจสอบสุขภาพประชาชนในพื้นที่ชายแดน">
+  <option value="ให้บริการฉีดวัคซีน/เวชภัณฑ์ในพื้นที่ชายแดน">
+  <option value="ร่วมปฏิบัติการควบคุมโรคในพื้นที่ชายแดน">
+  <option value="ช่วยเหลือเหตุฉุกเฉินหรือภัยพิบัติพื้นที่ชายแดน">
+  <option value="รายงานสถานการณ์สุขภาพ/โรคระบาดชายแดน">
+
+</datalist>
+
+
+        <div class="forgot-pass">
+          <h4 id='dispDistance'>กำลังคำนวนระยะห่าง...</h4>
+        </div>
+
+        <button id="cin" type="button" class="btn btn-success" onclick="checkin()">ยื่นคำขอลงเวลามา</button>
+        <button id="cout" type="button" class="btn btn-danger" onclick="checkout()">ยื่นคำขอลงเวลากลับ</button>
+
+        <div class="signup-link mt-2">
+          <h4 id="utimeline"></h4>
+          <button id="ExitBtn" type="button" onclick="backtoindex()"><i class="fa-solid fa-circle-xmark"></i> ปิด</button>
+        </div>
+
+        <div class="text-center">
+          <p id="demo" style="font-size:1px; color:#E0FFFF;"></p>
+        </div>
+      </form>
+    </div>
+
+    <!-- Animated spans -->
+    <div id="span-container"></div>
+  </div>
+
+  <!-- Loading Modal -->
+  <div class="modal" id="loadingModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <div class="loading-spinner mb-2"></div>
+          <h6 id="latlong">รับค่าพิกัด : กรุณาตรวจสอบการเปิดตำแหน่ง</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal-in -->
+  <div class="modal fade" id="inModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">กรุณาตรวจสอบพิกัดและกดยืนยันการลงเวลาปฏิบัติงาน</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body"><p id="indemo">กำลังโหลดข้อมูล...</p></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" onclick="checkin()">ยืนยันการลงเวลาปฏิบัติงาน</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal-out -->
+  <div class="modal fade" id="outModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">กรุณาตรวจสอบพิกัดและกดยืนยันการลงเวลากลับ</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body"><p id="outdemo">กำลังโหลดข้อมูล...</p></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" onclick="getLocationOut()">ยืนยันการลงเวลากลับ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // ตั้งค่า datetime-local
+      const inputDate = document.getElementById("daytime");
+      const now = new Date();
+      const isoDate = now.toISOString().slice(0, 10); // YYYY-MM-DD
+      const minDate = new Date(now);
+      minDate.setDate(now.getDate() - 14);
+      const isoMinDate = minDate.toISOString().slice(0, 10);
+
+      inputDate.value = `${isoDate}T08:30`;
+      inputDate.min = `${isoMinDate}T08:30`;
+      inputDate.max = `${isoDate}T16:30`;
+
+      // กำหนดค่า typea วันหยุด
+      const day = now.getDay();
+      if (day === 0 || day === 6) document.getElementById("typea").value = "วันหยุด";
+
+      // ดึงรูป avatar จาก localStorage
+      const avatarSrc = localStorage.getItem("upic");
+      document.getElementById("avatar").src = avatarSrc || "default-avatar.png";
+
+      // สร้าง span animation แบบ loop
+      const spanContainer = document.getElementById('span-container');
+      for (let i = 0; i < 50; i++) {
+        const span = document.createElement('span');
+        span.style.setProperty('--i', i);
+        spanContainer.appendChild(span);
+      }
+    });
+  </script>
+
+  <script src="request.js"></script>
+  <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.min.js"></script>
+</body>
+
+</html>

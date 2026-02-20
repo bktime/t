@@ -1,0 +1,1198 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-primary);
+}
+
+body {
+  font-family: var(--font-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--background-color, #f9f9f9);
+  color: var(--text-color, #333);
+  flex-direction: column;
+  padding-top: 70px;
+  padding-bottom: 120px;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  background-attachment: fixed;
+  opacity: 0;
+  animation: fadeIn 1s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(
+    var(--background-color-rgb),
+    1
+  ); /* Semi-transparent overlay */
+  z-index: -1; /* Ensure the overlay stays behind the content */
+}
+
+:root {
+  --primary-color: #388e3c; /* สีหลักเข้มขึ้นสำหรับโลโก้ */
+  --background-color: #f9f9f9;
+  --text-color: #333;
+  --button-bg: #4caf50;
+  --button-hover-bg: #45a049;
+  --button-cf-color: #2e7d32; /* สีปุ่มยืนยัน */
+  --nav-bg: #ffffff;
+  --nav-shadow: rgba(0, 0, 0, 0.1);
+  --border-color: #ddd;
+  --link-color: #1e90ff;
+  --secondary-text-color: #666;
+  --nav-hover-bg: #f1f1f1;
+  --font-primary: "Sarabun", sans-serif;
+}
+
+[data-theme="dark"] {
+  --primary-color: #e0e0e0;
+  --background-color: #333;
+  --text-color: #f9f9f9;
+  --button-bg: #666;
+  --button-hover-bg: #555;
+  --button-cf-color: #111;
+  --nav-bg: #444;
+  --nav-shadow: rgba(255, 255, 255, 0.1);
+  --border-color: #555;
+  --secondary-text-color: #c4c4c4;
+  --nav-hover-bg: #555;
+  --font-primary: "Open Sans", sans-serif;
+}
+
+[data-theme="pink"] {
+  --primary-color: #c74e7f;
+  --background-color: #ffd6e6;
+  --text-color: #3f3f3f;
+  --button-bg: #e87b9e;
+  --button-hover-bg: #d96a8c;
+  --button-cf-color: #d14675;
+  --nav-bg: #ffebf0;
+  --nav-shadow: rgba(255, 105, 135, 0.25);
+  --border-color: #e89ba9;
+  --secondary-text-color: #944b6b;
+  --nav-hover-bg: #f8c6d9;
+  --font-primary: "Itim", cursive;
+}
+
+[data-theme="green"] {
+  --primary-color: #6ea86b;
+  --background-color: #d3f2d3;
+  --text-color: #394b39;
+  --button-bg: #8ec59c;
+  --button-hover-bg: #7eb886;
+  --button-cf-color: #5c946e;
+  --nav-bg: #e6f7e6;
+  --nav-shadow: rgba(144, 238, 144, 0.25);
+  --border-color: #a7d4b8;
+  --secondary-text-color: #5e765e;
+  --nav-hover-bg: #c9f1c9;
+  --font-primary: "Taviraj", serif;
+}
+
+[data-theme="purple"] {
+  --primary-color: #7f63b3;
+  --background-color: #e4dbff;
+  --text-color: #393a50;
+  --button-bg: #9c88d8;
+  --button-hover-bg: #8a76c4;
+  --button-cf-color: #7157a3;
+  --nav-bg: #f4ecff;
+  --nav-shadow: rgba(160, 136, 192, 0.25);
+  --border-color: #c3aadf;
+  --secondary-text-color: #675a8b;
+  --nav-hover-bg: #d1b1ff;
+  --font-primary: "K2D", sans-serif;
+}
+
+[data-theme="yellow"] {
+  --primary-color: #e6b800;
+  --background-color: #fff5cc;
+  --text-color: #5a511e;
+  --button-bg: #ffda66;
+  --button-hover-bg: #ffcc33;
+  --button-cf-color: #d4a200;
+  --nav-bg: #fff9e6;
+  --nav-shadow: rgba(255, 215, 115, 0.25);
+  --border-color: #ffde99;
+  --secondary-text-color: #87742f;
+  --nav-hover-bg: #fff2b3;
+  --font-primary: "Niramit", sans-serif;
+}
+
+[data-theme="blue"] {
+  --primary-color: #1e88e5;
+  --background-color: #e3f2fd;
+  --text-color: #1a3d63; /* Darker shade for more contrast */
+  --button-bg: #64b5f6;
+  --button-hover-bg: #42a5f5;
+  --button-cf-color: #1976d2;
+  --nav-bg: #bbdefb;
+  --nav-shadow: rgba(100, 181, 246, 0.25);
+  --border-color: #90caf9;
+  --link-color: #1e88e5;
+  --secondary-text-color: #3e4a77; /* Darker shade for secondary text */
+  --nav-hover-bg: #a6c8ff;
+  --font-primary: "Mali", cursive;
+}
+
+[data-theme="gray"] {
+  --primary-color: #607d8b;
+  --background-color: #eceff1;
+  --text-color: #37474f;
+  --button-bg: #90a4ae;
+  --button-hover-bg: #78909c;
+  --button-cf-color: #546e7a;
+  --nav-bg: #cfd8dc;
+  --nav-shadow: rgba(0, 0, 0, 0.1);
+  --border-color: #b0bec5;
+  --link-color: #607d8b;
+  --secondary-text-color: #78909c;
+  --nav-hover-bg: #b0bec5;
+  --font-primary: "Roboto", sans-serif;
+}
+
+[data-theme="red"] {
+  --primary-color: #d32f2f;
+  --background-color: #ffebee;
+  --text-color: #b71c1c;
+  --button-bg: #e57373;
+  --button-hover-bg: #ef5350;
+  --button-cf-color: #c62828;
+  --nav-bg: #ffcdd2;
+  --nav-shadow: rgba(0, 0, 0, 0.1);
+  --border-color: #ef9a9a;
+  --link-color: #d32f2f;
+  --secondary-text-color: #c62828;
+  --nav-hover-bg: #ffb3b3;
+  --font-primary: "Pattaya", sans-serif;
+}
+
+nav {
+  background-color: var(--nav-bg);
+  opacity: 0.8; /* ปรับความโปร่งแสง */
+  width: 100%;
+  padding: 0.4rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 5px var(--nav-shadow);
+  border-bottom: 1px solid var(--border-color);
+
+}
+
+/* สไตล์โลโก้ */
+nav .logo {
+  font-size: 1.5rem; /* เพิ่มขนาด */
+  font-weight: 700; /* ใช้ตัวหนา */
+  color: var(--primary-color); /* ใช้สีหลัก */
+  text-transform: uppercase; /* ตัวอักษรใหญ่ทั้งหมด */
+  letter-spacing: 2px; /* เพิ่มระยะห่างตัวอักษร */
+  transition: color 0.3s ease, transform 0.3s ease; /* เพิ่มเอฟเฟกต์การเปลี่ยน */
+  cursor: pointer;
+}
+
+.logo i {
+    color: black; 
+    text-shadow: 
+        .5px .5px 0 white,
+        -.5px .5px 0 white,
+        .5px -.5px 0 white,
+        -.5px -.5px 0 white;
+}
+
+nav .logo:hover {
+  color: var(--text-color); /* เปลี่ยนสีเมื่อ hover */
+  transform: scale(1.2); /* ขยายเล็กน้อย */
+}
+
+h1 {
+  font-size: 1.5em; /* ขนาดฟอนต์ใหญ่เหมือนนาฬิกาดิจิตอล */
+  /* color: var(--text-color); */
+  /* color: #2196f3; */
+  font-family: var(--font-family); /* ใช้ฟอนต์ที่เหมือนนาฬิกาดิจิตอล */
+  text-align: center;
+  margin-bottom: 0.5rem;
+  letter-spacing: 2px; /* ระยะห่างระหว่างตัวอักษร */
+  padding: 0.5rem; /* ระยะห่างภายใน */
+  border-radius: 10px; /* มุมโค้ง */
+}
+
+h2 {
+  font-size: 1.4em;
+  color: var(--text-color);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.notify-menu {
+  display: none;
+  position: absolute;
+  font-size: 0.8rem;
+  right: 10px;
+  top: 50px;
+  background: var(--nav-bg);
+  border: 1px solid var(--background-color);
+  border-radius: 0.5rem;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  line-height: 2.5;
+}
+
+.notify-menu.show {
+  display: block;
+}
+
+.notify-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  background: red;
+  border-radius: 50%;
+  border: 2px solid white;
+  display: none; /* ซ่อนไว้ก่อน */
+}
+
+
+
+#menu-toggle {
+  display: none;
+}
+
+/* Ensure both the theme-toggle and menu-toggle are aligned horizontally */
+nav > div {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Adjust the space between the two icons */
+}
+
+/* Styling for the menu-toggle and theme-toggle icons */
+.notify-toggle,
+.menu-toggle,
+.theme-toggle {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-color);
+  margin: 8px;
+  transition: color 0.3s ease;
+  position: relative;
+  display: inline-block;
+}
+
+.notify-toggle:hover,
+.menu-toggle:hover,
+.theme-toggle:hover {
+  color: var(--secondary-text-color); /* Add a hover color if needed */
+  transform: scale(1.2); /* ขยายเล็กน้อย */
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin: 8px;
+}
+
+.avatar:hover {
+  transform: scale(1.2); /* ขยายเล็กน้อย */
+}
+
+nav .menu {
+  display: flex;
+  flex-wrap: wrap;
+ justify-content: flex-end;
+  /* margin-left: auto; */
+  gap: 1px; 
+}
+
+nav .menu a {
+  color: var(--text-color);
+  text-decoration: none;
+  padding: 0.4rem 0.5rem;
+  border-radius: 5px;
+  font-size: 0.7rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+nav .menu a:hover {
+  background-color: var(--nav-hover-bg);
+  color: var(--secondary-text-color);
+  transform: scale(1.1); /* ขยายเล็กน้อย */
+  box-shadow: 0 4px 10px var(--nav-shadow);
+  transition: box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.logo-text {
+  display: none; /* Default display */
+}
+
+@media (max-width: 760px) {
+  nav{
+      padding: 0.4rem 1rem;
+  }
+  nav .menu {
+    display: none;
+    flex-direction: column;
+    flex-wrap: nowrap; /* ป้องกันการแสดงผลเป็นหลายคอลัมน์ */
+    background-color: var(--nav-bg);
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 100%;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border-color);
+    max-height: 80vh; /* จำกัดความสูง */
+    overflow-y: auto; /* เพิ่มสกอบาร์ในแนวตั้ง */
+    overflow-x: hidden; /* ซ่อนสกอบาร์แนวนอน */
+    justify-content: flex-start; /* จัดชิดซ้าย */
+    align-items: flex-start;
+    padding: 0.5rem 10%; /* ลด padding เพื่อประหยัดพื้นที่ */
+    gap: .6rem; /* ลดระยะห่างระหว่างรายการ */
+    box-sizing: border-box;
+  }
+
+  nav .menu.show {
+    display: flex;
+  }
+
+  nav .menu a {
+    width: 100%; /* ทำให้ลิงก์เต็มความกว้างของเมนู */
+    text-align: left; /* ชิดซ้ายข้อความ */
+    font-size: 1rem; /* ลดขนาดตัวอักษรเพื่อให้เหมาะกับหน้าจอเล็ก */
+    padding: 0.5rem 1rem; /* ลด padding ของลิงก์ */
+    box-sizing: border-box; /* ป้องกันการล้น */
+  }
+
+  .logo-text {
+    display: inline; /* Hide text on large screens */
+  }
+
+  #menu-toggle {
+    display: block;
+  }
+
+  /* เมื่อเมนูเปิด, ซ่อน .container */
+  body.menu-open .container {
+    display: none;
+  }
+}
+
+/* เมื่อเมนูเปิด */
+body.menu-open #mainContent,
+body.menu-open #trackerContent {
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+body.menu-open {
+  overflow: hidden; /* ป้องกันการเลื่อนหน้า */
+  nav{
+    padding: 0.1rem 1rem;
+}
+}
+
+.container {
+  background: var(--nav-bg);
+  opacity: 0; /* เริ่มต้นจากโปร่งแสง */
+  /* padding: 1rem; */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px var(--nav-shadow);
+  width: 98%;
+  /* max-width: 400px; */
+  text-align: center;
+  margin-top: 1rem;
+  border: 1px solid var(--border-color);
+  transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+  padding-bottom: 1rem; /* Default padding */
+  overflow: hidden;
+  position: relative;
+  animation: containerFadeIn 1s ease-in-out forwards;
+  animation-delay: 1s;
+}
+
+@keyframes containerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 0.96;
+    transform: translateY(0);
+  }
+}
+
+/* เมื่อย่อลง */
+.container.collapsed {
+  padding-top: 1%;
+  max-height: 60px;
+  padding-bottom: 0;
+  opacity: 0.7 !important; /* Adjust transparency */
+  position: absolute; /* Position it relative to the nearest positioned ancestor */
+  bottom: 85px; /* Move to the bottom of its parent container */
+}
+
+.container.collapsed .nav {
+  display: none; /* Hide the nav when container is collapsed */
+}
+
+/* Button to toggle visibility */
+#showHide {
+  padding: 1px 1px;
+  background-color: var(--background-color);
+  color: var(--secondary-text-color);
+  /* box-shadow: 0 4px 10px var(--nav-shadow); */
+  font-size: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+  margin-bottom: 15px; /* Space between the button and content */
+  position: absolute; /* Make it stay in the top-left corner */
+  top: 1px;
+  right: 1px;
+}
+
+#showHide:hover {
+  color: var(--text-color);
+  background-color: var(--nav-hover-bg);
+}
+
+#showHide:focus {
+  outline: none;
+}
+
+#showHide:active {
+  background-color: #0a6bbd;
+}
+
+label {
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.2rem;
+  display: block;
+  color: var(--text-color);
+  text-align: left;
+}
+
+select,
+input[type="text"] {
+  width: 100%;
+  padding: 0.4rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  margin-bottom: 0.5rem;
+  transition: border-color 0.3s;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+select:focus,
+input[type="text"]:focus {
+  border-color: var(--border-color);
+  outline: none;
+}
+
+button {
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border: none;
+  color: white;
+}
+
+#startBtn {
+  background-color: #28a745; /* สีเขียวสดใส */
+  color: #ffffff; /* สีขาว */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px var(--nav-shadow);
+  font-weight: bold; /* ตัวหนา */
+  transition: all 0.3s ease; /* เพิ่มความนุ่มนวล */
+}
+
+#startBtn:hover {
+  background-color: #218838; /* สีเขียวเข้มขึ้น */
+  color: #e8f5e9; /* สีขาวอมเขียว */
+  box-shadow: 0 6px 8px var(--nav-shadow);
+}
+
+#statusBtn {
+  background-color: #007bff; /* สีฟ้าสด */
+  color: #ffffff; /* สีขาว */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px var(--nav-shadow);
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+#statusBtn:hover {
+  background-color: #0056b3; /* สีฟ้าเข้ม */
+  color: #d1ecf1; /* สีฟ้าอ่อน */
+  box-shadow: 0 6px 8px var(--nav-shadow);
+}
+
+#endBtn {
+  background-color: #dc3545; /* สีแดงสด */
+  color: #ffffff; /* สีขาว */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px var(--nav-shadow);
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+#endBtn:hover {
+  background-color: #c82333; /* สีแดงเข้ม */
+  color: #f8d7da; /* สีชมพูอ่อน */
+  box-shadow: 0 6px 8px var(--nav-shadow);
+}
+
+#imapBtn {
+  background-color: #ffc107; /* สีเหลืองสด */
+  color: #212529; /* สีดำ */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px var(--nav-shadow);
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+#imapBtn:hover {
+  background-color: #e0a800; /* สีเหลืองเข้ม */
+  color: #fff3cd; /* สีเหลืองอ่อน */
+  box-shadow: 0 6px 8px var(--nav-shadow);
+}
+
+#requestBtn {
+  background-color: #1e3a8a; /* น้ำเงินเข้ม */
+  color: #ffffff; /* สีขาว */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px var(--nav-shadow);
+  font-weight: bold; /* ตัวหนา */
+  transition: all 0.3s ease; /* เพิ่มความนุ่มนวล */
+}
+
+#requestBtn:hover {
+  background-color: #1e40af; /* น้ำเงินเข้มขึ้นเล็กน้อย */
+  color: #cfe0fc; /* สีขาวอมฟ้าอ่อน */
+  box-shadow: 0 6px 8px var(--nav-shadow);
+}
+
+
+
+body {
+  font-family: var(--font-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--background-color, #f9f9f9);
+  color: var(--text-color, #333);
+  flex-direction: column;
+  padding-top: 70px;
+  padding-bottom: 120px;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  background-attachment: fixed;
+  opacity: 0;
+  animation: fadeIn 1s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.tracker-bar {
+  background-color: var(--nav-bg);
+  opacity: 0.85; /* ปรับความโปร่งแสง */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.8rem;
+  box-shadow: 0 -2px 5px var(--nav-shadow);
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  z-index: 1000;
+  opacity: 0; /* เริ่มต้นจากโปร่งแสง */
+  animation: trackerBarFadeIn 1s ease-in-out forwards; /* เพิ่มแอนิเมชั่น */
+  animation-delay: 1s; /* หน่วงเวลาให้แสดงหลังจาก body */
+}
+
+@keyframes trackerBarFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ปุ่มใน tracker-bar */
+.tracker-bar button {
+  opacity: 1; /* เริ่มต้นจากโปร่งแสง */
+  transition: opacity 0.3s ease-in-out; /* เพิ่มการเปลี่ยนแปลง opacity */
+}
+
+#otherInput {
+  display: none;
+}
+
+.custom-title {
+  color: #008000; /* Green color for title */
+}
+
+#map {
+  margin-top: 0.5rem;
+  height: 52vh; /* ปรับความสูงของแผนที่ให้เต็มหน้าจอ */
+  width: 100%;
+  /* background-color: var(--nav-bg);
+    opacity: .85;  */
+}
+
+.popup-content {
+  padding: 0px;
+  border-radius: 12px;
+  text-align: center;
+  font-family: "Arial", sans-serif;
+  font-size: 14px;
+  max-width: 400px;
+  margin: 20px auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.popup-content a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.popup-content .secondary-text {
+  font-size: 12px;
+  color: var(--secondary-text-color);
+}
+
+.popup-content img {
+  width: 40px;
+  height: 40px;
+  margin: 0.1px 0;
+}
+
+.popup-content .weather-info {
+  font-size: 14px;
+}
+
+.popup-content .aqi {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* popup map */
+.leaflet-popup-content-wrapper {
+  padding: 1px;
+  text-align: left;
+  border-radius: 12px;
+}
+
+.leaflet-popup-content {
+  margin: 0px 2px 0px 2px;
+  line-height: 1.3;
+  font-size: 13px;
+  font-size: 1.08333em;
+  min-height: 1px;
+}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background-color: var(--nav-bg);
+  color: var(--text-color);
+  box-shadow: 0 4px 8px var(--shadow-color);
+  opacity: 0.9; /* ปรับความโปร่งแสง */
+}
+
+.leaflet-touch .leaflet-bar a {
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  background-color: var(--nav-bg);
+  opacity: 0.5; /* ปรับความโปร่งแสง */
+}
+
+.leaflet-container .leaflet-control-attribution {
+  /* background: var(--nav-bg); */
+  background: transparent;
+  margin: 0;
+  opacity: 0.5;
+}
+
+.leaflet-marker-icon {
+  width: 25px;
+  height: 41px;
+  transform: translate3d(104px, 165px, 0px);
+  z-index: 165;
+}
+
+/* layers control */
+
+.leaflet-control-layers {
+  box-shadow: 0 1px 5px var(--nav-shadow);
+  background: var(--nav-bg);
+  border-radius: 5px;
+  opacity: 0.5;
+}
+.leaflet-control-layers-toggle {
+  width: 36px;
+  height: 36px;
+}
+.leaflet-retina .leaflet-control-layers-toggle {
+  background-size: 26px 26px;
+}
+.leaflet-touch .leaflet-control-layers-toggle {
+  width: 36px;
+  height: 36px;
+}
+.leaflet-control-layers .leaflet-control-layers-list,
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+  display: none;
+}
+.leaflet-control-layers-expanded .leaflet-control-layers-list {
+  display: block;
+  position: relative;
+}
+.leaflet-control-layers-expanded {
+  padding: 6px 10px 6px 6px;
+  color: var(--text-color);
+  background: var(--background-color);
+  opacity: 0.88;
+}
+.leaflet-control-layers-scrollbar {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-right: 5px;
+}
+.leaflet-control-layers-selector {
+  margin-top: 2px;
+  position: relative;
+  top: 1px;
+}
+.leaflet-control-layers label {
+  display: block;
+  font-size: 13px;
+  font-size: 1.08333em;
+}
+.leaflet-control-layers-separator {
+  height: 0;
+  border-top: 1px solid var(--nav-bg);
+  margin: 5px -10px 5px -6px;
+}
+
+.swal2-popup {
+  background: var(--nav-bg);
+  color: var(--text-color);
+  box-shadow: 0 4px 10px var(--shadow-color);
+  opacity: 0.82;
+}
+
+.swal2-confirm {
+  background-color: var(--button-cf-color);
+  padding: 0.625em 1.1em;
+  /*   color: var(--text-color) ;  */
+}
+
+.swal2-popup label {
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  color: var(--text-color) !important;
+}
+
+label.swal2-checkbox {
+  background: transparent !important;
+}
+
+.swal2-toast {
+  background: var(--nav-bg) !important;
+}
+
+.nav {
+  margin-top: 0;
+  --bs-nav-link-color: var(--secondary-text-color) !important;
+  --bs-nav-link-hover-color: var(--button-hover-bg) !important;
+  margin-bottom: 10px !important;
+}
+
+.nav-tabs {
+  --bs-nav-tabs-border-width: none !important;
+  --bs-nav-tabs-border-color: var(--border-color) !important;
+  background-color: var(--background-color) !important;
+  width: 98%  !important;
+}
+
+.nav-link {
+  padding: 4px 12px !important;
+  border-right: .5px solid var(--border-color) !important;
+  border-radius: 0.4rem 0.4rem 0 0  !important;
+}
+
+.nav-link.active {
+  border-bottom: none !important;
+  border-left: none !important;
+}
+
+
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+  color: var(--text-color) !important;
+  background-color: var(--nav-bg) !important;
+  font-weight: bold !important;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+#reader {
+  width: 250px;
+  height: auto;
+  background: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px var(--nav-shadow);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #007bff;
+}
+
+#reader::before,
+#reader::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #007bff;
+}
+
+#reader::before {
+  top: 8px;
+  left: 8px;
+  border-right: none;
+  border-bottom: none;
+}
+
+#reader::after {
+  bottom: 8px;
+  right: 8px;
+  border-left: none;
+  border-top: none;
+}
+
+#qrcode {
+  width: 220px;
+  height: 220px;
+  background: var(--background-color);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px var(--nav-shadow);
+  display: none;
+}
+
+p {
+  margin-bottom: 0 !important;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 5px 15px var(--nav-shadow);
+  background-color: var(--background-color) !important;
+}
+
+th,
+td {
+  border: 1px solid var(--secondary-text-color) !important;
+  padding: 8px;
+  text-align: left;
+  font-size: 14px !important;
+  background-color: var(--nav-bg) !important;
+  color: var(--text-color) !important;
+}
+th {
+  background-color: var(--nav-bg) !important;
+}
+
+thead th {
+  background-color: var(--nav-bg) !important;
+}
+
+.dataTables_length select {
+  background-color: var(
+    --background-color
+  ) !important; /* เปลี่ยนสีพื้นหลังของ select ภายใน lengthMenu เป็นสีเทา */
+  color: var(
+    --text-color
+  ) !important; /* เปลี่ยนสีตัวหนังสือของ select ภายใน lengthMenu */
+  font-size: 14px; /* ปรับขนาดฟอนต์ */
+  padding: 5px; /* ปรับระยะห่างภายใน */
+  width: auto; /* ปรับขนาดความกว้างให้เหมาะสม */
+}
+
+div.dt-button-collection {
+  background-color: var(--nav-bg) !important ;
+}
+
+.google-login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.form-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* ระยะห่างระหว่างองค์ประกอบ */
+}
+
+#reportBtn, #summaryBtn{
+  background-color: var(--background-color); /* สีเหลืองสด */
+  color: var(--text-color); /* สีดำ */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px var(--nav-shadow);
+  font-weight: bold;
+  transition: all 0.3s ease;
+  padding: 6px 24px; /* แนวตั้ง แนวนอน */
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+#reportBtn:hover, #summaryBtn:hover {
+  background-color: var(--button-hover-bg); /* สีเหลืองเข้ม */
+  color: var(--background-color); /* สีเหลืองอ่อน */
+  box-shadow: 0 6px 8px var(--nav-shadow);
+}
+
+#statistics {
+  background: var(--background-color);
+  padding: 8px 50px 20px 50px; /* บน ขวา ล่าง ซ้าย */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px var(--nav-shadow);
+  font-family: var(--font-family);
+  max-width: 500px;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+.stat-title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 14px;
+  color: var(--text-color);
+  border-bottom: 1px solid var(--secondary-text-color);
+  padding-bottom: 5px;
+}
+
+.stat-item {
+  font-size: 0.9rem;
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  color: var(--text-color);
+}
+
+.stat-item i {
+  color: var(--text-color);
+  margin-right: 8px;
+}
+
+.stat-item span {
+  font-weight: bold;
+  color: var(--text-color);
+  padding-left: 10px; /* ระยะห่างด้านหน้า (ก่อนตัวอักษร) */
+  padding-right: 5px; /* ระยะห่างด้านหลัง (หลังตัวอักษร) */
+}
+
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* ระยะห่างระหว่าง toggle กับ label */
+}
+
+.form-check-input {
+  background-color: var(--background-color);
+  border-color: var(--border-color);
+}
+
+.form-check-input:checked {
+  background-color: var(--secondary-text-color) !important; /* สีฟ้า */
+  border-color: var(--text-color) !important;
+}
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.25rem var(--background-color-rgb);
+}
+
+.form-check-input:checked::before {
+  background-color: var(--text-color) !important;
+}
+
+.checkReport {
+  max-width: 100%;
+  margin: 1rem auto;
+  background: var(--background-color);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0 0.25rem var(--shadow-color);
+  text-align: left;
+}
+
+#checkToggleReportBtn {
+  margin-left: 1rem; /* ปรับค่าตามต้องการ */
+}
+
+.ot-set {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.ot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.ot-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0; /* สำคัญ */
+  color: var(--text-color);
+}
+
+
+
+.otLog,
+.otReport {
+  max-width: 100%;
+  margin: 1rem auto;
+  background: var(--background-color);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0 0.25rem var(--shadow-color);
+  text-align: left;
+}
+
+.otLabel {
+  font-weight: bold;
+  display: inline-block;
+  width: 120px;
+}
+
+#otToggleReportBtn {
+  margin-left: 1rem; /* ปรับค่าตามต้องการ */
+}
+
+/* สไตล์สำหรับ Modal */
+.modal-header {
+  background-color:  var(--background-color) !important;
+}
+
+
+.modal-body {
+  background-color:  var(--nav-bg) !important;
+}
+
+.modal-footer {
+  background-color: var(--background-color) !important;
+}
+
+.form-control {
+  background-color: var(--background-color) !important;
+color: var(--text-color) !important;
+}
+
+
+.timeline {
+  position: relative;
+  margin: 20px 0;
+  padding-left: 40px;
+  border-left: 2px solid #3498db; /* เส้นแนวตั้ง */
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -9px;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  background-color: #3498db;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.timeline-content {
+  padding-left: 10px;
+}
+
+.timeline-content p {
+  margin: 0;
+  font-size: 14px;
+}
+

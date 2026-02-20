@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="th-TH">
+
+<head>
+  <!-- ✅ Required Meta Tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="ระบบลงเวลาปฏิบัติงาน สำหรับการลงเวลา การตรวจสอบการลงเวลา และการจัดการข้อมูล">
+
+  <!-- ✅ PWA Support -->
+  <meta name="theme-color" content="#ffffff">
+  <meta name="msapplication-navbutton-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ระบบลงเวลาปฏิบัติงาน">
+  <meta name="application-name" content="ระบบลงเวลาปฏิบัติงาน">
+
+  <!-- ✅ Cache Control (ป้องกันแคช) -->
+  <!-- <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0"> -->
+
+  <!-- ✅ Preconnect for faster loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://cdn.datatables.net">
+  <link rel="preconnect" href="https://script.google.com">
+
+  <!-- ✅ Web App Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- ✅ Favicon & Apple Touch Icon -->
+  <link rel="apple-touch-icon" sizes="180x180"
+    href="https://lh5.googleusercontent.com/d/15oBJkXkg-WVElsZb6a-BlRx8CyPP0_Q5">
+  <link rel="shortcut icon" href="https://lh5.googleusercontent.com/d/15oBJkXkg-WVElsZb6a-BlRx8CyPP0_Q5">
+
+  <!-- ✅ Google Fonts (ลดเวลาโหลด + ป้องกัน FOUT) -->
+  <!-- นำเข้าฟอนต์จาก Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Itim&family=K2D:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Mali:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Niramit:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Pattaya&family=Roboto:ital,wght@0,100..900;1,100..900&family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- ✅ Bootstrap -->
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+  <!-- ✅ Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <!-- ✅ Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+  <!-- ✅ DataTable CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+
+  <!-- ✅ Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- ✅ JavaScript files (โหลดแบบ async/defer) -->
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script defer src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+
+  <title>ระบบลงเวลาปฏิบัติงาน | SK_BK_Time</title>
+</head>
+
+<body>
+  <nav>
+
+    <div class="logo" onclick="window.location.href='#';">
+      <i class="fa-solid fa-ribbon"></i> <span class="logo-text">ลงเวลา</span>
+    </div>
+
+    <div class="menu" id="menu">
+      <a href="request.html" target="_blank"><i class="fas fa-paper-plane"></i> ส่งคำขอ</a>
+      <a href="javascript:void(0);" onclick="checktoday()"><i class="fas fa-clock"></i> ตรวจสอบ</a>
+      <a href="javascript:void(0);" onclick="canceltoday()"><i class="fas fa-xmark"></i> ยกเลิก</a>
+      <!-- <a href="#">พิกัด</a> -->
+      <a href="javascript:void(0);" onclick="openWebAdmin()"><i class="fas fa-chart-bar"></i> รายงาน</a>
+      <a href="javascript:void(0);" onclick="openWeb5s()"><i class="fas fa-folder"></i> 5ส.</a>
+      <a href="authen.html"><i class="fab fa-telegram"></i> เชื่อมต่อ Telegram</a>
+      <a href="javascript:void(0);" onclick="googlelogin()"><i class="fa-brands fa-google"></i> เชื่อมต่อ Google</a>
+      <a href="javascript:void(0);" onclick="uploadImage()"><i class="fa-solid fa-gear"></i> ตั้งค่าภาพพื้นหลัง</a>
+      <a href="javascript:void(0);" onclick="aboutme()"><i class="fas fa-user"></i> ฉัน</a>
+      <a href="javascript:void(0);" onclick="editpic()"><i class="fas fa-image"></i> รูปโปรไฟล์</a>
+      <a href="javascript:void(0);" onclick="requestReceive()"><i class="fa-regular fa-file-lines"></i> คำขอกู้คืน</a>
+      <a href="javascript:void(0);" onclick="logupdate()"><i class="fas fa-history"></i> บันทึก</a>
+      <a href="https://drive.google.com/file/d/1vv9PcsMhtZrztWn3daz13PQUH2Pko71x/view?usp=drive_link" target="_blank"><i
+          class="fas fa-book"></i> วิธีใช้</a>
+      <a href="javascript:void(0);" onclick="clearLocal()"><i class="fas fa-sync-alt"></i> ออก</a>
+    </div>
+
+    <div>
+      <img src="https://lh5.googleusercontent.com/d/15oBJkXkg-WVElsZb6a-BlRx8CyPP0_Q5" alt="Avatar" class="avatar"
+        id="avatar" onclick="editpic()">
+
+      <span class="notify-toggle" id="notify-toggle">
+        <i class="fa-solid fa-bell"></i>
+        <span class="notify-badge" id="notify-badge"></span>
+      </span>
+
+
+      <div id="notify-menu" class="notify-menu">
+        <p id="no-time-log"><i class="fas fa-clock"></i> การตรวจสอบเบื้องต้นไม่พบการลงเวลาปฏิบัติงานในวันนี้</p>
+        <p id="has-time-log"><i class="fas fa-check-circle"></i> คุณได้ลงเวลาปฏิบัติงานในวันนี้แล้ว</p>
+      </div>
+
+      <span class="theme-toggle" id="theme-toggle"><i class="fa-solid fa-moon"></i></span>
+      <span class="menu-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></span>
+    </div>
+
+  </nav>
+
+  <div id="mainContent" class="container">
+    <button id="showHide">ย่อ/แสดง</button>
+
+    <!-- tap -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+          role="tab" aria-controls="home" aria-selected="true"><i class="fa-solid fa-location-dot"></i>
+          Location</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="srqrcode-tab" data-bs-toggle="tab" data-bs-target="#srqrcode" type="button"
+          role="tab" aria-controls="srqrcode" aria-selected="false"><i class="fa-solid fa-qrcode"></i> QR Code</button>
+      </li>
+      <!-- Overtime -->
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="Overtime-tab" data-bs-toggle="tab" data-bs-target="#Overtime" type="button"
+          role="tab" aria-controls="Overtime" aria-selected="false"><i class="fa-solid fa-stopwatch"></i></i>
+          OT</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="report-tab" data-bs-toggle="tab" data-bs-target="#report" type="button" role="tab"
+          aria-controls="report" aria-selected="false"><i class="fa-solid fa-table"></i> Report</button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+      <!-- ลงเวลา -->
+      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <!-- <h1>Welcome to Work Tracker</h1> -->
+
+
+        <iframe title="datetime" src="" frameborder="0" width="276" height="46" allowtransparency="true"
+          style="pointer-events: none;"></iframe>
+
+        <div id="log">
+          <label for="typea"><i class="fa-solid fa-list"></i> ลักษณะการปฏิบัติงาน:</label>
+          <select id="typea" name="CheckIn" required onchange="handleOtherOption()">
+            <option value="ปกติ">ทำงานตามปกติ</option>
+            <option value="นอกสถานที่">ออกปฏิบัติงานนอกสถานที่</option>
+            <option value="วันหยุด">ปฏิบัติงานในวันหยุด (เสาร์-อาทิตย์ หรือวันหยุดราชการ)</option>
+            <option value="ไปราชการ">ไปราชการ (เช่น ประชุม อบรม ฯลฯ)</option>
+            <option value="อื่นๆ">อื่นๆ (โปรดระบุรายละเอียด)</option>
+          </select>
+
+          <div id="otherInput" style="display:none">
+            <label for="otherDetails"><i class="fas fa-info-circle"></i> รายละเอียดเพิ่มเติม:</label>
+            <input type="text" id="otherDetails" name="OtherDetails" placeholder="ระบุรายละเอียดเพิ่มเติม" list="other-suggestions" autofocus />
+
+<datalist id="other-suggestions">
+
+  <!-- ปกติ -->
+  <option value="ปฏิบัติงานประจำที่สำนักงาน/หน่วยงาน">
+  <option value="ทำงานเอกสาร/จัดทำรายงาน">
+  <option value="ประชุมภายในหน่วยงาน">
+  <option value="ประสานงานกับทีม/เจ้าหน้าที่อื่น">
+  <option value="ตรวจสอบข้อมูลและสถิติ">
+
+  <!-- นอกสถานที่ -->
+  <option value="ลงพื้นที่ชุมชน/บ้านผู้ป่วย">
+  <option value="ติดตามผู้ป่วยหรือผู้สูงอายุที่บ้าน">
+  <option value="ให้บริการฉีดวัคซีน/ตรวจสุขภาพประชาชน">
+  <option value="ร่วมงานรณรงค์สุขภาพ/โครงการสาธารณสุข">
+  <option value="เข้าร่วมปฏิบัติการควบคุมโรคระบาด">
+  <option value="ช่วยเหลือผู้ป่วยฉุกเฉิน">
+  <option value="พื้นที่ชายแดน/หมู่บ้านห่างไกล">
+  <option value="ตรวจสอบ/แจกเวชภัณฑ์ฉุกเฉิน">
+
+  <!-- วันหยุด -->
+   <option value="ปฏิบัติหน้าที่เวรในวันหยุด">
+  <option value="ปฏิบัติหน้าที่เวร On-call ช่วงวันหยุด">
+  <option value="ช่วยเหลือเหตุฉุกเฉินหรือภัยพิบัติ">
+  <option value="ติดประชุม/อบรมวันหยุด">
+  <option value="ออกตรวจเยี่ยมผู้ป่วย/ชุมชนในวันหยุด">
+
+  <!-- ไปราชการ -->
+  <option value="เข้าร่วมประชุม/อบรม/สัมมนา">
+  <option value="ไปราชการตามคำสั่งหัวหน้า">
+  <option value="ไปยื่นเอกสารราชการ/ธนาคาร">
+  <option value="ประชุมร่วมกับหน่วยงานอื่น">
+  <option value="อบรม/ฝึกซ้อมสถานการณ์ฉุกเฉิน">
+
+  <!-- อื่นๆ -->
+  <option value="เหตุผลส่วนตัว/ครอบครัว">
+  <option value="งานพิเศษหรือโครงการเฉพาะ">
+  <option value="งานภารกิจชั่วคราว/พิเศษที่ได้รับมอบหมาย">
+
+</datalist>
+            <input type="text" id="llat" name="llat" placeholder="ละติจูด" hidden />
+            <input type="text" id="llon" name="llon" placeholder="ลองจิจูด" hidden />
+          </div>
+        </div>
+
+        <!-- แผนที่ -->
+        <div id="map"></div>
+      </div>
+
+      <!-- QR Code -->
+      <div class="tab-pane fade" id="srqrcode" role="tabpanel" aria-labelledby="srqrcode-tab">
+        <div class="content-wrapper">
+          <div id="reader"></div>
+          <button id="button-qr" onclick="toggleQRCode()" class="btn btn-primary">สร้าง <i
+              class="fa-solid fa-qrcode"></i> QR Code</button>
+          <div id="qrcode"></div>
+          <P></P>
+          <p><i class="fas fa-book-open"></i> วิธีใช้ : แสกน QR Code จากหัวหน้าของคุณ</p>
+          <p><i class="fas fa-sticky-note"></i> หมายเหตุ : สำหรับลงเวลาการปฏิบัติงานตามปกติเท่านั้น</p>
+        </div>
+      </div>
+
+      <!-- // Overtime -->
+      <div class="tab-pane fade" id="Overtime" role="tabpanel" aria-labelledby="Overtime-tab">
+        <!-- tap เฉพาะหน้า OT -->
+        <ul class="nav nav-tabs" id="otTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="ot-home-tab" data-bs-toggle="tab" data-bs-target="#ot-home"
+              type="button" role="tab" aria-controls="ot-home" aria-selected="true">
+              <i class="fa-solid fa-stopwatch"></i> บันทึก
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="ot-report-tab" data-bs-toggle="tab" data-bs-target="#ot-report" type="button"
+              role="tab" aria-controls="ot-report" aria-selected="false">
+              <i class="fa-solid fa-table"></i> ล่วงเวลา
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="ot-management-tab" data-bs-toggle="tab" data-bs-target="#ot-management" type="button"
+              role="tab" aria-controls="ot-management" aria-selected="false">
+              <i class="fa-solid fa-table"></i> วันหยุด
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="otTabContent">
+          <!-- ลงเวลาทำงาน OT -->
+          <div class="tab-pane fade show active" id="ot-home" role="tabpanel" aria-labelledby="ot-home-tab">
+
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              สำหรับการบันทึกเวลาปฏิบัติงานล่วงเวลา รายชั่วโมงเท่านั้น
+              หากต้องการบันทึกการทำงาน เต็มวันในวันหยุดให้ดำเนินการเช่นเดียวกันกับการลงเวลาปฏิบัติงานปกติ
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+
+            <div class="ot-set">
+               <button id="otConfigBtn" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                data-bs-target="#otConfigModal">
+                <i class="fas fa-cog"></i> กำหนด
+              </button>      
+            </div>
+
+            <div class="ot-header">
+                  <h5 class="ot-title">ระบบลงเวลาปฏิบัติงานนอกเวลา (OT) ทดสอบ</h5>
+            </div>
+
+            <div class="d-flex justify-content-center gap-3 my-4 flex-wrap">
+              <button id="otStartBtn" class="btn btn-success">
+                <i class="fas fa-play"></i> เริ่มปฏิบัติงาน
+              </button>
+              <button id="otEndBtn" class="btn btn-danger">
+                <i class="fas fa-stop"></i> สิ้นสุดการทำงาน
+              </button>
+              <button id="otResetBtn" class="btn btn-secondary">
+                <i class="fas fa-rotate-right"></i> รีเซ็ต
+              </button>
+            </div>
+
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <p><strong>วันที่เริ่ม:</strong> <span id="otStartDateText">-</span></p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content ">
+                  <p><strong>เวลาเริ่ม:</strong> <span id="otStartTimeText">-</span></p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <p><strong>เวลาสิ้นสุด:</strong> <span id="otEndTimeText">-</span></p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <p><strong>ระยะเวลา:</strong> <span id="otDurationText">-</span></p>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+          <!-- รายงาน OT -->
+          <div class="tab-pane fade" id="ot-report" role="tabpanel" aria-labelledby="ot-report-tab">
+            <div class="otReport">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5>รายงานการทำงานล่วงเวลา (OT) และการจัดการการ</h5>
+                
+                <button id="otToggleReportBtn" class="btn btn-outline-primary btn-sm">
+                  <i class="fas fa-eye me-1"></i> แสดงรายงาน
+                </button>
+              </div>
+              <div id="otReportTableWrapper" class="mt-3 table-responsive">
+                           <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              ข้อมูลส่วนนี้จะแสดงเฉพาะรายการที่กระทำในเครื่องนี้เท่านั้น หากต้องการดูรายงานทั้งหมดกรุณาคลิกที่ลิงก์ด้านล่าง
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+                <table id="otReport" class="display" style="width:100%">
+                  <thead>
+                    <tr>
+                      <!-- <th>ลำดับ</th> -->
+                      <th>วันที่</th>
+                      <th>เริ่ม</th>
+                      <th>สิ้นสุด</th>
+                      <th>ระยะเวลา</th>
+                      <th>สถานะ</th>
+                      <th>หมายเหตุ</th>
+                      <th>อ้างอิง</th>
+                      <th>Stamp</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- ข้อมูลจะถูกเติมจาก JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQy0ntyNI29LDu3VupAJobaO75GrnF5ObD8oObXr1SfuB6lxe3J4ZsgdGBB03p5GzXDhopkvohmB225/pubhtml?gid=1736275263&single=true" target="_blank" rel="noopener noreferrer"> ดูรายงาน OT ใน Google Sheets</a>
+            <!-- สิ้นสุด ot -->
+          </div>
+
+          <!-- การจัดการเวลาทำงานในวันหยุด -->
+          <div class="tab-pane fade" id="ot-management" role="tabpanel" aria-labelledby="ot-management-tab">
+            <div class="otManagement">
+              <h5>รายงานการเวลาทำงานในวันหยุด และการจัดการ</h5>
+              <!-- <button id="otAddBtn" class="btn btn-primary" onclick="sendOffDayReport()"> 
+                <i class="fas fa-plus"></i> เพิ่มการทำงานในวันหยุด
+              </button> -->
+                  <div id="otReportTableWrapper" class="mt-3 table-responsive">
+                           <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              ข้อมูลส่วนนี้จะแสดงเฉพาะรายการที่กระทำในเครื่องนี้เท่านั้น หากต้องการดูรายงานทั้งหมดกรุณาคลิกที่ลิงก์ด้านล่าง
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+<table id="offDayTable" class="table table-bordered table-striped" style="width:100%">
+  <thead>
+    <tr>
+      <th>วันที่</th>
+      <th>ชื่อ</th>
+      <th>หน่วยงาน</th>
+      <th>ประเภท</th>
+      <th>อ้างอิง</th>
+      <th>หมายเหตุ</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+
+            </div>
+               <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTuCWOsP6AJRpW5hSpBOG0aaUKjXbYtOXJR2UuCavzsbv2JlrkMDeXbP1XIXq0FG7xRpLyyyKYSuzyz/pubhtml?gid=1936925149&single=true" target="_blank" rel="noopener noreferrer"> ดูรายงานการทำงานในวันหยุดใน Google Sheets</a>
+          </div>
+          </div>
+        </div>
+      </div>
+      
+  
+          <!-- รายงาน -->
+          <div class="tab-pane fade" id="report" role="tabpanel" aria-labelledby="report-tab">
+            <!-- tab เฉพาะหน้า report -->
+        <ul class="nav nav-tabs" id="rpTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="rp-home-tab" data-bs-toggle="tab" data-bs-target="#rp-home"
+              type="button" role="tab" aria-controls="rp-home" aria-selected="true">
+              <i class="fa-solid fa-stopwatch"></i> รายงาน
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="rp-report-tab" data-bs-toggle="tab" data-bs-target="#rp-report" type="button"
+              role="tab" aria-controls="rp-report" aria-selected="false">
+              <i class="fa-solid fa-table"></i> สรุป
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="rp-log-tab" data-bs-toggle="tab" data-bs-target="#rp-log" type="button"
+              role="tab" aria-controls="rp-log" aria-selected="false">
+              <i class="fa-solid fa-table"></i> การส่งข้อมูล
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content" id="rpTabContent">
+          <div class="tab-pane fade show active" id="rp-home" role="tabpanel" aria-labelledby="rp-home-tab">
+            <div class="form-container">
+              <label for="report-month">เดือน</label>
+              <select id="report-month"></select>
+
+              <label for="report-year">พ.ศ.</label>
+              <select id="report-year"></select>
+            </div>
+            <div class="center-container">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="responsiveSwitchMain" checked />
+                <label class="form-check-label" for="responsiveSwitchMain" id="responsiveLabelMain">
+                  แสดงข้อมูลแบบย่อ (กดปุ่ม <i class="fa-solid fa-play"></i> เพื่อดูรายละเอียด)
+                </label>
+              </div>
+            </div>
+
+            <button id="reportBtn" name="reportBtn" onclick="reportdata()">
+              <i class="fa-solid fa-magnifying-glass"></i> ดูรายงาน
+            </button>
+
+            <div id="loadingSpinner" style="display: none;">
+              <div class="spinner-grow text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="spinner-grow text-secondary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="spinner-grow text-success" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="spinner-grow text-danger" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="spinner-grow text-warning" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="spinner-grow text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="spinner-grow text-light" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="spinner-grow text-dark" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="d-flex justify-content-center align-items-center">
+                <strong role="status"><i class="fa-solid fa-cloud-arrow-down"></i> Loading...</strong>
+              </div>
+            </div>
+
+            <div id="statistics"></div>
+
+            <table id="dreportdata" class="table-striped table-bordered table-hover display nowrap"
+              style="display: none;">
+
+              <thead>
+                <tr>
+                  <th>วัน</th>
+                  <th>วันที่</th>
+                  <th>เวลามา</th>
+                  <th>เวลากลับ</th>
+                  <th>ชื่อ</th>
+                  <th>กลุ่มงาน/หน่วยงาน</th>
+                  <th>การปฏิบัติงาน</th>
+                  <th>ระยะ(มา)</th>
+                  <th>ระยะ(กลับ)</th>
+                  <th>บันทึก</th>
+
+                  <th>สถานะคำขอ</th>
+                  <th>วันที่คำขอ</th>
+                  <th>เวลาคำขอ</th>
+
+                  <th>วันที่อนุญาต</th>
+                  <th>เวลาอนุญาต</th>
+                  <th>ผู้อนุญาต</th>
+                  <th>ตำแหน่งผู้อนุญาต</th>
+
+                  <th>การตรวจสอบ</th>
+                  <th>ผู้ตรวจสอบ</th>
+                  <th>ตำแหน่งผู้ตรวจสอบ</th>
+                  <th>วันที่ตรวจสอบ</th>
+                  <th>เวลาตรวจสอบ</th>
+                  <th>อ้างอิง</th>
+                </tr>
+              </thead>
+              <tbody id="reportdata"></tbody>
+              <tfoot>
+                <tr>
+                  <th>วัน</th>
+                  <th>วันที่</th>
+                  <th>เวลามา</th>
+                  <th>เวลากลับ</th>
+                  <th>ชื่อ</th>
+                  <th>กลุ่มงาน/หน่วยงาน</th>
+                  <th>การปฏิบัติงาน</th>
+                  <th>ระยะ(มา)</th>
+                  <th>ระยะ(กลับ)</th>
+                  <th>บันทึก</th>
+
+                  <th>สถานะคำขอ</th>
+                  <th>วันที่คำขอ</th>
+                  <th>เวลาคำขอ</th>
+
+                  <th>วันที่อนุญาต</th>
+                  <th>เวลาอนุญาต</th>
+                  <th>ผู้อนุญาต</th>
+                  <th>ตำแหน่งผู้อนุญาต</th>
+
+                  <th>การตรวจสอบ</th>
+                  <th>ผู้ตรวจสอบ</th>
+                  <th>ตำแหน่งผู้ตรวจสอบ</th>
+                  <th>วันที่ตรวจสอบ</th>
+                  <th>เวลาตรวจสอบ</th>
+                  <th>อ้างอิง</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <!---  tab สรุป --->
+          <div class="tab-pane fade" id="rp-report" role="tabpanel" aria-labelledby="rp-report-tab">
+            <div class="form-container">
+              <label for="summary-month">เดือน</label>
+              <select id="summary-month"></select>
+
+              <label for="summary-year">พ.ศ.</label>
+              <select id="summary-year"></select>
+            </div>
+
+            <div class="center-container">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="responsiveSwitchAlt" checked />
+                <label class="form-check-label" for="responsiveSwitchAlt" id="responsiveLabelAlt">
+                  แสดงข้อมูลแบบย่อ (กดปุ่ม <i class="fa-solid fa-play"></i> เพื่อดูรายละเอียด)
+                </label>
+              </div>
+            </div>
+
+            <button id="summaryBtn" name="summaryBtn" onclick="summarydata()">
+              <i class="fa-solid fa-magnifying-glass"></i> สรุป(ในหน่วยงาน/กลุ่มงาน)
+            </button>
+
+            <div id="loadingSpinnerx" style="display: none;">
+              <div class="spinner-grow text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="spinner-grow text-secondary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="spinner-grow text-success" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="spinner-grow text-danger" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="spinner-grow text-warning" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="spinner-grow text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="spinner-grow text-light" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="spinner-grow text-dark" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="d-flex justify-content-center align-items-center">
+                <strong role="status"><i class="fa-solid fa-cloud-arrow-down"></i> Loading...</strong>
+              </div>
+            </div>
+
+            <!-- <div id="statistics"></div> -->
+            <table id="dsummarydata" class="table-striped table-bordered table-hover display nowrap"
+              style="display: none;">
+              <thead></thead>
+            </table>
+          </div>
+          <!--- tap การส่งข้อมูล --->
+          <div class="tab-pane fade" id="rp-log" role="tabpanel" aria-labelledby="rp-log-tab">
+            <!-- สถานะ -->
+            <div class="checkReport">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5>การส่งข้อมูล (Log)</h5>
+                <button id="clearCheckEntriesBtn" class="btn btn-outline-danger btn-sm">
+                  <i class="fas fa-trash-alt me-1"></i> เคลียร์ข้อมูล
+                </button>
+              </div>
+              <div id="checkReportTableWrapper" class="mt-3 table-responsive">
+                <p>กดปุ่ม <i class="fa-solid fa-play"></i> เพื่อดูรายละเอียด</p>
+                <table id="checkReportTable" class="table-striped table-bordered table-hover display nowrap">
+                  <thead class="table-light">
+                    <tr>
+                      <th>วันที่</th>
+                      <th>เวลา</th>
+                      <th>สถานะ</th>
+                      <th>การลงเวลา</th>
+                      <th>ประเภท</th>
+                      <th>หมายเหตุ</th>
+                      <th>ข้อความ</th>
+                    </tr>
+                  </thead>
+                  <tbody id="checkReportBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+      <!-- tap end -->
+
+<!-- แถบปุ่ม -->
+  <div id="trackerContent" class="tracker-bar">
+    <button id="startBtn" type="button" onclick="checkin()"><i class="fas fa-sign-in-alt"></i> มา</button>
+    <button id="requestBtn" type="button" onclick="window.location.href='request.html'"><i class="fas fa-file-alt"></i> คำขอ</button>
+    <button id="statusBtn" type="button" onclick="checkinfo()"><i class="fas fa-check-circle"></i> สถานะ</button>
+    <button id="endBtn" type="button" onclick="checkout()"><i class="fas fa-sign-out-alt"></i> กลับ</button>
+    <button id="imapBtn" type="button" onclick="refreshMap()"><i class="fa-solid fa-location-dot"></i> พิกัด</button>
+     <!-- <button id="requestBtn" type="button" onclick="clearOffDayIfExceedLimit()"><i class="fa-solid fa-code"></i></i> ทดสอบ function</button> -->
+  </div>
+
+  <!-- Modal OT -->
+  <div class="modal fade" id="otConfigModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="fas fa-cog"></i> การกำหนดค่า
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-check form-switch mb-2">
+            <input class="form-check-input" type="checkbox" id="staffScopeSwitch" />
+            <label class="form-check-label" for="staffScopeSwitch" id="staffScopeLabel">
+              แสดงตัวเลือกเฉพาะกลุ่มงาน/หน่วยงาน
+            </label>
+          </div>
+
+
+          <div class="mb-3">
+            <label for="otStaffName" class="form-label"> <i class="fa-solid fa-user-clock"></i> ผู้ควบคุม</label>
+            <div class="d-flex gap-2">
+              <select id="otStaffName" class="form-control"></select>
+              <button class="btn btn-outline-info btn-sm" onclick="clearStaffGeneric('otStaffName','otStaffName')">
+                <i class="fa-solid fa-folder-open"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">
+              <i class="fa-solid fa-user-check"></i> ผู้อนุมัติ
+            </label>
+            <div class="d-flex gap-2">
+              <select id="otApprover" class="form-control"></select>
+              <button class="btn btn-outline-info btn-sm" onclick="clearStaffGeneric('otApprover','otApproverName')">
+                <i class="fa-solid fa-folder-open"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">
+              <i class="fa-solid fa-money-check-dollar"></i> ผู้จ่ายเงิน
+            </label>
+            <div class="d-flex gap-2">
+              <select id="otPayer" class="form-control"></select>
+              <button class="btn btn-outline-info btn-sm" onclick="clearStaffGeneric('otPayer','otPayerName')">
+                <i class="fa-solid fa-folder-open"></i>
+              </button>
+            </div>
+          </div>
+
+
+          <div class="mb-3">
+            <label for="otRateDay" class="form-label"><i class="fa-solid fa-baht-sign"></i> อัตราค่าตอบแทน
+              (บาท/วัน)</label>
+            <input type="number" id="otRateDay" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label for="otRate" class="form-label"><i class="fa-solid fa-baht-sign"></i> อัตราค่าตอบแทน
+              (บาท/ชม.)</label>
+            <input type="number" id="otRate" class="form-control" />
+          </div>
+          <div class="mb-3" hidden>
+            <label for="otAutoEndTime" class="form-label"><i class="fa-regular fa-clock"></i> เวลาสิ้นสุด</label>
+            <input type="time" id="otAutoEndTime" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label for="hourslimit" class="form-label"><i class="fa-solid fa-clock"></i> จำนวนชั่วโมงของ OT รายชั่วโมง (Limit)</label>
+            <input type="number" min="1" max="18" step="0.5" id="hourslimit" class="form-control"
+              placeholder="จำนวนชั่วโมงขั้นต่ำ" />
+          </div>
+          <div id="hoursDisplay" class="form-text text-primary">
+            <!-- เวลาที่แปลงเป็น ชม. นาที จะโชว์ตรงนี้ -->
+          </div>
+          <div class="mb-3">
+            <label for="otbank" class="form-label"><i class="fa-solid fa-money-check"></i> กรุงไทย</label>
+            <input type="number" id="otbank" maxlength="10" class="form-control" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">
+            ปิด
+          </button>
+          <button class="btn btn-primary" id="otSaveConfigBtn">
+            บันทึก
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- jQuery -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+
+  <!-- DataTable JS -->
+  <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js" defer></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"
+    defer></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.dataTables.min.js"
+    defer></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js" defer></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js" defer></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js" defer></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/colreorder/1.7.0/js/dataTables.colReorder.min.js"
+    defer></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"
+    defer></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"
+    defer></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"
+    defer></script>
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+
+  <!-- Bootstrap 5 JS (with Popper) -->
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous" defer></script>
+  <!-- OAuth -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <!-- Custom JS -->
+  <script src="checkin.js" defer></script>
+  <script src="app.js" defer></script>
+  <script src="overtime.js" defer></script>
+
+  <script>
+    // Handle "Other" option in select dropdown
+ const select = document.getElementById("typea");
+  const otherInput = document.getElementById("otherInput");
+
+  let otherShown = false; // ตัวแปรเก็บว่าเคยเปิดแล้วหรือยัง
+
+  function handleOtherOption() {
+    const value = select.value;
+
+    if (value !== "ปกติ" || otherShown) {
+      otherInput.style.display = "block"; // แสดงทันที
+      otherShown = true; // บันทึกว่าเคยเปิดแล้ว
+    } else {
+      otherInput.style.display = "none"; // ซ่อนเฉพาะตอนเริ่มต้น
+    }
+  }
+
+  // ค่าเริ่มต้น
+  document.addEventListener("DOMContentLoaded", () => {
+    otherInput.style.display = "none"; // เริ่มต้นซ่อน
+  });
+
+    // Time-based button visibility
+    let publicHolidays = [];
+
+    // โหลด JSON วันหยุด
+    async function loadPublicHolidays() {
+      try {
+        const response = await fetch('holidays.json');
+        if (!response.ok) throw new Error("ไม่สามารถโหลดวันหยุดได้");
+        publicHolidays = await response.json(); // array ของ object
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // เช็ควันหยุด
+    function isHoliday(date) {
+      const formattedDate = date.toISOString().split("T")[0]; // "YYYY-MM-DD"
+      return publicHolidays.some(h => h.date === formattedDate);
+    }
+
+    // toggleButtonsByTime
+    function toggleButtonsByTime() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+
+      const startBtn = document.getElementById("startBtn");
+      const requestBtn = document.getElementById("requestBtn");
+      const statusBtn = document.getElementById("statusBtn");
+      const endBtn = document.getElementById("endBtn");
+      const typeaElement = document.getElementById("typea");
+
+      // เช็ควันหยุดสุดสัปดาห์หรือวันหยุดใน JSON
+      let day = now.getDay();
+      if (day === 0 || day === 6 || isHoliday(now)) {
+        typeaElement.value = "วันหยุด";
+      } else {
+        typeaElement.value = "ปกติ";
+      }
+
+      // --- ปุ่ม Start / request / Status / End  ---
+      if ((hours === 0 && minutes >= 0) || hours < 8 || (hours === 8 && minutes <= 30)) {
+        startBtn.style.display = "inline-block";
+        statusBtn.style.display = "none";
+        endBtn.style.display = "none";
+        requestBtn.style.display = "none";
+        let formattedToday = now.toLocaleDateString("th-TH");
+        if (formattedToday === localStorage.getItem("datecheck")) {
+          startBtn.style.display = "none";
+          statusBtn.style.display = "inline-block";
+          endBtn.style.display = "none";
+          requestBtn.style.display = "none";
+        }
+      } else if ((hours >= 8 && hours < 16) || (hours === 16 && minutes < 30)) {
+        startBtn.style.display = "none";
+        statusBtn.style.display = "inline-block";
+        endBtn.style.display = "none";
+        requestBtn.style.display = "none";
+        let formattedToday = now.toLocaleDateString("th-TH");
+        if (formattedToday !== localStorage.getItem("datecheck")) {
+         startBtn.style.display = "none";
+          statusBtn.style.display = "none";
+          endBtn.style.display = "none";
+          requestBtn.style.display = "inline-block";
+        }
+      } else {
+        startBtn.style.display = "none";
+        statusBtn.style.display = "none";
+        requestBtn.style.display = "none";
+        endBtn.style.display = "inline-block";
+        let formattedToday = now.toLocaleDateString("th-TH");
+        if (formattedToday === localStorage.getItem("datecheckout")) {
+          startBtn.style.display = "none";
+          statusBtn.style.display = "inline-block";
+          endBtn.style.display = "none";
+        }
+      }
+    }
+
+    // โหลด JSON ก่อนแล้วเริ่มตรวจสอบทุกนาที
+    loadPublicHolidays().then(() => {
+      toggleButtonsByTime();
+      setInterval(toggleButtonsByTime, 60000);
+    });
+
+    // ดึงข้อมูลรูปภาพจาก localStorage
+    const avatarSrc = localStorage.getItem("upic");
+    const avatarSrcx = localStorage.getItem("yourpic");
+
+    // ตรวจสอบว่ามีข้อมูลรูปภาพใน localStorage หรือไม่
+    if (avatarSrc) {
+      // ตั้งค่าให้รูปภาพ avatar
+      document.getElementById("avatar").src = avatarSrc;
+    } else if (avatarSrcx) {
+      document.getElementById("avatar").src = avatarSrcx;
+    } else {
+      // กรณีที่ไม่มีรูปภาพใน localStorage
+      document.getElementById("avatar").src = 'https://lh5.googleusercontent.com/d/15oBJkXkg-WVElsZb6a-BlRx8CyPP0_Q5'; // ใส่รูปภาพที่เป็นค่าเริ่มต้น
+    }
+
+    // แท็ป และ ย่อลง
+    document.addEventListener("DOMContentLoaded", function () {
+      const trackerBar = document.querySelector(".tracker-bar");
+      const tabs = document.querySelectorAll(".nav-link");
+
+      tabs.forEach(tab => {
+        tab.addEventListener("click", function () {
+          const target = this.getAttribute("data-bs-target");
+
+          if (target !== "#home") {
+            stopLocationTracking();
+            trackerBar.style.display = "none";
+          } else {
+            trackerBar.style.display = "flex"; // รีเซ็ตค่าให้ถูกต้อง
+          }
+
+          // ตรวจสอบว่าเป็นแท็บ #srqrcode หรือไม่
+          if (target === "#srqrcode") {
+            startScan();
+          } else {
+            stopScanner(); // หยุดการสแกนเมื่อเปลี่ยนแท็บ
+          }
+          if (target === "#report") {
+            updateCheckReport();
+          } else {
+          }
+          if (target === "#Overtime") {
+            loadOffDayTable();
+          }
+        });
+      });
+    });
+
+    // Check localStorage for the saved state and apply it
+    document.addEventListener("DOMContentLoaded", function () {
+      const mainContent = document.getElementById("mainContent");
+      const showHideButton = document.getElementById("showHide");
+
+      // Retrieve the stored state from localStorage
+      const isCollapsed = localStorage.getItem("containerCollapsed") === "true";
+
+      // Apply the collapsed state to the container
+      if (isCollapsed) {
+        mainContent.classList.add("collapsed");
+        showHideButton.textContent = "แสดง"; // Change button text to 'Show'
+
+        // Automatically select the home tab when collapsed
+        const homeTab = document.querySelector('.nav-link[data-bs-target="#home"]');
+        if (homeTab) {
+          homeTab.click();
+        }
+      } else {
+        showHideButton.textContent = "ย่อ"; // Change button text to 'Hide'
+      }
+
+      // Add event listener for button click
+      showHideButton.addEventListener("click", function () {
+        // Toggle the collapsed state
+        mainContent.classList.toggle("collapsed");
+
+        // Update localStorage with the new state
+        const isCollapsed = mainContent.classList.contains("collapsed");
+        localStorage.setItem("containerCollapsed", isCollapsed);
+
+        // Change the button text based on the new state
+        showHideButton.textContent = isCollapsed ? "แสดง" : "ย่อ";
+
+        // Automatically select the home tab when collapsed
+        if (isCollapsed) {
+          const homeTab = document.querySelector('.nav-link[data-bs-target="#home"]');
+          if (homeTab) {
+            homeTab.click();
+          }
+        }
+      });
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const switchMain = document.getElementById("responsiveSwitchMain");
+      const labelMain = document.getElementById("responsiveLabelMain");
+
+      const switchAlt = document.getElementById("responsiveSwitchAlt");
+      const labelAlt = document.getElementById("responsiveLabelAlt");
+
+      switchMain.addEventListener("change", () => {
+        if (switchMain.checked) {
+          labelMain.innerHTML = 'แสดงข้อมูลแบบย่อ (กดปุ่ม <i class="fa-solid fa-play"></i> เพื่อดูรายละเอียด)';
+        } else {
+          labelMain.innerHTML = 'แสดงข้อมูลเต็มแถวทั้งหมด';
+        }
+      });
+
+      switchAlt.addEventListener("change", () => {
+        if (switchAlt.checked) {
+          labelAlt.innerHTML = 'แสดงข้อมูลแบบย่อ (กดปุ่ม <i class="fa-solid fa-play"></i> เพื่อดูรายละเอียด)';
+        } else {
+          labelAlt.innerHTML = 'แสดงข้อมูลเต็มแถวทั้งหมด';
+        }
+      });
+    });
+
+
+
+  </script>
+
+</body>
+
+</html>

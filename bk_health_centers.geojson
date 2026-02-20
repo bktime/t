@@ -1,0 +1,1481 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.648361,
+                    18.366469
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "77706",
+                "BED": "0",
+                "NAME": "ศูนย์สุขภาพชุมชนเขตเมืองตำบลบึงกาฬ",
+                "TYPECODE": "T8",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.95234168,
+                    17.92791019
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "77704",
+                "BED": "0",
+                "NAME": "ศูนย์สุขภาพชุมชนเขตเมืองเซกา",
+                "TYPECODE": "T8",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    104.043623,
+                    17.970043
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "77477",
+                "BED": "0",
+                "NAME": "ศูนย์สุขภาพชุมชนโรงพยาบาลบึงโขงหลง",
+                "TYPECODE": "T8",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.641651,
+                    18.318311
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "22832",
+                "BED": "0",
+                "NAME": "สถานพยาบาลเรือนจำจังหวัดบึงกาฬ",
+                "TYPECODE": "T8",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.64554524,
+                    18.37446782
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "24683",
+                "BED": "0",
+                "NAME": "สำนักงานสาธารณสุขจังหวัดบึงกาฬ",
+                "TYPECODE": "T1",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.65118569,
+                    18.368641263
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "00431",
+                "BED": "0",
+                "NAME": "สำนักงานสาธารณสุขอำเภอบึงกาฬ",
+                "TYPECODE": "T2",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    104.04585315,
+                    17.965354527
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "00439",
+                "BED": "0",
+                "NAME": "สำนักงานสาธารณสุขอำเภอบึงโขงหลง",
+                "TYPECODE": "T2",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    104.00085292,
+                    18.293981088
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "00441",
+                "BED": "0",
+                "NAME": "สำนักงานสาธารณสุขอำเภอบุ่งคล้า",
+                "TYPECODE": "T2",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.30536604,
+                    18.307168
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "00438",
+                "BED": "0",
+                "NAME": "สำนักงานสาธารณสุขอำเภอปากคาด",
+                "TYPECODE": "T2",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.70954275,
+                    18.02432296
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "00432",
+                "BED": "0",
+                "NAME": "สำนักงานสาธารณสุขอำเภอพรเจริญ",
+                "TYPECODE": "T2",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.74205917,
+                    18.18478567
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "00440",
+                "BED": "0",
+                "NAME": "สำนักงานสาธารณสุขอำเภอศรีวิไล",
+                "TYPECODE": "T2",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.95574271,
+                    17.924113548
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "00437",
+                "BED": "0",
+                "NAME": "สำนักงานสาธารณสุขอำเภอเซกา",
+                "TYPECODE": "T2",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.44460147,
+                    18.080632884
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "00434",
+                "BED": "0",
+                "NAME": "สำนักงานสาธารณสุขอำเภอโซ่พิสัย",
+                "TYPECODE": "T2",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.6517787,
+                    18.36381219
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "11040",
+                "BED": "273",
+                "NAME": "โรงพยาบาลบึงกาฬ",
+                "TYPECODE": "T4",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    104.04553247,
+                    17.965280649
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "11048",
+                "BED": "52",
+                "NAME": "โรงพยาบาลบึงโขงหลง",
+                "TYPECODE": "T5",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.98669004,
+                    18.28019388
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "11050",
+                "BED": "32",
+                "NAME": "โรงพยาบาลบุ่งคล้า",
+                "TYPECODE": "T5",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.31242561,
+                    18.299284
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "11047",
+                "BED": "41",
+                "NAME": "โรงพยาบาลปากคาด",
+                "TYPECODE": "T5",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.708405,
+                    18.008233
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "11041",
+                "BED": "37",
+                "NAME": "โรงพยาบาลพรเจริญ",
+                "TYPECODE": "T5",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.73771667,
+                    18.18611839
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "11049",
+                "BED": "38",
+                "NAME": "โรงพยาบาลศรีวิไล",
+                "TYPECODE": "T5",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.63735785,
+                    18.200467502
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04821",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลคำนาดี",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.8579011,
+                    18.276506
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04818",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลชัยพร",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.74209404,
+                    18.14177362
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04889",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลชุมภูพร",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.9517355,
+                    17.86764787
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04869",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลซาง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    104.16388518,
+                    18.031766818
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04887",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลดงบัง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.61300468,
+                    18.05317276
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04824",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลดอนหญ้านาง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.34320639,
+                    18.213513473
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04851",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลถ้ำเจริญ",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.82373252,
+                    17.899863209
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04870",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลท่ากกแดง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    104.08780128,
+                    18.12797857
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04888",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลท่าดอกคำ",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.7690556,
+                    17.95266515
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04877",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลท่าสะอาด",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.28210592,
+                    18.39382751
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04882",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลนากั้ง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.30774737,
+                    18.262897572
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04884",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลนาดง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.62051487,
+                    18.25403068
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04815",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลนาสวรรค์",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.80500793,
+                    18.13944394
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04892",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลนาสะแบง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.77088831,
+                    18.234479897
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04893",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลนาสิงห์",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.83477547,
+                    18.086998066
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04890",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลนาแสง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.88148139,
+                    18.023110451
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04876",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลน้ำจั้น",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.34338962,
+                    18.081733218
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04849",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบัวตูม",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    104.00085292,
+                    18.293981088
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "13935",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบุ่งคล้า",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.90959012,
+                    18.060323666
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04875",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านคำบอน ตำบลน้ำจั้น",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.50080252,
+                    18.08391483
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04846",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านคำแก้ว ตำบลคำแก้ว",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.43149041,
+                    18.384125609
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "13932",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านดอนปอ ตำบลหนองเข็ง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.52085852,
+                    18.112858802
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "10240",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านดอนเสียด ตำบลคำแก้ว",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.93378843,
+                    18.121008529
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04872",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านต้อง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.24734449,
+                    18.35014678
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "13934",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านต้าย ตำบลนากั้ง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.78780431,
+                    18.046946175
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "10243",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านท่าเชียงเครือ ตำบลป่งไฮ",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.41927643,
+                    18.270176526
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04844",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านนาขาม ตำบลศรีชมภู",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.86414528,
+                    18.11461072
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04891",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านนาคำแคน ตำบลนาแสง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.344686,
+                    18.056309386
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04848",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านนาเหว่อ ตำบลบัวตูม",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.90227556,
+                    18.1602061
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04817",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านผาสวรรค์ ตำบลชัยพร",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.39785661,
+                    18.233856112
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04883",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านสมสนุก",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.874681,
+                    17.89121412
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04878",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านหนองทุ่ม",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.33902,
+                    18.355331503
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04880",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านห้วยก้านเหลือง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.97677419,
+                    18.042616346
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04871",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านโคกกระแซ",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.36951163,
+                    18.40518987
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04812",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านโคกสะอาด ตำบลหอคำ",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.80677067,
+                    18.036219771
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04873",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านโคกโขง ตำบลป่งไฮ",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.50869826,
+                    18.218450149
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04850",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านโนนสวาง ตำบลถ้ำเจริญ",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.52798691,
+                    18.164419099
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04847",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านโนนเค็ง ตำบลคำแก้ว",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    104.0345195,
+                    18.021223149
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04885",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านโสกโพธิ์",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.86199346,
+                    17.968773693
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04874",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลป่งไฮ",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.74883693,
+                    18.080134157
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "14182",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลป่าแฝก",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.68738356,
+                    17.957730659
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04826",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลวังชมภู",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.64737919,
+                    18.371325135
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04820",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลวิศิษฐ์",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.68676826,
+                    18.040864199
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04823",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลศรีชมภู",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.49307239,
+                    18.2500111
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04845",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลศรีชมภู",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.63300843,
+                    18.067881231
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04827",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลศรีสำราญ",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.40868473,
+                    18.10759499
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04843",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลหนองพันทา",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.34718168,
+                    18.22268161
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04881",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลหนองยอง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.57022141,
+                    18.085218999
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04825",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลหนองหัวช้าง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.92691678,
+                    18.317076541
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04894",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลหนองเดิ่น",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.40635423,
+                    18.338739304
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04813",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลหนองเลิง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.4348348,
+                    18.432945058
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04811",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลหอคำ",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.42184231,
+                    18.164959394
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04852",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลเหล่าทอง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    104.05527688,
+                    18.202076324
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04895",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลโคกกว้าง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.78061056,
+                    18.32069423
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04814",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลโคกก่อง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.66038322,
+                    18.29442508
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04809",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลโนนสมบูรณ์",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.48726273,
+                    18.36731493
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04810",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลโนนสว่าง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.53168011,
+                    18.3230775
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04822",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลโป่งเปือย",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    104.0509787,
+                    17.946292099
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04886",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลโพธิ์หมากแข้ง",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.94619848,
+                    17.965489705
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04879",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลโสกก่าม",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.43389639,
+                    18.432033765
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "04816",
+                "BED": "0",
+                "NAME": "โรงพยาบาลส่งเสริมสุขภาพตำบลไคสี",
+                "TYPECODE": "T3",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.95596266,
+                    17.93666325
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "11046",
+                "BED": "125",
+                "NAME": "โรงพยาบาลเซกา",
+                "TYPECODE": "T5",
+                "TOTAL": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    103.447545,
+                    18.080978
+                ]
+            },
+            "properties": {
+                "PROVCODE": "38",
+                "MAINCODE": "11043",
+                "BED": "73",
+                "NAME": "โรงพยาบาลโซ่พิสัย",
+                "TYPECODE": "T5",
+                "TOTAL": ""
+            }
+        }
+    ]
+}

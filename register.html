@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ✅ PWA Support -->
+     <meta name="theme-color" content="#FFFFFF">
+     <meta name="msapplication-navbutton-color" content="#FFFFFF">
+     <meta name="apple-mobile-web-app-status-bar-style" content="default">
+     <meta name="apple-mobile-web-app-capable" content="yes">
+     <meta name="mobile-web-app-capable" content="yes">
+     <meta name="apple-mobile-web-app-title" content="ระบบลงเวลาปฏิบัติงาน">
+     <meta name="application-name" content="ระบบลงเวลาปฏิบัติงาน">
+  
+  <title>สมัครสมาชิก</title>
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,regular,italic,500,500italic,700,700italic,900,900italic);
+body {font-family: Verdana, Geneva, Tahoma, sans-serif;}
+* {box-sizing: border-box;}
+
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.input-container {
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  width: 100%;
+  margin-bottom: 15px;
+}
+img {
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.icon {
+  padding: 15px;
+  background: #1e90ff;
+  color: white;
+  min-width: 50px;
+  text-align: center;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  outline: none;
+}
+
+.input-field:focus {
+  border: 2px solid dodgerblue;
+}
+
+/* Set a style for the submit button */
+.btn {
+  background-color: dodgerblue;
+  color: white;
+  padding: 20px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.btnline {
+  background-color: green;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.btntoken {
+  background-color: yellowgreen;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.btn:hover {
+  opacity: 1;
+}
+
+.error{
+  color:#F00;
+}
+.error.true{
+  color:#6bc900;
+}
+</style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+<script type='text/javascript' src='https://code.jquery.com/jquery-1.12.4.min.js' crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container ">
+<form  style="max-width:500px;margin:auto">
+    <div style="text-align: center;">
+        <img id ="upic"src="" alt="Avatar" style="width:200px">
+        <h2 id ="uname">สมัครสมาชิก</h2>  
+    </div>
+   <div class="input-container">
+    <i class="fa fa-building icon"></i>
+    <select id="category" onchange="loadSubcategories()">
+        <!-- Options will be dynamically added here -->
+      </select>
+  </div>
+  <div class="input-container">
+    <i class="fa fa-hospital-o icon"></i>
+    <select id="subcategory" onchange="loadSubdatas()">
+        <!-- Options will be dynamically added here -->
+      </select>
+  </div>
+    <div class="input-container">
+    <i class="fa fa-code  icon"></i>
+    <input class="input-field" id="subcode" type="text" placeholder="code" name="subcode" disabled>
+  </div>
+  
+    <div class="input-container">
+            <i class="fa fa-id-card icon"></i>
+      <input class="input-field" id="cid" type="number" placeholder="เลขบัตรประจำตัวประชาชน" name="cid" maxlength="13" required>
+      <span class="error"></span>
+    </div>
+  <div class="input-container">
+    <i class="fa fa-user icon"></i>
+    <input class="input-field" id="pname" type="text" placeholder="คำนำหน้า" name="pname" required>
+  </div>
+  <div class="input-container">
+    <i class="fa fa-user icon"></i>
+    <input class="input-field" id="fname" type="text" placeholder="ชื่อ" name="fname" required>
+  </div>
+  <div class="input-container">
+    <i class="fa fa-users icon"></i>
+    <input class="input-field" id="lname" type="text" placeholder="สกุล" name="lname" required>
+  </div>
+  <div class="input-container">
+    <i class="fa fa-user-md icon"></i>
+    <input class="input-field" id="job" type="text" placeholder="ตำแหน่ง" name="job" required>
+  </div>
+  <div class="input-container">
+    <i class="fa fa-user-md icon"></i>
+    <select id="rank" name="rank">
+        <option value="">ประเภท</option>
+        <option value="ข้าราชการ">ข้าราชการ</option>
+        <option value="พนักงานราชการ">พนักงานราชการ</option>
+        <option value="พนักงานกระทรวงสาธารณสุข">พนักงานกระทรวงสาธารณสุข</option>
+        <option value="ลูกจ้างชั่วคราว">ลูกจ้างชั่วคราว</option>
+      </select>
+  </div>
+
+  <button type="button" class="btn" onclick="insertdata()">สมัครสมาชิก</button>
+  <div class="input-container">
+<!--     <i class="fa fa-user icon"></i> -->
+    <input class="input-field" id="username" type="hidden" placeholder="User Name" name="username" disabled>
+  </div>
+  <div class="input-container">
+<!--     <i class="fa fa-id-badge icon"></i> -->
+    <input class="input-field" id="userid" type="hidden" placeholder="User ID" name="userid" disabled>
+  </div>
+  <div class="input-container">
+<!--     <i class="fa fa-image icon"></i> -->
+    <input class="input-field" id="userimg" type="hidden" placeholder="User IMG" name="userimg" disabled>
+  </div>
+  <div class="input-container">
+<!--     <i class="fa fa-mobile-phone icon"></i> -->
+    <input class="input-field" id="useros" type="hidden" placeholder="User OS" name="useros" disabled>
+  </div>
+  <!-- <div class="input-container">
+    <i class="fa fa-bell icon"></i>
+    <input class="input-field" id="useremail" type="text" placeholder="User Email" name="useremail" disabled>
+  </div> -->
+  <div class="input-container">
+<!--     <i class="fa fa-map icon"></i> -->
+    <input class="input-field" id="latitude" type="hidden" placeholder="Latitude" name="latitude" disabled>
+  </div>
+  <div class="input-container">
+<!--     <i class="fa fa-map icon"></i> -->
+    <input class="input-field" id="longitude" type="hidden" placeholder="Longitude" name="longitude" disabled>
+  </div>
+  <div class="input-container">
+<!--     <i class="fa fa-database icon"></i> -->
+    <input class="input-field" id="db1" type="hidden" placeholder="Database" name="db1" disabled>
+  </div>
+  <div class="input-container">
+<!--     <i class="fa fa-database icon"></i> -->
+    <input class="input-field" id="db2" type="hidden" placeholder="Database" name="db2" disabled>
+  </div>
+  <div class="input-container">
+<!--     <i class="fa fa-database icon"></i> -->
+    <input class="input-field" id="db3" type="hidden" placeholder="Database" name="db3" disabled>
+  </div>
+  <div class="input-container">
+<!--     <i class="fa fa-code icon"></i> -->
+    <input class="input-field" id="maincode" type="hidden" placeholder="code1" name="maincode" disabled>
+  </div>
+
+
+<!--     <button type="button" class="btn" onclick="insertdata()">สมัครสมาชิก</button> -->
+</form>
+</div>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="sub.js"></script>
+<script src="md5.js"></script>
+<!-- <script src="src/app.js"></script> -->
+
+</body>
+</html>

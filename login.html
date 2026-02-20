@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <!-- ✅ PWA Support -->
+     <meta name="theme-color" content="#1f293a">
+     <meta name="msapplication-navbutton-color" content="#1f293a">
+     <meta name="apple-mobile-web-app-status-bar-style" content="default">
+     <meta name="apple-mobile-web-app-capable" content="yes">
+     <meta name="mobile-web-app-capable" content="yes">
+     <meta name="apple-mobile-web-app-title" content="ระบบลงเวลาปฏิบัติงาน">
+     <meta name="application-name" content="ระบบลงเวลาปฏิบัติงาน">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+     <link rel="stylesheet" href="request.css">
+	   <link rel="stylesheet" href="loading.css">
+       <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+    <title>ลงชื่อเข้าใช้งาน</title>
+  </head>
+  <body>
+
+ <div class="container">
+        <div class="login-box">
+            <h2 class="line-break">เข้าใช้งานระบบลงเวลา</h2>
+		
+	<form>
+    <div style="text-align: center;">
+      <!-- <p style="font-size:14px; color:#E0FFFF;"></p> -->
+      
+       </div>
+		
+              <button id="linelogin" type="button" class="btn btn-success" onclick="main()" > <i class="fab fa-line"></i> เข้าสู่ระบบด้วยไลน์ (LINE)</button>
+       
+              <button id="telegramlogin" type="button" class="btn btn-info" onclick="telegramLogin()"><i class="fab fa-telegram"></i> เข้าสู่ระบบด้วย Telegram</button>
+
+		 <button id="googlelogin" type="button" class="btn btn-primary" onclick="googleLogin()"><i class="fab fa-google"></i> เข้าสู่ระบบด้วย Google</button>
+<button id="linerecovery" type="button" class="btn btn-secondary" onclick="keylogin()"><i class="fa-solid fa-key"></i> เข้าสู่ระบบ ด้วยรหัส</button>
+		 <button id="linerecovery" type="button" class="btn btn-warning" onclick="main2()"><i class="fa-solid fa-retweet"></i> กู้คืนบัญชี</button>
+
+<!--               <button id="clearLocalStorageBtn" type="button" class="btn btn-danger" onclick="clearLocal()"><i class="fa-regular fa-circle-xmark"></i> ลบข้อมูลใน Local Storage</button> -->
+
+  <div class="signup-link">
+                <a href="register.html">สมัครสมาชิก</a>
+            </div>
+		
+              <div  style="text-align: center;">
+                <p class="line-breaks"></p>
+                <p class="line-breaks" style="font-size:14px; color:#E0FFFF;">Powered By : รพ.สต.หนองทุ่ม อ.เซกา จ.บึงกาฬ</p>
+
+                
+                 </div>
+            </form>
+        </div>
+
+        <span style="--i:0;"></span>
+        <span style="--i:1;"></span>
+        <span style="--i:2;"></span>
+        <span style="--i:3;"></span>
+        <span style="--i:4;"></span>
+        <span style="--i:5;"></span>
+        <span style="--i:6;"></span>
+        <span style="--i:7;"></span>
+        <span style="--i:8;"></span>
+        <span style="--i:9;"></span>
+        <span style="--i:10;"></span>
+        <span style="--i:11;"></span>
+        <span style="--i:12;"></span>
+        <span style="--i:13;"></span>
+        <span style="--i:14;"></span>
+        <span style="--i:15;"></span>
+        <span style="--i:16;"></span>
+        <span style="--i:17;"></span>
+        <span style="--i:18;"></span>
+        <span style="--i:19;"></span>
+        <span style="--i:20;"></span>
+        <span style="--i:21;"></span>
+        <span style="--i:22;"></span>
+        <span style="--i:23;"></span>
+        <span style="--i:24;"></span>
+        <span style="--i:25;"></span>
+        <span style="--i:26;"></span>
+        <span style="--i:27;"></span>
+        <span style="--i:28;"></span>
+        <span style="--i:29;"></span>
+        <span style="--i:30;"></span>
+        <span style="--i:31;"></span>
+        <span style="--i:32;"></span>
+        <span style="--i:33;"></span>
+        <span style="--i:34;"></span>
+        <span style="--i:35;"></span>
+        <span style="--i:36;"></span>
+        <span style="--i:37;"></span>
+        <span style="--i:38;"></span>
+        <span style="--i:39;"></span>
+        <span style="--i:40;"></span>
+        <span style="--i:41;"></span>
+        <span style="--i:42;"></span>
+        <span style="--i:43;"></span>
+        <span style="--i:44;"></span>
+        <span style="--i:45;"></span>
+        <span style="--i:46;"></span>
+        <span style="--i:47;"></span>
+        <span style="--i:48;"></span>
+        <span style="--i:49;"></span>
+    </div>
+       
+
+      </div>
+    </div>
+  </div>
+</div>
+	  	  <div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+</div>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+	  <!-- OAuth -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="login.js"></script>
+<script src="md5.js"></script>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-borderless/borderless.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
+  </body>
+</html>
+
+
