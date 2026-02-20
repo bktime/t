@@ -86,8 +86,8 @@ async function main() {
   }
 }
 
-const botUsername = "TimestampNotifybot";
-const botId = "7733040493";
+const botUsername = import.meta.env.VITE_TELEGRAM_BOT_USERNAME;
+const botId = import.meta.env.VITE_TELEGRAM_BOT_ID;
 
 // const botUsername = "wisanusenhombot";
 // const botId = "7781010431";
@@ -619,3 +619,4 @@ function keylogin() {
     }
   });
 }
+
