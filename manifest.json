@@ -1,0 +1,27 @@
+{
+  "name": "ลงเวลาปฏิบัติงาน",
+  "short_name": "ลงเวลา",
+  "description": "ระบบลงเวลาปฏิบัติงาน สำหรับการบันทึกเวลาและตรวจสอบการลงเวลา",
+  "start_url": "https://wisanusenhom.github.io/nu/index.html",
+  "display": "standalone",
+
+  "scope": "/nu/",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://lh5.googleusercontent.com/d/15oBJkXkg-WVElsZb6a-BlRx8CyPP0_Q5",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "https://lh5.googleusercontent.com/d/15oBJkXkg-WVElsZb6a-BlRx8CyPP0_Q5",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://lh5.googleusercontent.com/d/15oBJkXkg-WVElsZb6a-BlRx8CyPP0_Q5",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

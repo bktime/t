@@ -1,0 +1,360 @@
+/* @import url("https://fonts.googleapis.com/css2?family=K2D:wght@300;400;500;600;800;900&display=swap"); */
+
+@import url('https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Mali", cursive;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #1f293a;
+}
+
+.container {
+  position: fixed;
+  width: 256px;
+  height: 256px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 32px;
+  height: 6px;
+  background: #2c4766;
+  border-radius: 8px;
+  transform-origin: 128px;
+  transform: scale(2.2) rotate(calc(var(--i) * (360deg / 50)));
+  animation: animateBlink 15s linear infinite;
+  animation-delay: calc(var(--i) * (15s / 50));
+}
+
+@keyframes animateBlink {
+  0% {
+    background: #0ef;
+  }
+
+  25% {
+    background: #2c4766;
+  }
+}
+
+.login-box {
+  position: absolute;
+  width: 400px;
+  /* background: red; */
+}
+
+.login-box form {
+  width: 100%;
+  padding: 0 50px;
+}
+
+h2 {
+  font-size: 1.4em;
+  color: #0ef;
+  text-align: center;
+}
+
+h3 {
+  font-size: 1em;
+  color: #0ef;
+  text-align: center;
+}
+
+h4 {
+  font-size: 0.7em;
+  color: rgb(248, 251, 252);
+  text-align: center;
+}
+
+.input-box {
+  position: relative;
+  margin: 25px 0;
+}
+
+.input-box input {
+  width: 100%;
+  height: 35px;
+  background: transparent;
+  border: 2px solid #2c4766;
+  outline: none;
+  border-radius: 25px;
+  font-size: 0.8em;
+  color: #fff;
+  padding: 0 20px;
+  transition: 0.5s ease;
+}
+
+.input-box input[required]:focus,
+.input-box input:valid {
+  border-color: #0ef;
+}
+
+.input-box label {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  font-size: 0.8em;
+  color: #fff;
+  pointer-events: none;
+  transition: 0.5s ease;
+}
+
+.input-box input:focus ~ label,
+.input-box input:valid ~ label {
+  top: 1px;
+  font-size: 0.8em;
+  background: #1f293a;
+  padding: 0 6px;
+  color: #0ef;
+}
+
+.forgot-pass {
+  margin: -15px 0 10px;
+  text-align: center;
+}
+
+.forgot-pass a {
+  font-size: 0.8em;
+  color: #fff;
+  text-decoration: none;
+}
+
+.forgot-pass a:hover {
+  text-decoration: underline;
+}
+
+.btn {
+  width: 100%;
+  height: 35px;
+  margin: 3px 0; /* เพิ่มระยะห่าง 10px ด้านบนและด้านล่าง */
+  border: none;
+  outline: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1em;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.btn2 {
+  width: 100%;
+  height: 35px;
+  background: #1f293a;
+  border: 2px solid #0ef;
+  outline: none;
+  border-radius: 25px;
+  font-size: 0.8em;
+  color: #ffff;
+  padding: 0 20px;
+  /* text-align-last: center; */
+  font-weight: 600;
+  transition: 0.5s ease;
+}
+
+.signup-link {
+  margin: 2.5px 0 10px;
+  text-align: center;
+}
+
+.signup-link a {
+  font-size: 0.8em;
+  color: #0ef;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
+
+.line-break {
+  line-height: 3; /* ปรับค่าตามที่ต้องการ */
+}
+.line-breaks {
+  line-height: 1.5; /* ปรับค่าตามที่ต้องการ */
+}
+/* หน้าจอหลักเป็นเบลอเมื่อ modal เปิด */
+.modal-backdrop.show + #mainContent {
+    filter: blur(5px);
+    pointer-events: none; /* ปิดการโต้ตอบกับหน้าจอ */
+  }
+
+.loading-spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid indigo;
+  border-radius: 50%;
+  border-top-color: #0001;
+  display: inline-block;
+  animation: loadingspinner 0.7s linear infinite;
+}
+@keyframes loadingspinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Style the datetime-local input */
+.daytime {
+  width: 100%;
+  padding: 5px;
+  box-sizing: border-box;
+  font-size: 14px;
+  margin: 15px auto; /* Center horizontally with 15px top and bottom margin */
+  border: 2px solid #0ef;
+  border-radius: 20px;
+  background-color: #1f293a;
+  color: #fff;
+  text-align: center; /* Center the text horizontally */
+}
+
+/* nav */
+.navbar-dark .navbar-nav {
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column; /* จัดเรียงเมนูในแนวตั้ง */
+  justify-content: flex-start;
+  margin-left: 2%; /* เยื้องข้อความเล็กน้อยไปทางขวา */
+  max-height: 560px; /* จำกัดความสูงสูงสุดของเมนู */
+  overflow-y: auto; /* เพิ่ม Scroll Bar แนวตั้งเมื่อเกินพื้นที่ */
+  width: auto;
+  scrollbar-width: thin; /* สำหรับเบราว์เซอร์ที่รองรับ */
+  scrollbar-color: rgba(43, 55, 75, 0.8) rgba(255, 255, 255, 0.2); /* สี Scroll Bar */
+}
+
+.navbar-dark .navbar-nav::-webkit-scrollbar {
+  width: 8px; /* ความกว้างของ Scroll Bar */
+}
+
+.navbar-dark .navbar-nav::-webkit-scrollbar-thumb {
+  background-color: rgba(43, 55, 75, 0.8); /* สีแถบ Scroll */
+  border-radius: 4px;
+}
+
+.navbar-dark .navbar-nav::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0.2); /* สีพื้นหลังของ Scroll Bar */
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  margin: 0 15px; /* จัดระยะห่างระหว่างลิงก์ */
+  text-align: left;
+  color: #ffffff;
+  padding: 10px 12px; /* เพิ่มพื้นที่ภายในลิงก์ */
+  border-radius: 30px; /* ทำให้ลิงก์มีมุมโค้งมน */
+  background-color: rgba(43, 55, 75, 0.6); /* พื้นหลังโปร่งแสง */
+  transition: background-color 0.3s, color 0.3s, transform 0.3s;
+
+  /* ปรับระยะห่างข้อความ */
+  letter-spacing: 0.5px; /* ระยะห่างระหว่างตัวอักษร */
+  line-height: 1.4; /* ระยะห่างระหว่างบรรทัด (ในกรณีข้อความมีหลายบรรทัด) */
+}
+
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  background-color: rgba(73, 80, 87, 0.85); /* สีพื้นหลังที่เข้มขึ้นเมื่อ hover */
+  color: #ffffff;
+  transform: translateY(-3px); /* ยกขึ้นเล็กน้อยเมื่อ hover */
+}
+
+.navbar-dark .navbar-nav .nav-link:active {
+  background-color: #007bff; /* พื้นหลังเมื่อกด active */
+  transform: translateY(0); /* รีเซตการยกขึ้นเมื่อกด */
+}
+
+.navbar-dark .navbar-nav .nav-link::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 2px;
+  background-color: #ffffff;
+  transition: width 0.3s;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover::after {
+  width: 100%; /* เส้นใต้ขยายเต็มเมื่อ hover */
+  height: 2px;
+  background-color: #ffffff;
+  transition: width 0.3s;
+}
+
+.navbar-dark .navbar-brand {
+  font-size: 1.5rem; /* ขนาดใหญ่สำหรับโลโก้หรือชื่อแบรนด์ */
+  font-weight: bold;
+  color: #ffffff;
+  margin-right: 20px;
+}
+
+
+#avatar {
+  width: 40px; /* Adjust the size of the avatar */
+  height: 40px;
+  border-radius: 50%; /* Make it circular */
+}
+
+#map {
+  height: 400px;
+  width: 100%;
+}
+
+       .google-login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+
+
+#ExitBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+
+  color: #212529; /* ตัวอักษรสีเข้ม อ่านชัด */
+  background-color: #ffc107; /* เหลือง */
+  border: none;
+  border-radius: 6px;
+
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+#ExitBtn i {
+  font-size: 13px;
+}
+
+#ExitBtn:hover {
+  background-color: #e0a800; /* เหลืองเข้ม */
+  transform: translateY(-1px);
+}
+
+#ExitBtn:active {
+  transform: scale(0.96);
+}
+
+#ExitBtn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.45);
+}
