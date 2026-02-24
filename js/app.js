@@ -1528,8 +1528,8 @@ function sendMsgToTelegram(
   monthName,
   yearTH
 ) {
-  const chatId = localStorage.getItem("chatId");
-  const botToken = "7733040493:AAEWH-FUoFbXE3ohDboDxImRI52f39yvtV4";
+  const chatId = import.meta.env.VITE_botId_telegram;
+  const botToken = import.meta.env.VITE_token_telegram;
 
   if (!chatId || !botToken) {
     console.error("Missing chatId or botToken");
