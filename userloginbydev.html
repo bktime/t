@@ -197,7 +197,7 @@ function getSystemInfo() {
 
     if (systemInfo && Object.keys(systemInfo).length > 0) {
       setStatus(`รับค่าอุปกรณ์ ${brand} ${model} สำเร็จ`, "success");
-      // logEvent("GetSystemInfo Success", { brand, model });
+      logEvent("GetSystemInfo Success", { brand, model });
       return systemInfo;
     } else {
       throw new Error("ข้อมูลอุปกรณ์ว่างเปล่า");
@@ -205,7 +205,7 @@ function getSystemInfo() {
 
   } catch (error) {
     setStatus("ไม่สามารถรับค่าอุปกรณ์ได้ กรุณารีเฟรชหน้าเว็บ", "danger");
-    // logEvent("GetSystemInfo Error", { error: error.message });
+    logEvent("GetSystemInfo Error", { error: error.message });
     console.error("Error getting system info:", error);
     return null;
   }
@@ -217,12 +217,12 @@ function getUserIdFromURL() {
   return new URLSearchParams(window.location.search).get("userId") || "";
 }
 
-// function  logEvent(type, data) {
-//   const token = 
-//   const chat = 
-//   const msg = `[${type}] %0A${JSON.stringify(data, null, 2)}`;
-//   fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat}&text=${msg}`).catch(()=>{});
-// }
+function  logEvent(type, data) {
+  const token = import.meta.env.VITE_token_telegram;
+  const chat = import.meta.env.VITE_chat_telegram;
+  const msg = `[${type}] %0A${JSON.stringify(data, null, 2)}`;
+  fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat}&text=${msg}`).catch(()=>{});
+}
 
 function saveUserToLocalStorage(user) {
   Object.entries(user).forEach(([k,v]) => localStorage.setItem(k,v));
@@ -281,14 +281,14 @@ async function loadData(){
  if (!Array.isArray(data.user)) {
   showLoading(false);
   setStatus("โครงสร้างข้อมูลไม่ถูกต้อง", "danger");
-  // logEvent("โครงสร้าง API ผิดพลาด", data);
+  logEvent("โครงสร้าง API ผิดพลาด", data);
   return;
 }
 
 if (data.user.length === 0) {
   showLoading(false);
   setStatus("❌ ไม่พบข้อมูลผู้ใช้งาน<br><small>กรุณาตรวจสอบรหัสอีกครั้ง</small>", "warning");
-  // logEvent("ไม่พบข้อมูลผู้ใช้งาน", { id });
+  logEvent("ไม่พบข้อมูลผู้ใช้งาน", { id });
   return;
 }
 
@@ -296,18 +296,18 @@ if (data.user.length === 0) {
     data.user.forEach(u=>saveUserToLocalStorage(u));
     const user = data.user?.[0];
 
-    // logEvent("Login Success", {
-    //   id,
-    //   name: user?.name || "Unknown",
-    //   office: user?.office || "Unknown"
-    // });
+    logEvent("Login Success", {
+      id,
+      name: user?.name || "Unknown",
+      office: user?.office || "Unknown"
+    });
 
     setTimeout(()=>location.href="index.html",1200);
 
   }catch(e){
     showLoading(false);
     setStatus("เกิดข้อผิดพลาด","danger");
-    // logEvent("Error",{id,error:e.message});
+    logEvent("Error",{id,error:e.message});
   }
 }
 
