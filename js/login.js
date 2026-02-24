@@ -87,12 +87,12 @@ async function main() {
 }
 
 
-const botUsername = localStorage.getItem("dev_botName_telegram");
-const botId = localStorage.getItem("dev_botId_telegram");
+const botUsername = import.meta.env.VITE_botName_telegram;
+const botId = import.meta.env.VITE_botId_telegram;
 
 
 function telegramLogin() {
-  const originUrl = "https://wisanusenhom.github.io/nu/login.html";
+  const originUrl = "https://t-7k0.pages.dev/login.html";
   // const originUrl = "https://1a52-125-24-90-98.ngrok-free.app/login.html"; // test telegram login
   const authUrl = `https://oauth.telegram.org/auth?bot_id=${botId}&origin=${originUrl}&embed=1`;
   window.open(authUrl, "_self");
@@ -501,7 +501,8 @@ function getSystemInfo() {
   }
 }
 
-const oauth2 = localStorage.getItem("dev_OAuth_gg_id");
+const oauth2 = import.meta.env.VITE_OAuth_gg_id;
+log("OAuth 2.0 Client ID (Base64):", oauth2);
 
 // OAuth 2.0
 let decodedClientId = atob(oauth2);
