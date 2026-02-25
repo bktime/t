@@ -13,7 +13,6 @@ async function getConfig(){
 
 window.onload = async ()=>{
  await getConfig();
- startApp();
 }
 
 document.addEventListener("DOMContentLoaded", function () { 
