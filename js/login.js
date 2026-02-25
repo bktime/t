@@ -1,3 +1,23 @@
+let CONFIG = null;
+
+async function getConfig(){
+ if(localStorage.getItem("CONFIG")){    
+    CONFIG = JSON.parse(localStorage.getItem("CONFIG"));
+    return CONFIG;
+ }
+ const res = await fetch("/config");
+ CONFIG = await res.json();
+ localStorage.setItem("CONFIG",JSON.stringify(CONFIG));
+ return CONFIG;
+}
+
+window.onload = async ()=>{
+ await getConfig();
+ startApp();
+}
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
   const uuid = localStorage.getItem("uuid");
   if (uuid) {
@@ -87,8 +107,8 @@ async function main() {
 }
 
 
-const botUsername = import.meta.env.VITE_botName_telegram;
-const botId = import.meta.env.VITE_botId_telegram;
+const botUsername = CONFIG.botName;
+const botId = CONFIG.botId;
 
 
 function telegramLogin() {
@@ -501,8 +521,7 @@ function getSystemInfo() {
   }
 }
 
-const oauth2 = import.meta.env.VITE_OAuth_gg_id;
-log("OAuth 2.0 Client ID (Base64):", oauth2);
+const oauth2 = CONFIG.OAuth_gg_id;
 
 // OAuth 2.0
 let decodedClientId = atob(oauth2);
