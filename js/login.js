@@ -13,7 +13,6 @@ async function getConfig(){
 
 window.onload = async ()=>{
  await getConfig();
- startApp();
 }
 
 
@@ -639,3 +638,4 @@ function keylogin() {
     }
   });
 }
+
