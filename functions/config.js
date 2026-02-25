@@ -10,9 +10,15 @@ export async function onRequest(context) {
 
     botId: context.env.VITE_botId_telegram || "",
 
-    chatId: context.env.VITE_chat_telegram || "",
+    chatId: context.env.VITE_chat_telegram ? true : false,
 
-    secretKey: context.env.VITE_secretKey || ""
+    secretKey: context.env.VITE_secretKey ? true : false
+
+  },{
+
+    headers:{
+      "Cache-Control":"public, max-age=86400"
+    }
 
   });
 
