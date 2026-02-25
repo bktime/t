@@ -1,3 +1,21 @@
+let CONFIG = null;
+
+async function getConfig(){
+ if(localStorage.getItem("CONFIG")){    
+    CONFIG = JSON.parse(localStorage.getItem("CONFIG"));
+    return CONFIG;
+ }
+ const res = await fetch("/config");
+ CONFIG = await res.json();
+ localStorage.setItem("CONFIG",JSON.stringify(CONFIG));
+ return CONFIG;
+}
+
+window.onload = async ()=>{
+ await getConfig();
+ startApp();
+}
+
 document.addEventListener("DOMContentLoaded", function () { 
 const uuid = localStorage.getItem("uuid");
   if (!uuid) {
@@ -46,7 +64,7 @@ function getchatID() {
 
 function sendMessageToTelegram(chatId) {
   const message = "การเชื่อมต่อสำเร็จแล้ว";
-  const botToken = localStorage.getItem("dev_token_telegram");
+  const botToken = CONFIG.telegram_bot_token;
   const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}`;
 
   fetch(url)
@@ -165,8 +183,8 @@ function showNoMessageAlert() {
 
 // telegram login
 
-const botUsername = localStorage.getItem("dev_botName_telegram");
-const botId = localStorage.getItem("dev_botId_telegram");
+const botUsername = CONFIG.botName;
+const botId = CONFIG.botId;
 
 function getLatestUpdate() {
   Swal.fire({
@@ -177,7 +195,7 @@ function getLatestUpdate() {
     },
   });
   // const authUrl = `https://oauth.telegram.org/auth?bot_id=${botId}&origin=${window.location.origin}&embed=1`;
-  const authUrl = `https://oauth.telegram.org/auth?bot_id=${botId}&origin=https://wisanusenhom.github.io/nu/authen.html&embed=1`;
+  const authUrl = `https://oauth.telegram.org/auth?bot_id=${botId}&origin=https://t-7k0.pages.dev/authen.html&embed=1`;
   window.open(authUrl, "_self"); // Open Telegram login page
 
 }
