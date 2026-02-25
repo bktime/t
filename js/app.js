@@ -1975,7 +1975,7 @@ async function inputcid() {
           Swal.fire({
             title: '<i class="fa-solid fa-circle-check" style="color: #28a745;"></i><br>สำเร็จ',
             html: `
-              <p style="color: #555; margin-bottom: 10px;">รหัสเข้าระบบ</p>
+              <p style="color: #555; margin-bottom: 10px;">รหัสเข้าระบบ (กรุณาเก็บเป็นความลับ)</p>
               <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border: 2px dashed #007bff; display: inline-block;">
                 <span style="font-size: 2.2rem; font-weight: bold; color: #007bff; letter-spacing: 3px;">
                   ${data.code}
