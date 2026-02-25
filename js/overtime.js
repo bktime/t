@@ -464,36 +464,97 @@ const thaiDate = formatThaiShortDate(data.date);
 const fullNameOnly = otstaffName.split(" ").slice(0, 2).join(" ");
 
 const { isConfirmed } = await Swal.fire({
-    title: autoClosed ? '📌 ยืนยันส่ง OT อัตโนมัติ' : '📌 ยืนยันส่ง OT',
+    title: autoClosed 
+        ? '<i class="fa-solid fa-clock-rotate-left"></i> ยืนยันส่ง OT อัตโนมัติ'
+        : '<i class="fa-solid fa-paper-plane"></i> ยืนยันส่ง OT',
+
     html: `
-        <div style="text-align:left; font-size:14px; line-height:1.8;">
-            <div>📅 <b>วันที่</b> : ${thaiDate}</div>
-            <div>⏰ <b>เวลาเริ่ม</b> : ${data.startTime}</div>
-            <div>⏳ <b>เวลาเลิก</b> : ${data.endTime}</div>
-            <hr style="margin:10px 0;">
-            <div>🕒 <b>รวมเวลา</b> : 
-                <span style="color:#2563eb; font-weight:bold;">
-                    ${totalHours.toFixed(2)} ชั่วโมง
-                </span>
-            </div>
-            <div>💰 <b>ค่าตอบแทน</b> : 
-                <span style="color:#16a34a; font-weight:bold;">
-                    ${otAmount} บาท
-                </span>
-            </div>
-            <hr style="margin:10px 0;">
-            <div>👤 <b>ผู้รองรับ</b> : ${fullNameOnly}</div>
+    <div style="
+        text-align:left;
+        font-size:15px;
+        border-radius:12px;
+        padding:15px;
+        background:#f8fafc;
+        line-height:1.9;
+    ">
+
+        <div style="margin-bottom:8px;">
+            <i class="fa-solid fa-calendar-days" style="color:#2563eb"></i>
+            <b> วันที่ :</b> ${thaiDate}
         </div>
+
+        <div>
+            <i class="fa-solid fa-clock" style="color:#16a34a"></i>
+            <b> เวลาเริ่ม :</b> ${data.startTime}
+        </div>
+
+        <div>
+            <i class="fa-solid fa-clock" style="color:#dc2626"></i>
+            <b> เวลาเลิก :</b> ${data.endTime}
+        </div>
+
+        <hr style="margin:12px 0; opacity:0.3;">
+
+        <div style="
+            background:white;
+            padding:10px;
+            border-radius:8px;
+            margin-bottom:10px;
+            box-shadow:0 2px 6px rgba(0,0,0,0.08);
+        ">
+            <i class="fa-solid fa-hourglass-half" style="color:#2563eb"></i>
+            <b> รวมเวลา :</b>
+            <span style="
+                color:#2563eb;
+                font-weight:bold;
+                font-size:16px;
+            ">
+                ${totalHours.toFixed(2)} ชั่วโมง
+            </span>
+        </div>
+
+        <div style="
+            background:white;
+            padding:10px;
+            border-radius:8px;
+            margin-bottom:10px;
+            box-shadow:0 2px 6px rgba(0,0,0,0.08);
+        ">
+            <i class="fa-solid fa-money-bill-wave" style="color:#16a34a"></i>
+            <b> ค่าตอบแทน :</b>
+            <span style="
+                color:#16a34a;
+                font-weight:bold;
+                font-size:16px;
+            ">
+                ${otAmount} บาท
+            </span>
+        </div>
+
+        <hr style="margin:12px 0; opacity:0.3;">
+
+        <div>
+            <i class="fa-solid fa-user-check" style="color:#7c3aed"></i>
+            <b> ผู้รับรอง :</b> ${fullNameOnly}
+        </div>
+
+    </div>
     `,
+
     icon: 'question',
+
     showCancelButton: true,
-    confirmButtonText: '✅ ส่งข้อมูล',
-    cancelButtonText: '❌ ยกเลิก',
+
+    confirmButtonText: '<i class="fa-solid fa-check"></i> ส่งข้อมูล',
+    cancelButtonText: '<i class="fa-solid fa-xmark"></i> ยกเลิก',
+
     confirmButtonColor: '#16a34a',
     cancelButtonColor: '#dc2626',
-    allowOutsideClick: false
-});
 
+    allowOutsideClick: false,
+
+    width: 420
+});
     if (!isConfirmed) return; // ถ้ายกเลิก → ออกจากฟังก์ชัน
 
     // ส่งข้อมูลไป GAS
