@@ -538,7 +538,7 @@ async function handleCredentialResponse(response) {
     let googleEmail = user.email;
     let googlePicture = user.picture;
 
-    console.log("Google ID:", googleId);
+   // console.log("Google ID:", googleId);
     console.log("Google Email:", googleEmail);
     
      const result = await Swal.fire({
@@ -635,6 +635,7 @@ function keylogin() {
     }
   });
 }
+
 
 
 
