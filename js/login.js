@@ -1,3 +1,58 @@
+Swal.fire({
+
+  title: '<i class="fa-solid fa-circle-info"></i> ขออภัยในความไม่สะดวก',
+
+  html: `
+    <div style="
+        text-align:center;
+        font-size:15px;
+        line-height:1.8;
+        color:#e5e7eb;
+        padding:10px;
+    ">
+
+
+
+        <div>
+            กรุณา <b style="color:#93c5fd;">เข้าสู่ระบบใหม่</b>
+        </div>
+
+        <div style="
+            background:#111827;
+            padding:12px;
+            border-radius:10px;
+            margin-top:12px;
+            font-size:14px;
+            border:1px solid #374151;
+        ">
+            ระบบลงเวลาได้ย้าย Host ไปยัง<br>
+            <b style="color:#f97316; font-size:20px;">
+                    <div style="margin-bottom:0px;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/9/94/Cloudflare_Logo.png"
+                 style="height:40px;">
+        </div>
+          Cloudflare
+            </b>
+        </div>
+
+    </div>
+  `,
+
+  background: '#1f293a',
+  color: '#e5e7eb',
+
+  confirmButtonText:
+    '<i class="fa-solid fa-check"></i> ตกลง',
+
+  confirmButtonColor: '#3b82f6',
+
+  allowOutsideClick: false,
+  allowEscapeKey: false,
+
+  width: 420
+
+});
+
 let CONFIG = null;
 
 async function getConfig(){
@@ -11,8 +66,6 @@ async function getConfig(){
  localStorage.setItem("CONFIG",JSON.stringify(CONFIG));
 }
 getConfig();
-
-
 
 document.addEventListener("DOMContentLoaded", function () {
   const uuid = localStorage.getItem("uuid");
@@ -538,7 +591,7 @@ async function handleCredentialResponse(response) {
     let googleEmail = user.email;
     let googlePicture = user.picture;
 
-   // console.log("Google ID:", googleId);
+    // console.log("Google ID:", googleId);
     console.log("Google Email:", googleEmail);
     
      const result = await Swal.fire({
@@ -635,7 +688,3 @@ function keylogin() {
     }
   });
 }
-
-
-
-
