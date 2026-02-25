@@ -6,7 +6,7 @@ async function getConfig(){
     CONFIG = JSON.parse(cache);
     return;
  }
- const res = await fetch("/runtime");
+ const res = await fetch("/config");
  CONFIG = await res.json();
  localStorage.setItem("CONFIG",JSON.stringify(CONFIG));
 }
