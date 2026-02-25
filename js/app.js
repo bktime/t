@@ -1,19 +1,16 @@
 let CONFIG = null;
 
 async function getConfig(){
- if(localStorage.getItem("CONFIG")){    
-    CONFIG = JSON.parse(localStorage.getItem("CONFIG"));
-    return CONFIG;
+ const cache = localStorage.getItem("CONFIG");
+ if(cache){
+    CONFIG = JSON.parse(cache);
+    return;
  }
- const res = await fetch("/config");
+ const res = await fetch("/runtime");
  CONFIG = await res.json();
  localStorage.setItem("CONFIG",JSON.stringify(CONFIG));
- return CONFIG;
 }
-
-window.onload = async ()=>{
- await getConfig();
-}
+getConfig();
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -1918,4 +1915,5 @@ function clearOffDayIfExceedLimit() {
 }
 
 clearOffDayIfExceedLimit();
+
 
