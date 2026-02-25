@@ -12,7 +12,6 @@ async function getConfig(){
 }
 getConfig();
 
-
 document.addEventListener("DOMContentLoaded", function () {
   // Check operating system
   // const isWindows = /Windows/i.test(navigator.userAgent);
@@ -1916,5 +1915,95 @@ function clearOffDayIfExceedLimit() {
 
 clearOffDayIfExceedLimit();
 
+async function inputcid() {
+  const { value: cid } = await Swal.fire({
+    // ใส่ Icon บน Title ให้ดูสวยงาม
+    title: '<i class="fa-solid fa-id-card fa-bounce" style="color: #007bff; margin-bottom: 10px;"></i><br>กรุณากรอกเลขประจำตัวประชาชน',
+    html: '<span style="font-size: 0.9em; color: #6c757d;">ระบุตัวเลข 13 หลักให้ครบถ้วน</span>',
+    input: "number", // ใช้ text เพื่อป้องกันปัญหาพิมพ์ตัว e หรือเครื่องหมาย -
+    inputAttributes: {
+      inputmode: "numeric", // เรียกคีย์บอร์ดตัวเลขในมือถือ
+      pattern: "[0-9]*",
+      maxlength: "13",
+      style: "text-align: center; font-size: 1.2rem; letter-spacing: 2px;" // จัดกึ่งกลางและเพิ่มช่องไฟ
+    },
+    inputPlaceholder: "XXXXXXXXXXXXX",
+    showCancelButton: true,
+    confirmButtonText: '<i class="fa-solid fa-check"></i> ยืนยัน',
+    cancelButtonText: '<i class="fa-solid fa-xmark"></i> ยกเลิก',
+    confirmButtonColor: '#28a745',
+    cancelButtonColor: '#dc3545',
+    allowOutsideClick: false,
+    preConfirm: (value) => {
+      // ตรวจสอบว่าเป็นตัวเลขทั้งหมดหรือไม่
+      const onlyNumbers = /^[0-9]+$/.test(value);
+      
+      if (!value) {
+        Swal.showValidationMessage('<i class="fa-solid fa-circle-exclamation"></i> กรุณากรอกเลขประจำตัวประชาชน');
+        return false;
+      }
+      if (!onlyNumbers || value.length !== 13) {
+        Swal.showValidationMessage('<i class="fa-solid fa-triangle-exclamation"></i> กรุณากรอกตัวเลขให้ครบ 13 หลัก');
+        return false;
+      }
+      return value;
+    },
+  });
 
+  if (cid) {
+    // โหลดดิ้งสเตตัสแบบใช้ Icon ของ Font Awesome หมุนๆ
+    Swal.fire({ 
+      title: 'กำลังตรวจสอบ...', 
+      html: '<i class="fa-solid fa-spinner fa-spin-pulse fa-3x" style="color: #007bff; margin: 20px 0;"></i>',
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false
+    });
 
+    // สมมติว่ามีฟังก์ชัน md5 ถูกประกาศไว้แล้ว
+    const cid_hash = md5(cid); 
+    const uuid = localStorage.getItem("uuid");
+
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbwbCOnjdHjd8dVgU67PDTWgfsc6haIQEX6cp_cVIJjO3dKgfcVumojl_dfwTGPniIQ/exec';
+    const fullUrl = `${scriptUrl}?admin_uuid=${uuid}&refid=${cid_hash}`;
+
+    fetch(fullUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          // แจ้งเตือนเมื่อสำเร็จ แบบเน้นรหัสเข้าระบบให้ชัดเจน
+          Swal.fire({
+            title: '<i class="fa-solid fa-circle-check" style="color: #28a745;"></i><br>สำเร็จ',
+            html: `
+              <p style="color: #555; margin-bottom: 10px;">รหัสเข้าระบบ</p>
+              <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border: 2px dashed #007bff; display: inline-block;">
+                <span style="font-size: 2.2rem; font-weight: bold; color: #007bff; letter-spacing: 3px;">
+                  ${data.code}
+                </span>
+              </div>
+            `,
+            confirmButtonText: '<i class="fa-solid fa-door-open"></i> ตกลง',
+            confirmButtonColor: '#007bff',
+            allowOutsideClick: false
+          });
+        } else {
+          // แจ้งเตือนเมื่อข้อมูลผิดพลาด
+          Swal.fire({
+            title: '<i class="fa-solid fa-circle-xmark" style="color: #dc3545;"></i><br>ผิดพลาด',
+            text: data.error || "ไม่สามารถเข้าสู่ระบบได้",
+            confirmButtonText: '<i class="fa-solid fa-rotate-right"></i> ลองใหม่',
+            confirmButtonColor: '#dc3545'
+          });
+        }
+      })
+      .catch((error) => {
+        // แจ้งเตือนเมื่อเซิร์ฟเวอร์มีปัญหา
+        Swal.fire({
+          title: '<i class="fa-solid fa-server" style="color: #6c757d;"></i><br>เกิดข้อผิดพลาด',
+          text: "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ในขณะนี้",
+          confirmButtonText: '<i class="fa-solid fa-check"></i> ตกลง',
+          confirmButtonColor: '#6c757d'
+        });
+      });
+  }
+}
