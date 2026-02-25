@@ -1,3 +1,22 @@
+let CONFIG = null;
+
+async function getConfig(){
+ if(localStorage.getItem("CONFIG")){    
+    CONFIG = JSON.parse(localStorage.getItem("CONFIG"));
+    return CONFIG;
+ }
+ const res = await fetch("/config");
+ CONFIG = await res.json();
+ localStorage.setItem("CONFIG",JSON.stringify(CONFIG));
+ return CONFIG;
+}
+
+window.onload = async ()=>{
+ await getConfig();
+ startApp();
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
   // Check operating system
   // const isWindows = /Windows/i.test(navigator.userAgent);
@@ -1528,8 +1547,8 @@ function sendMsgToTelegram(
   monthName,
   yearTH
 ) {
-  const chatId = import.meta.env.VITE_botId_telegram;
-  const botToken = import.meta.env.VITE_token_telegram;
+  const chatId = CONFIG.botId_telegram;
+  const botToken = CONFIG.token_telegram;
 
   if (!chatId || !botToken) {
     console.error("Missing chatId or botToken");
