@@ -1,57 +1,69 @@
-Swal.fire({
+window.onload = function () {
 
-  title: '<i class="fa-solid fa-circle-info"></i> ขออภัยในความไม่สะดวก',
+  // ถ้าไม่เคยแสดงใน session นี้
+  if (!sessionStorage.getItem("showCloudflareNotice")) {
 
-  html: `
-    <div style="
-        text-align:center;
-        font-size:15px;
-        line-height:1.8;
-        color:#e5e7eb;
-        padding:10px;
-    ">
+    Swal.fire({
 
+      title: '<i class="fa-solid fa-circle-info"></i> ขออภัยในความไม่สะดวก',
 
-
-        <div>
-            กรุณา <b style="color:#93c5fd;">เข้าสู่ระบบใหม่</b>
-        </div>
-
+      html: `
         <div style="
-            background:#111827;
-            padding:12px;
-            border-radius:10px;
-            margin-top:12px;
-            font-size:14px;
-            border:1px solid #374151;
+            text-align:center;
+            font-size:15px;
+            line-height:1.8;
+            color:#e5e7eb;
+            padding:10px;
         ">
-            ระบบลงเวลาได้ย้าย Host ไปยัง<br>
-            <b style="color:#f97316; font-size:20px;">
-                    <div style="margin-bottom:0px;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/9/94/Cloudflare_Logo.png"
-                 style="height:40px;">
+
+            <div>
+                กรุณา <b style="color:#93c5fd;">เข้าสู่ระบบใหม่</b>
+            </div>
+
+            <div style="
+                background:#111827;
+                padding:12px;
+                border-radius:10px;
+                margin-top:12px;
+                font-size:14px;
+                border:1px solid #374151;
+            ">
+                ระบบลงเวลาได้ย้าย Host ไปยัง<br>
+
+                <div style="margin-bottom:6px;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/94/Cloudflare_Logo.png"
+                         style="height:40px;">
+                </div>
+
+                <b style="color:#f97316; font-size:20px;">
+                    Cloudflare
+                </b>
+
+            </div>
+
         </div>
-          Cloudflare
-            </b>
-        </div>
+      `,
 
-    </div>
-  `,
+      background: '#1f293a',
+      color: '#e5e7eb',
 
-  background: '#1f293a',
-  color: '#e5e7eb',
+      confirmButtonText:
+        '<i class="fa-solid fa-check"></i> ตกลง',
 
-  confirmButtonText:
-    '<i class="fa-solid fa-check"></i> ตกลง',
+      confirmButtonColor: '#3b82f6',
 
-  confirmButtonColor: '#3b82f6',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
 
-  allowOutsideClick: false,
-  allowEscapeKey: false,
+      width: 420
 
-  width: 420
+    });
 
-});
+    // บันทึกว่าแสดงแล้ว
+    sessionStorage.setItem("showCloudflareNotice", "yes");
+  }
+
+};
 
 let CONFIG = null;
 
@@ -672,19 +684,65 @@ function googleLogin() {
 }
 
 function keylogin() {
+
   Swal.fire({
-    title: "คุณต้องการเข้าสู่ระบบด้วยรหัสหรือไม่?",
-    text: "กรุณาติดต่อนักพัฒนาระบบเพื่อขอรับรหัสเข้าสู่ระบบ",
-    icon: "question",
+    title: "เลือกหน่วยงาน",
+    input: "select",
+    inputOptions: {
+      "สสจ.บึงกาฬ": "สสจ.บึงกาฬ",
+      "สสอ.เซกา": "สสอ.เซกา",
+      "อื่นๆ": "อื่นๆ"
+    },
+    inputPlaceholder: "กรุณาเลือกหน่วยงาน",
     showCancelButton: true,
-    confirmButtonText: "ใช่, ดำเนินการต่อ",
+    confirmButtonText: "ถัดไป",
     cancelButtonText: "ยกเลิก",
     confirmButtonColor: "#0d6efd",
-    cancelButtonColor: "#6c757d",
     allowOutsideClick: false
-  }).then((result) => {
-    if (result.isConfirmed) {
-      window.location.href = "userloginbydev.html";
+
+  }).then((officeResult) => {
+
+    if (!officeResult.isConfirmed) return;
+
+    let admin_name = '';
+
+    if (officeResult.value === 'สสจ.บึงกาฬ'){
+      admin_name = 'นางสาวพีชญา วงษาบุตร กลุ่มงานบริหารทรัพยากรบุคคล';
+
+    }else if (officeResult.value === 'สสอ.เซกา'){
+      admin_name = 'นายวิษณุ เสนหอม รพ.สต.หนองทุ่ม';
+
+    }else{
+      admin_name = 'ผู้ดูแลระบบ';
     }
+
+    Swal.fire({
+      title: "คุณต้องการเข้าสู่ระบบด้วยรหัสหรือไม่?",
+      html: `
+      กรุณาติดต่อ
+      <br><br>
+      <b style="color:#f0f0f0; font-size:18px;">
+      ${admin_name}
+      </b>
+      <br><br>
+      เพื่อขอรับรหัส
+      `,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "ใช่, ดำเนินการต่อ",
+      cancelButtonText: "ยกเลิก",
+      confirmButtonColor: "#0d6efd",
+      cancelButtonColor: "#6c757d",
+      allowOutsideClick: false
+
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+        window.location.href = "userloginbydev.html";
+      }
+
+    });
+
   });
+
 }
