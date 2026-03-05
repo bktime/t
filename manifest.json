@@ -5,7 +5,7 @@
   "start_url": "https://t-7k0.pages.dev",
   "display": "standalone",
 
-  "scope": "/nu/",
+  "scope": "/",
   "orientation": "portrait-primary",
   "icons": [
     {
