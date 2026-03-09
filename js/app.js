@@ -1207,11 +1207,30 @@ async function requestReceiveYesNo(uu_id, newline, byName, status) {
     });
 }
 
-// รายงานและสถิติ
+// รายงาน สถิติ รับรอง 
+document.addEventListener("DOMContentLoaded", () => {
+
+  function setResponsiveSwitch(switchId, labelId){
+    const sw = document.getElementById(switchId);
+    const lb = document.getElementById(labelId);
+
+    sw.addEventListener("change", () => {
+      lb.innerHTML = sw.checked
+        ? 'แสดงข้อมูลแบบย่อ (กดปุ่ม <i class="fa-solid fa-play"></i> เพื่อดูรายละเอียด)'
+        : 'แสดงข้อมูลเต็มแถวทั้งหมด';
+    });
+  }
+
+  setResponsiveSwitch("responsiveSwitchMain","responsiveLabelMain");
+  setResponsiveSwitch("responsiveSwitchAlt","responsiveLabelAlt");
+  setResponsiveSwitch("responsiveSwitchAltx","responsiveLabelAltx");
+
+});
 
 document.addEventListener("DOMContentLoaded", function () {
   setupYearMonthSelectors("report-year", "report-month");
   setupYearMonthSelectors("summary-year", "summary-month");
+  setupYearMonthSelectors("approver-year", "approver-month");
 });
 
 function setupYearMonthSelectors(yearId, monthId) {
@@ -1277,6 +1296,23 @@ function summarydata() {
 
   // เรียกใช้ชื่อเดือนด้วย
   fetchSummaryData(formattedMonth, monthName, yearTH,isResponsiveAlt);
+}
+
+function approverdata() {
+  let yearCE = document.getElementById("approver-year").value;
+  let monthSelect = document.getElementById("approver-month");
+  let month = monthSelect.value.padStart(2, "0");
+  let monthName = monthSelect.options[monthSelect.selectedIndex].text; // ชื่อเดือน (ภาษาไทย)
+
+  let formattedMonth = `${yearCE}-${month}`;
+  let yearTH = parseInt(yearCE) + 543;
+
+  const approver_type = document.getElementById("approver-type").value;
+
+  const isResponsiveAlt = document.getElementById("responsiveSwitchAltx").checked;
+
+  // เรียกใช้ชื่อเดือนด้วย
+  fetchApproverData(formattedMonth, monthName, yearTH,approver_type,isResponsiveAlt);
 }
 
 async function fetchReportData(formattedDate, monthName, yearTH, responsiveSwitchMain) {
@@ -1683,6 +1719,15 @@ async function fetchSummaryData(formattedMonth, monthName, yearTH, isResponsiveA
   } finally {
     document.getElementById("loadingSpinnerx").style.display = "none";
   }
+}
+
+
+// ฟังก์ชันดึงข้อมูลผู้รับรอง
+async function fetchApproverData(formattedMonth, monthName, yearTH, approver_type, isResponsiveAlt){
+  console.log('Fetching approver data...', formattedMonth, monthName, yearTH, approver_type, isResponsiveAlt);
+  // Implement the data fetching logic here
+  Swal.fire({ title: 'อยู่ระหว่างการพัฒนา', icon: 'info' });
+
 }
 
 function clearTableData() {
