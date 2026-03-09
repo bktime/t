@@ -1,3 +1,102 @@
+window.addEventListener("load",()=>{
+
+Swal.fire({
+
+ title: "โปรดอ่านก่อนลงลายมือชื่อ",
+
+ icon: "warning",
+
+html: `
+
+<div style="text-align:left;font-size:14px;line-height:1.7">
+
+<div class="mb-3">
+
+<i class="fa-solid fa-circle-info text-primary me-2"></i>
+<b>วัตถุประสงค์ของลายมือชื่อ</b>
+
+<p class="mt-1 mb-0">
+เพื่อความสะดวกในการใช้งานระบบลงเวลา ผู้ใช้งานจำเป็นต้องจัดทำลายมือชื่อสำหรับใช้ภายในระบบลงเวลานี้ 
+โดยลายมือชื่อดังกล่าวมีวัตถุประสงค์เพื่อใช้ประกอบการยืนยันตัวตนและการดำเนินการภายในระบบลงเวลาเท่านั้น
+</p>
+
+</div>
+
+
+<div class="mb-3">
+
+<i class="fa-solid fa-scale-balanced text-danger me-2"></i>
+<b>ข้อจำกัดทางกฎหมาย</b>
+
+<p class="mt-1 mb-0">
+ลายมือชื่อนี้จัดทำขึ้นเพื่อใช้ในการยืนยันการใช้งานภายในระบบลงเวลานี้เท่านั้น 
+<b>มิได้มีสถานะเป็นลายมือชื่อทางกฎหมาย</b> และไม่ใช้แทนลายมือชื่อจริงของท่าน
+ในการดำเนินการทางกฎหมาย
+</p>
+
+</div>
+
+
+<div class="mb-3">
+
+<i class="fa-solid fa-shield-halved text-warning me-2"></i>
+<b>ข้อควรระวังในการจัดทำลายมือชื่อ</b>
+
+<ul class="mb-0 ps-3">
+
+<li>กรุณาจัดทำลายมือชื่อให้แตกต่างจากลายมือชื่อจริงของท่าน</li>
+
+<li>หลีกเลี่ยงการใช้ลายมือชื่อที่ใช้ในเอกสารราชการหรือเอกสารสำคัญ</li>
+
+<li>ลายมือชื่อนี้จะถูกใช้เฉพาะภายในระบบลงเวลานี้เท่านั้น</li>
+
+</ul>
+
+</div>
+
+
+<hr>
+
+
+<div class="form-check mt-3">
+
+<input class="form-check-input" type="checkbox" id="acceptRule">
+
+<label class="form-check-label" for="acceptRule">
+
+<i class="fa-solid fa-check-circle text-success me-1"></i>
+
+ข้าพเจ้าได้อ่านและรับทราบรายละเอียดดังกล่าวแล้ว 
+และยินยอมจัดทำลายมือชื่อเพื่อใช้ภายในระบบลงเวลานี้
+
+</label>
+
+</div>
+
+</div>
+`,
+
+ confirmButtonText: "รับทราบและดำเนินการต่อ",
+
+ allowOutsideClick:false,
+
+ didOpen:()=>{
+
+  const btn = Swal.getConfirmButton();
+  btn.disabled = true;
+
+  const checkbox = document.getElementById("acceptRule");
+
+  checkbox.addEventListener("change",()=>{
+   btn.disabled = !checkbox.checked;
+  });
+
+ }
+
+});
+
+});
+
 const canvas = document.getElementById("signature");
 
 /* resize canvas */
