@@ -179,9 +179,11 @@ document.getElementById("save").onclick = async () => {
    return;
   }
 
-  const cidhash = localStorage.getItem("cidhash") || "signature";
+const cidhash = localStorage.getItem("cidhash") || "signature";
 
-  const sign = await fetch("/upload-signature");
+const sign = await fetch(`/upload-signature?id=${cidhash}`,{
+ cache:"no-store"
+});
 
   if(!sign.ok) throw new Error("API signature ใช้งานไม่ได้");
 
@@ -189,15 +191,14 @@ document.getElementById("save").onclick = async () => {
 
   const form = new FormData();
 
-form.append("file",blob);
+form.append("file", blob);
 
-form.append("public_id",sig.public_id);
-form.append("folder",sig.folder);
-form.append("overwrite",sig.overwrite);
+form.append("folder", sig.folder);
+form.append("public_id", sig.public_id);
 
-form.append("api_key",sig.apiKey);
-form.append("timestamp",sig.timestamp);
-form.append("signature",sig.signature);
+form.append("api_key", sig.apiKey);
+form.append("timestamp", sig.timestamp);
+form.append("signature", sig.signature);
 
   const res = await fetch(
    `https://api.cloudinary.com/v1_1/${sig.cloudName}/image/upload`,
