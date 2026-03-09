@@ -214,10 +214,16 @@ form.append("signature", sig.signature);
 
   localStorage.setItem("signature_url",data.secure_url);
 
-  Swal.fire({
-   icon:"success",
-   title:"บันทึกลายเซ็นสำเร็จ"
-  });
+Swal.fire({
+ icon:"success",
+ title:"บันทึกลายเซ็นสำเร็จ",
+ allowOutsideClick: false
+
+}).then(()=>{
+
+ signaturePad.clear();
+
+});
 
   document.getElementById("result").innerHTML=`
 
