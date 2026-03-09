@@ -1,17 +1,19 @@
 export async function onRequest(context){
 
+ const url = new URL(context.request.url);
+ const cidhash = url.searchParams.get("id") || "signature";
+
  const timestamp = Math.floor(Date.now()/1000);
 
  const cloudName = context.env.VITE_CLOUDINARY_NAME;
  const apiKey = context.env.VITE_CLOUDINARY_API;
  const apiSecret = context.env.VITE_CLOUDINARY_SECRET;
 
- const public_id = "signature/user-signature";
  const folder = "signature";
- const overwrite = "true";
+ const public_id = cidhash;
 
  const params =
-  `folder=${folder}&overwrite=${overwrite}&public_id=${public_id}&timestamp=${timestamp}`;
+  `folder=${folder}&public_id=${public_id}&timestamp=${timestamp}`;
 
  const data = new TextEncoder().encode(params + apiSecret);
 
@@ -27,9 +29,8 @@ export async function onRequest(context){
    signature,
    apiKey,
    cloudName,
-   public_id,
    folder,
-   overwrite
+   public_id
   }),
   {
    headers:{
