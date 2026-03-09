@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+<meta charset="UTF-8">
+<title>บันทึกลายเซ็น</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Fontawesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Signature pad -->
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+
+<style>
+
+body{
+background:#f4f6f9;
+}
+
+.card{
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+canvas{
+width:100%;
+height:220px;
+border:2px dashed #bbb;
+border-radius:10px;
+background:#fff;
+touch-action:none;
+}
+
+.preview{
+background:#fafafa;
+padding:10px;
+border-radius:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container py-5">
+
+<div class="row justify-content-center">
+
+<div class="col-lg-6 col-md-8">
+
+<div class="card">
+
+<div class="text-center mt-3" onclick="location.href='https://t-7k0.pages.dev/'">
+<button class="btn btn-primary" id="home">
+<i class="fa-solid fa-house"></i> Home
+</button>
+</div>
+
+<div class="card-body">
+
+<h4 class="text-center mb-4">
+
+<i class="fa-solid fa-signature text-primary"></i>
+บันทึกลายเซ็น
+
+</h4>
+
+<canvas id="signature"></canvas>
+
+<div class="text-center mt-3">
+
+<button class="btn btn-warning" id="undo">
+<i class="fa-solid fa-rotate-left"></i> Undo
+</button>
+
+<button class="btn btn-secondary" id="clear">
+<i class="fa-solid fa-trash"></i> เซ็นใหม่
+</button>
+
+<button class="btn btn-success" id="save">
+<i class="fa-solid fa-cloud-arrow-up"></i> บันทึก
+</button>
+
+</div>
+
+<div id="result" class="preview mt-4 text-center"></div>
+
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
