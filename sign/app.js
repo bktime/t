@@ -189,14 +189,15 @@ document.getElementById("save").onclick = async () => {
 
   const form = new FormData();
 
-  form.append("file",blob);
-  form.append("public_id",`signature/${cidhash}`);
-  form.append("folder","signature");
-  form.append("overwrite","true");
+form.append("file",blob);
 
-  form.append("api_key",sig.apiKey);
-  form.append("timestamp",sig.timestamp);
-  form.append("signature",sig.signature);
+form.append("public_id",sig.public_id);
+form.append("folder",sig.folder);
+form.append("overwrite",sig.overwrite);
+
+form.append("api_key",sig.apiKey);
+form.append("timestamp",sig.timestamp);
+form.append("signature",sig.signature);
 
   const res = await fetch(
    `https://api.cloudinary.com/v1_1/${sig.cloudName}/image/upload`,
