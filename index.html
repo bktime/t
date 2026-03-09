@@ -43,7 +43,8 @@
     rel="stylesheet">
 
   <!-- ✅ Bootstrap -->
- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
   <!-- ✅ Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -88,6 +89,7 @@
       <a href="javascript:void(0);" onclick="googlelogin()"><i class="fa-brands fa-google"></i> เชื่อมต่อ Google</a>
       <a href="javascript:void(0);" onclick="uploadImage()"><i class="fa-solid fa-gear"></i> ตั้งค่าภาพพื้นหลัง</a>
       <a href="javascript:void(0);" onclick="aboutme()"><i class="fas fa-user"></i> ฉัน</a>
+      <a href="sign/index.html"><i class="fa-solid fa-signature"></i> ลายเซ็น</a>
       <a href="javascript:void(0);" onclick="editpic()"><i class="fas fa-image"></i> รูปโปรไฟล์</a>
       <a href="javascript:void(0);" onclick="requestReceive()"><i class="fa-regular fa-file-lines"></i> คำขอกู้คืน</a>
       <a href="javascript:void(0);" onclick="inputcid()"><i class="fas fa-id-card"></i> รหัสเข้าระบบ</a>
@@ -165,47 +167,48 @@
 
           <div id="otherInput" style="display:none">
             <label for="otherDetails"><i class="fas fa-info-circle"></i> รายละเอียดเพิ่มเติม:</label>
-            <input type="text" id="otherDetails" name="OtherDetails" placeholder="ระบุรายละเอียดเพิ่มเติม" list="other-suggestions" autofocus />
+            <input type="text" id="otherDetails" name="OtherDetails" placeholder="ระบุรายละเอียดเพิ่มเติม"
+              list="other-suggestions" autofocus />
 
-<datalist id="other-suggestions">
+            <datalist id="other-suggestions">
 
-  <!-- ปกติ -->
-  <option value="ปฏิบัติงานประจำที่สำนักงาน/หน่วยงาน">
-  <option value="ทำงานเอกสาร/จัดทำรายงาน">
-  <option value="ประชุมภายในหน่วยงาน">
-  <option value="ประสานงานกับทีม/เจ้าหน้าที่อื่น">
-  <option value="ตรวจสอบข้อมูลและสถิติ">
+              <!-- ปกติ -->
+              <option value="ปฏิบัติงานประจำที่สำนักงาน/หน่วยงาน">
+              <option value="ทำงานเอกสาร/จัดทำรายงาน">
+              <option value="ประชุมภายในหน่วยงาน">
+              <option value="ประสานงานกับทีม/เจ้าหน้าที่อื่น">
+              <option value="ตรวจสอบข้อมูลและสถิติ">
 
-  <!-- นอกสถานที่ -->
-  <option value="ลงพื้นที่ชุมชน/บ้านผู้ป่วย">
-  <option value="ติดตามผู้ป่วยหรือผู้สูงอายุที่บ้าน">
-  <option value="ให้บริการฉีดวัคซีน/ตรวจสุขภาพประชาชน">
-  <option value="ร่วมงานรณรงค์สุขภาพ/โครงการสาธารณสุข">
-  <option value="เข้าร่วมปฏิบัติการควบคุมโรคระบาด">
-  <option value="ช่วยเหลือผู้ป่วยฉุกเฉิน">
-  <option value="พื้นที่ชายแดน/หมู่บ้านห่างไกล">
-  <option value="ตรวจสอบ/แจกเวชภัณฑ์ฉุกเฉิน">
+                <!-- นอกสถานที่ -->
+              <option value="ลงพื้นที่ชุมชน/บ้านผู้ป่วย">
+              <option value="ติดตามผู้ป่วยหรือผู้สูงอายุที่บ้าน">
+              <option value="ให้บริการฉีดวัคซีน/ตรวจสุขภาพประชาชน">
+              <option value="ร่วมงานรณรงค์สุขภาพ/โครงการสาธารณสุข">
+              <option value="เข้าร่วมปฏิบัติการควบคุมโรคระบาด">
+              <option value="ช่วยเหลือผู้ป่วยฉุกเฉิน">
+              <option value="พื้นที่ชายแดน/หมู่บ้านห่างไกล">
+              <option value="ตรวจสอบ/แจกเวชภัณฑ์ฉุกเฉิน">
 
-  <!-- วันหยุด -->
-   <option value="ปฏิบัติหน้าที่เวรในวันหยุด">
-  <option value="ปฏิบัติหน้าที่เวร On-call ช่วงวันหยุด">
-  <option value="ช่วยเหลือเหตุฉุกเฉินหรือภัยพิบัติ">
-  <option value="ติดประชุม/อบรมวันหยุด">
-  <option value="ออกตรวจเยี่ยมผู้ป่วย/ชุมชนในวันหยุด">
+                <!-- วันหยุด -->
+              <option value="ปฏิบัติหน้าที่เวรในวันหยุด">
+              <option value="ปฏิบัติหน้าที่เวร On-call ช่วงวันหยุด">
+              <option value="ช่วยเหลือเหตุฉุกเฉินหรือภัยพิบัติ">
+              <option value="ติดประชุม/อบรมวันหยุด">
+              <option value="ออกตรวจเยี่ยมผู้ป่วย/ชุมชนในวันหยุด">
 
-  <!-- ไปราชการ -->
-  <option value="เข้าร่วมประชุม/อบรม/สัมมนา">
-  <option value="ไปราชการตามคำสั่งหัวหน้า">
-  <option value="ไปยื่นเอกสารราชการ/ธนาคาร">
-  <option value="ประชุมร่วมกับหน่วยงานอื่น">
-  <option value="อบรม/ฝึกซ้อมสถานการณ์ฉุกเฉิน">
+                <!-- ไปราชการ -->
+              <option value="เข้าร่วมประชุม/อบรม/สัมมนา">
+              <option value="ไปราชการตามคำสั่งหัวหน้า">
+              <option value="ไปยื่นเอกสารราชการ/ธนาคาร">
+              <option value="ประชุมร่วมกับหน่วยงานอื่น">
+              <option value="อบรม/ฝึกซ้อมสถานการณ์ฉุกเฉิน">
 
-  <!-- อื่นๆ -->
-  <option value="เหตุผลส่วนตัว/ครอบครัว">
-  <option value="งานพิเศษหรือโครงการเฉพาะ">
-  <option value="งานภารกิจชั่วคราว/พิเศษที่ได้รับมอบหมาย">
+                <!-- อื่นๆ -->
+              <option value="เหตุผลส่วนตัว/ครอบครัว">
+              <option value="งานพิเศษหรือโครงการเฉพาะ">
+              <option value="งานภารกิจชั่วคราว/พิเศษที่ได้รับมอบหมาย">
 
-</datalist>
+            </datalist>
             <input type="text" id="llat" name="llat" placeholder="ละติจูด" hidden />
             <input type="text" id="llon" name="llon" placeholder="ลองจิจูด" hidden />
           </div>
@@ -245,9 +248,15 @@
             </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="ot-management-tab" data-bs-toggle="tab" data-bs-target="#ot-management" type="button"
-              role="tab" aria-controls="ot-management" aria-selected="false">
+            <button class="nav-link" id="ot-management-tab" data-bs-toggle="tab" data-bs-target="#ot-management"
+              type="button" role="tab" aria-controls="ot-management" aria-selected="false">
               <i class="fa-solid fa-table"></i> วันหยุด
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="ot-approver-tab" data-bs-toggle="tab" data-bs-target="#ot-approver"
+              type="button" role="tab" aria-controls="ot-approver" aria-selected="false">
+              <i class="fa-solid fa-table"></i> รับรอง
             </button>
           </li>
         </ul>
@@ -264,14 +273,14 @@
 
 
             <div class="ot-set">
-               <button id="otConfigBtn" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+              <button id="otConfigBtn" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                 data-bs-target="#otConfigModal">
                 <i class="fas fa-cog"></i> กำหนด
-              </button>      
+              </button>
             </div>
 
             <div class="ot-header">
-                  <h5 class="ot-title">ระบบลงเวลาปฏิบัติงานนอกเวลา (OT)</h5>
+              <h5 class="ot-title">ระบบลงเวลาปฏิบัติงานนอกเวลา (OT)</h5>
             </div>
 
             <div class="d-flex justify-content-center gap-3 my-4 flex-wrap">
@@ -321,16 +330,17 @@
             <div class="otReport">
               <div class="d-flex justify-content-between align-items-center">
                 <h5>รายงานการทำงานล่วงเวลา (OT) และการจัดการการ</h5>
-                
+
                 <button id="otToggleReportBtn" class="btn btn-outline-primary btn-sm">
                   <i class="fas fa-eye me-1"></i> แสดงรายงาน
                 </button>
               </div>
               <div id="otReportTableWrapper" class="mt-3 table-responsive">
-                           <div class="alert alert-warning alert-dismissible fade show" role="alert">
-              ข้อมูลส่วนนี้จะแสดงเฉพาะรายการที่กระทำในเครื่องนี้เท่านั้น หากต้องการดูรายงานทั้งหมดกรุณาคลิกที่ลิงก์ด้านล่าง
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  ข้อมูลส่วนนี้จะแสดงเฉพาะรายการที่กระทำในเครื่องนี้เท่านั้น
+                  หากต้องการดูรายงานทั้งหมดกรุณาคลิกที่ลิงก์ด้านล่าง
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 <table id="otReport" class="display" style="width:100%">
                   <thead>
                     <tr>
@@ -351,7 +361,8 @@
                 </table>
               </div>
             </div>
-            <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQy0ntyNI29LDu3VupAJobaO75GrnF5ObD8oObXr1SfuB6lxe3J4ZsgdGBB03p5GzXDhopkvohmB225/pubhtml?gid=1736275263&single=true" target="_blank" rel="noopener noreferrer"> ดูรายงาน OT ใน Google Sheets</a>
+            <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQy0ntyNI29LDu3VupAJobaO75GrnF5ObD8oObXr1SfuB6lxe3J4ZsgdGBB03p5GzXDhopkvohmB225/pubhtml?gid=1736275263&single=true"
+              target="_blank" rel="noopener noreferrer"> ดูรายงาน OT ใน Google Sheets</a>
             <!-- สิ้นสุด ot -->
           </div>
 
@@ -362,37 +373,100 @@
               <!-- <button id="otAddBtn" class="btn btn-primary" onclick="sendOffDayReport()"> 
                 <i class="fas fa-plus"></i> เพิ่มการทำงานในวันหยุด
               </button> -->
-                  <div id="otReportTableWrapper" class="mt-3 table-responsive">
-                           <div class="alert alert-warning alert-dismissible fade show" role="alert">
-              ข้อมูลส่วนนี้จะแสดงเฉพาะรายการที่กระทำในเครื่องนี้เท่านั้น หากต้องการดูรายงานทั้งหมดกรุณาคลิกที่ลิงก์ด้านล่าง
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              <div id="otReportTableWrapper" class="mt-3 table-responsive">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  ข้อมูลส่วนนี้จะแสดงเฉพาะรายการที่กระทำในเครื่องนี้เท่านั้น
+                  หากต้องการดูรายงานทั้งหมดกรุณาคลิกที่ลิงก์ด้านล่าง
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <table id="offDayTable" class="table table-bordered table-striped" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>วันที่</th>
+                      <th>ชื่อ</th>
+                      <th>หน่วยงาน</th>
+                      <th>ประเภท</th>
+                      <th>อ้างอิง</th>
+                      <th>หมายเหตุ</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTuCWOsP6AJRpW5hSpBOG0aaUKjXbYtOXJR2UuCavzsbv2JlrkMDeXbP1XIXq0FG7xRpLyyyKYSuzyz/pubhtml?gid=1936925149&single=true"
+                target="_blank" rel="noopener noreferrer"> ดูรายงานการทำงานในวันหยุดใน Google Sheets</a>
             </div>
-<table id="offDayTable" class="table table-bordered table-striped" style="width:100%">
-  <thead>
-    <tr>
-      <th>วันที่</th>
-      <th>ชื่อ</th>
-      <th>หน่วยงาน</th>
-      <th>ประเภท</th>
-      <th>อ้างอิง</th>
-      <th>หมายเหตุ</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
 
 
-            </div>
-               <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTuCWOsP6AJRpW5hSpBOG0aaUKjXbYtOXJR2UuCavzsbv2JlrkMDeXbP1XIXq0FG7xRpLyyyKYSuzyz/pubhtml?gid=1936925149&single=true" target="_blank" rel="noopener noreferrer"> ดูรายงานการทำงานในวันหยุดใน Google Sheets</a>
           </div>
+          <!-- รายงานสำหรับผู้รับรองการทำงานล่วงเวลาและวันหยุด -->
+          <div class="tab-pane fade" id="ot-approver" role="tabpanel" aria-labelledby="ot-approver-tab">
+            <div id="otApproverTableWrapper" class="mt-3 table-responsive">
+              <h5>รายงานการรับรองการทำงานล่วงเวลาและวันหยุด</h5>
+              <div class="form-container">
+                <label for="approver-month">เดือน</label>
+                <select id="approver-month"></select>
+
+                <label for="approver-year">พ.ศ.</label>
+                <select id="approver-year"></select>
+              </div>
+
+              <div class="form-container">
+                <label for="approver-type">ประเภท</label>
+                <select id="approver-type">
+                  <option value="OT">การทำงานล่วงเวลา (OT)</option>
+                  <option value="OffDay">การทำงานในวันหยุด</option>
+                </select>
+              </div>
+
+              <div class="center-container">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="responsiveSwitchAltx"  />
+                  <label class="form-check-label" for="responsiveSwitchAltx" id="responsiveLabelAltx">
+                    แสดงข้อมูลเต็มแถว
+                  </label>
+                </div>
+              </div>
+
+              <button id="approverBtn" name="approverBtn" onclick="approverdata()">
+                <i class="fa-solid fa-magnifying-glass"></i> รายงาน
+              </button>
+
+              <div id="loadingSpinnerY" style="display: none;">
+                <div class="spinner-grow text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow text-secondary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow text-success" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow text-danger" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow text-warning" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="d-flex justify-content-center align-items-center">
+                  <strong role="status"><i class="fa-solid fa-cloud-arrow-down"></i> Loading...</strong>
+                </div>
+              </div>
+
+              <!-- <div id="statistics"></div> -->
+              <table id="approverdata" class="table-striped table-bordered table-hover display nowrap"
+                style="display: none;">
+                <thead></thead>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-      
-  
-          <!-- รายงาน -->
-          <div class="tab-pane fade" id="report" role="tabpanel" aria-labelledby="report-tab">
-            <!-- tab เฉพาะหน้า report -->
+
+
+      <!-- รายงาน -->
+      <div class="tab-pane fade" id="report" role="tabpanel" aria-labelledby="report-tab">
+        <!-- tab เฉพาะหน้า report -->
         <ul class="nav nav-tabs" id="rpTab" role="tablist">
           <li class="nav-item" role="presentation">
             <button class="nav-link active" id="rp-home-tab" data-bs-toggle="tab" data-bs-target="#rp-home"
@@ -625,16 +699,17 @@
       </div>
     </div>
   </div>
-      <!-- tap end -->
+  <!-- tap end -->
 
-<!-- แถบปุ่ม -->
+  <!-- แถบปุ่ม -->
   <div id="trackerContent" class="tracker-bar">
     <button id="startBtn" type="button" onclick="checkin()"><i class="fas fa-sign-in-alt"></i> มา</button>
-    <button id="requestBtn" type="button" onclick="window.location.href='request.html'"><i class="fas fa-file-alt"></i> คำขอ</button>
+    <button id="requestBtn" type="button" onclick="window.location.href='request.html'"><i class="fas fa-file-alt"></i>
+      คำขอ</button>
     <button id="statusBtn" type="button" onclick="checkinfo()"><i class="fas fa-check-circle"></i> สถานะ</button>
     <button id="endBtn" type="button" onclick="checkout()"><i class="fas fa-sign-out-alt"></i> กลับ</button>
     <button id="imapBtn" type="button" onclick="refreshMap()"><i class="fa-solid fa-location-dot"></i> พิกัด</button>
-     <!-- <button id="requestBtn" type="button" onclick="clearOffDayIfExceedLimit()"><i class="fa-solid fa-code"></i></i> ทดสอบ function</button> -->
+    <!-- <button id="requestBtn" type="button" onclick="clearOffDayIfExceedLimit()"><i class="fa-solid fa-code"></i></i> ทดสอบ function</button> -->
   </div>
 
   <!-- Modal OT -->
@@ -707,7 +782,8 @@
             <input type="time" id="otAutoEndTime" class="form-control" />
           </div>
           <div class="mb-3">
-            <label for="hourslimit" class="form-label"><i class="fa-solid fa-clock"></i> จำนวนชั่วโมงของ OT รายชั่วโมง (Limit)</label>
+            <label for="hourslimit" class="form-label"><i class="fa-solid fa-clock"></i> จำนวนชั่วโมงของ OT รายชั่วโมง
+              (Limit)</label>
             <input type="number" min="1" max="18" step="0.5" id="hourslimit" class="form-control"
               placeholder="จำนวนชั่วโมงขั้นต่ำ" />
           </div>
@@ -757,7 +833,9 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 
   <!-- Bootstrap 5 JS (with Popper) -->
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"
+    defer></script>
   <!-- OAuth -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <!-- Custom JS -->
@@ -768,26 +846,26 @@
 
   <script>
     // Handle "Other" option in select dropdown
- const select = document.getElementById("typea");
-  const otherInput = document.getElementById("otherInput");
+    const select = document.getElementById("typea");
+    const otherInput = document.getElementById("otherInput");
 
-  let otherShown = false; // ตัวแปรเก็บว่าเคยเปิดแล้วหรือยัง
+    let otherShown = false; // ตัวแปรเก็บว่าเคยเปิดแล้วหรือยัง
 
-  function handleOtherOption() {
-    const value = select.value;
+    function handleOtherOption() {
+      const value = select.value;
 
-    if (value !== "ปกติ" || otherShown) {
-      otherInput.style.display = "block"; // แสดงทันที
-      otherShown = true; // บันทึกว่าเคยเปิดแล้ว
-    } else {
-      otherInput.style.display = "none"; // ซ่อนเฉพาะตอนเริ่มต้น
+      if (value !== "ปกติ" || otherShown) {
+        otherInput.style.display = "block"; // แสดงทันที
+        otherShown = true; // บันทึกว่าเคยเปิดแล้ว
+      } else {
+        otherInput.style.display = "none"; // ซ่อนเฉพาะตอนเริ่มต้น
+      }
     }
-  }
 
-  // ค่าเริ่มต้น
-  document.addEventListener("DOMContentLoaded", () => {
-    otherInput.style.display = "none"; // เริ่มต้นซ่อน
-  });
+    // ค่าเริ่มต้น
+    document.addEventListener("DOMContentLoaded", () => {
+      otherInput.style.display = "none"; // เริ่มต้นซ่อน
+    });
 
     // Time-based button visibility
     let publicHolidays = [];
@@ -849,7 +927,7 @@
         requestBtn.style.display = "none";
         let formattedToday = now.toLocaleDateString("th-TH");
         if (formattedToday !== localStorage.getItem("datecheck")) {
-         startBtn.style.display = "none";
+          startBtn.style.display = "none";
           statusBtn.style.display = "none";
           endBtn.style.display = "none";
           requestBtn.style.display = "inline-block";
@@ -966,33 +1044,7 @@
       });
     });
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const switchMain = document.getElementById("responsiveSwitchMain");
-      const labelMain = document.getElementById("responsiveLabelMain");
-
-      const switchAlt = document.getElementById("responsiveSwitchAlt");
-      const labelAlt = document.getElementById("responsiveLabelAlt");
-
-      switchMain.addEventListener("change", () => {
-        if (switchMain.checked) {
-          labelMain.innerHTML = 'แสดงข้อมูลแบบย่อ (กดปุ่ม <i class="fa-solid fa-play"></i> เพื่อดูรายละเอียด)';
-        } else {
-          labelMain.innerHTML = 'แสดงข้อมูลเต็มแถวทั้งหมด';
-        }
-      });
-
-      switchAlt.addEventListener("change", () => {
-        if (switchAlt.checked) {
-          labelAlt.innerHTML = 'แสดงข้อมูลแบบย่อ (กดปุ่ม <i class="fa-solid fa-play"></i> เพื่อดูรายละเอียด)';
-        } else {
-          labelAlt.innerHTML = 'แสดงข้อมูลเต็มแถวทั้งหมด';
-        }
-      });
-    });
-
-
-
-  </script>
+</script>
 
 </body>
 
