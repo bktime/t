@@ -68,16 +68,19 @@ window.onload = function () {
 let CONFIG = null;
 
 async function getConfig(){
- const cache = localStorage.getItem("CONFIG");
- if(cache){
+  const cache = localStorage.getItem("CONFIG");
+
+  if(cache){
     CONFIG = JSON.parse(cache);
-    return;
- }
- const res = await fetch("/config");
- CONFIG = await res.json();
- localStorage.setItem("CONFIG",JSON.stringify(CONFIG));
+    return CONFIG;
+  }
+
+  const res = await fetch("/config");
+  CONFIG = await res.json();
+  localStorage.setItem("CONFIG", JSON.stringify(CONFIG));
+
+  return CONFIG;
 }
-getConfig();
 
 document.addEventListener("DOMContentLoaded", function () {
   const uuid = localStorage.getItem("uuid");
@@ -167,15 +170,28 @@ async function main() {
   }
 }
 
+async function telegramLogin() {
 
-const botUsername = CONFIG.botName;
-const botId = CONFIG.botId;
+  if(!CONFIG){
+    await getConfig();
+  }
 
+  const botUsername = CONFIG?.botName;
+  const botId = CONFIG?.botId;
 
-function telegramLogin() {
+  if(!botUsername || !botId){
+    Swal.fire({
+      icon: "error",
+      title: "Telegram Bot Error",
+      text: "ยังไม่ได้ตั้งค่า BotName หรือ BotId",
+      confirmButtonText: "ตกลง"
+    });
+    return;
+  }
+
   const originUrl = "https://t-7k0.pages.dev/login.html";
-  // const originUrl = "https://1a52-125-24-90-98.ngrok-free.app/login.html"; // test telegram login
   const authUrl = `https://oauth.telegram.org/auth?bot_id=${botId}&origin=${originUrl}&embed=1`;
+
   window.open(authUrl, "_self");
 }
 
@@ -746,3 +762,4 @@ function keylogin() {
   });
 
 }
+
