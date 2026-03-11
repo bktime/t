@@ -94,6 +94,8 @@ async function getConfig(){
   return CONFIG;
 }
 
+getConfig()
+
 document.addEventListener("DOMContentLoaded", function () {
   const uuid = localStorage.getItem("uuid");
   if (uuid) {
@@ -774,5 +776,6 @@ function keylogin() {
   });
 
 }
+
 
 
