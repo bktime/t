@@ -65,6 +65,18 @@ window.onload = function () {
 
 };
 
+window.onload = () => {
+  const ua = navigator.userAgent.toLowerCase();
+
+  if(ua.includes("line") || ua.includes("liff")){
+    document.getElementById("telegramlogin").style.display = "none";
+  }
+
+  if(ua.includes("telegram")){
+    document.getElementById("linelogin").style.display = "none";
+  }
+};
+
 let CONFIG = null;
 
 async function getConfig(){
@@ -762,4 +774,5 @@ function keylogin() {
   });
 
 }
+
 
