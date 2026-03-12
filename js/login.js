@@ -136,67 +136,30 @@ function hideLoading() {
   document.getElementById("loadingOverlay").style.display = "none";
 }
 
-let LIFF_READY = false;
-
-async function getProfile() {
-  try {
-    const profile = await liff.getProfile();
-    const { displayName, userId, pictureUrl, statusMessage } = profile;
-
-    const result = await Swal.fire({
-      title: `ยินดีต้อนรับคุณ<br>${displayName}`,
-      html: `สถานะ : ${statusMessage || "-"}<br><br><strong>คุณต้องการเข้าสู่ระบบด้วยบัญชีไลน์นี้หรือไม่?</strong>`,
-      imageUrl: pictureUrl,
-      imageWidth: 150,
-      imageHeight: 150,
-      imageAlt: "User Photo",
-      showCancelButton: true,
-      confirmButtonText: "ยืนยัน",
-      cancelButtonText: "ยกเลิก",
-      confirmButtonColor: "#00B900",
-      cancelButtonColor: "#d33",
-      allowOutsideClick: false,
-    });
-
-    if (result.isConfirmed) {
-      getMember(userId, pictureUrl, displayName, "line");
-    } else {
-      Swal.fire({
-        icon: "info",
-        title: "คุณเลือกยกเลิกการเข้าสู่ระบบ",
-        confirmButtonColor: "#00B900",
-      });
-    }
-
-  } catch (error) {
-    console.error(error);
-
-    Swal.fire({
-      icon: "error",
-      title: "เกิดข้อผิดพลาด",
-      text: "ไม่สามารถดึงข้อมูลโปรไฟล์ได้",
-      confirmButtonColor: "#d33",
-    });
-  }
-}
+const APP = {
+  liffId: "1654797991-pr0xKPxW",
+  init: false
+};
 
 async function main() {
 
-  if (LIFF_READY) return; // กันเรียกซ้ำ
-  LIFF_READY = true;
+  if (APP.init) return;
+  APP.init = true;
+
+  showLoading();
 
   try {
 
-    await liff.init({
-      liffId: "1654797991-pr0xKPxW",
-    });
+    await liff.init({ liffId: APP.liffId });
 
     if (!liff.isLoggedIn()) {
       liff.login();
       return;
     }
 
-    await getProfile();
+    const profile = getLineProfile();
+
+    await confirmLogin(profile);
 
   } catch (err) {
 
@@ -204,14 +167,87 @@ async function main() {
 
     Swal.fire({
       icon: "error",
-      title: "LIFF Init Error",
-      text: err.message,
+      title: "LIFF Error",
+      text: err.message
     });
 
   } finally {
+
     hideLoading();
+
   }
 
+}
+
+function getLineProfile() {
+
+  const cache = sessionStorage.getItem("LINE_PROFILE");
+
+  if (cache) return JSON.parse(cache);
+
+  const token = liff.getDecodedIDToken();
+
+  const profile = {
+    userId: token.sub,
+    displayName: token.name,
+    pictureUrl: token.picture,
+    statusMessage: ""
+  };
+
+  sessionStorage.setItem(
+    "LINE_PROFILE",
+    JSON.stringify(profile)
+  );
+
+  return profile;
+
+}
+
+async function confirmLogin(profile) {
+
+  const { displayName, userId, pictureUrl } = profile;
+
+  const result = await Swal.fire({
+    title: `ยินดีต้อนรับ<br>${displayName}`,
+    html: `ต้องการเข้าสู่ระบบด้วยบัญชี LINE นี้หรือไม่`,
+    imageUrl: pictureUrl,
+    imageWidth: 140,
+    imageHeight: 140,
+    showCancelButton: true,
+    confirmButtonText: "เข้าสู่ระบบ",
+    cancelButtonText: "ยกเลิก",
+    confirmButtonColor: "#06C755",
+    cancelButtonColor: "#d33",
+    allowOutsideClick: false
+  });
+
+  if (result.isConfirmed) {
+
+    getMember(
+      userId,
+      pictureUrl,
+      displayName,
+      "line"
+    );
+
+  }
+
+}
+
+function showLoading() {
+
+  Swal.fire({
+    title: "กำลังเข้าสู่ระบบ...",
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
+
+}
+
+function hideLoading() {
+  Swal.close();
 }
 
 // document.addEventListener("DOMContentLoaded", main);
@@ -220,61 +256,110 @@ async function main() {
 const botUsername = CONFIG.botName;
 const botId = CONFIG.botId;
 
-
 function telegramLogin() {
-  const originUrl = "https://t-7k0.pages.dev/login.html";
-  // const originUrl = "https://1a52-125-24-90-98.ngrok-free.app/login.html"; // test telegram login
-  const authUrl = `https://oauth.telegram.org/auth?bot_id=${botId}&origin=${originUrl}&embed=1`;
-  window.open(authUrl, "_self");
+
+  const originUrl = window.location.origin + "/login.html";
+
+  const authUrl =
+    `https://oauth.telegram.org/auth?bot_id=${botId}&origin=${originUrl}&embed=1`;
+
+  window.location.href = authUrl;
+
 }
 
-window.addEventListener("load", handleTelegramCallback);
+window.addEventListener("DOMContentLoaded", handleTelegramCallback);
 
 async function handleTelegramCallback() {
-  const urlHash = window.location.hash;
-  const telegramDataBase64 = urlHash.replace("#tgAuthResult=", "");
 
-  if (telegramDataBase64) {
-    try {
-      const telegramData = atob(telegramDataBase64);
-      const user = JSON.parse(telegramData);
-      const { id, first_name, last_name, photo_url, username } = user;
+  const hash = window.location.hash;
 
-      const result = await Swal.fire({
-        title: `ยินดีต้อนรับคุณ\n${first_name} ${last_name}`,
-        html: `คุณต้องการเข้าสู่ระบบด้วยเทเลแกรม<br>ไอดี : ${id} <br> บัญชี : ${username} หรือไม่?`,
-        imageUrl: photo_url,
-        imageWidth: 150,
-        imageHeight: 150,
-        imageAlt: "User Photo",
-        showCancelButton: true,
-        confirmButtonText: "ยืนยัน",
-        cancelButtonText: "ยกเลิก",
-        confirmButtonColor: "#24A1DE",
-        cancelButtonColor: "#d33",
+  if (!hash.startsWith("#tgAuthResult=")) return;
+
+  try {
+
+    Swal.fire({
+      title: "กำลังตรวจสอบบัญชี Telegram...",
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
+    const telegramDataBase64 = hash.replace("#tgAuthResult=", "");
+
+    const telegramData = atob(telegramDataBase64);
+
+    const user = JSON.parse(telegramData);
+
+    const {
+      id,
+      first_name = "",
+      last_name = "",
+      photo_url = "",
+      username = ""
+    } = user;
+
+    // ล้าง hash ทันที
+    history.replaceState(null, null, window.location.pathname);
+
+    Swal.close();
+
+    const result = await Swal.fire({
+      title: `ยินดีต้อนรับ`,
+      html: `
+      <b>${first_name} ${last_name}</b><br><br>
+      Telegram ID : ${id}<br>
+      Username : ${username || "-"}<br><br>
+      <b>ต้องการเข้าสู่ระบบหรือไม่</b>
+      `,
+      imageUrl: photo_url,
+      imageWidth: 140,
+      imageHeight: 140,
+      showCancelButton: true,
+      confirmButtonText: "เข้าสู่ระบบ",
+      cancelButtonText: "ยกเลิก",
+      confirmButtonColor: "#24A1DE",
+      cancelButtonColor: "#d33",
+      allowOutsideClick: false
+    });
+
+    if (result.isConfirmed) {
+
+      Swal.fire({
+        title: "กำลังเข้าสู่ระบบ...",
         allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
       });
 
-      if (result.isConfirmed) {
-        await getMember(id, photo_url, username, "telegram");
-      } else {
-        Swal.fire({
-          icon: "info",
-          title: "คุณเลือกยกเลิกการเข้าสู่ระบบ",
-          confirmButtonColor: "#0ef",
-        });
-      }
-      window.location.hash = "";
-    } catch (error) {
-      main();
-      // Swal.fire({
-      //   icon: "error",
-      //   title: "Error parsing Telegram data.",
-      //   text: error.message,
-      //   confirmButtonColor: "#0ef",
-      // });
+      await getMember(id, photo_url, username, "telegram");
+
+    } else {
+
+      Swal.fire({
+        icon: "info",
+        title: "ยกเลิกการเข้าสู่ระบบ",
+        confirmButtonColor: "#24A1DE"
+      });
+
     }
+
+  } catch (err) {
+
+    console.error(err);
+
+    Swal.fire({
+      icon: "error",
+      title: "เข้าสู่ระบบ Telegram ไม่สำเร็จ",
+      text: "กรุณาลองใหม่อีกครั้ง",
+      confirmButtonColor: "#d33"
+    });
+
   }
+
 }
 
 
