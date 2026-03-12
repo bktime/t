@@ -1,3 +1,35 @@
+let CONFIG = null;
+
+async function getConfig(){
+
+  // แสดง Loading
+  Swal.fire({
+    title: 'กำลังโหลดข้อมูล...',
+    text: 'กรุณารอสักครู่',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
+
+  const cache = localStorage.getItem("CONFIG");
+
+  if(cache){
+    CONFIG = JSON.parse(cache);
+    Swal.close(); // ปิด swal
+    return;
+  }
+
+  const res = await fetch("/config");
+  CONFIG = await res.json();
+
+  localStorage.setItem("CONFIG", JSON.stringify(CONFIG));
+
+  Swal.close(); // ปิด swal
+}
+
+getConfig();
+
 window.onload = function () {
 
   // ถ้าไม่เคยแสดงใน session นี้
@@ -65,36 +97,7 @@ window.onload = function () {
 
 };
 
-window.onload = () => {
-  const ua = navigator.userAgent.toLowerCase();
 
-  if(ua.includes("line") || ua.includes("liff")){
-    document.getElementById("telegramlogin").style.display = "none";
-  }
-
-  if(ua.includes("telegram")){
-    document.getElementById("linelogin").style.display = "none";
-  }
-};
-
-let CONFIG = null;
-
-async function getConfig(){
-  const cache = localStorage.getItem("CONFIG");
-
-  if(cache){
-    CONFIG = JSON.parse(cache);
-    return CONFIG;
-  }
-
-  const res = await fetch("/config");
-  CONFIG = await res.json();
-  localStorage.setItem("CONFIG", JSON.stringify(CONFIG));
-
-  return CONFIG;
-}
-
-getConfig()
 
 document.addEventListener("DOMContentLoaded", function () {
   const uuid = localStorage.getItem("uuid");
@@ -133,14 +136,16 @@ function hideLoading() {
   document.getElementById("loadingOverlay").style.display = "none";
 }
 
+let LIFF_READY = false;
+
 async function getProfile() {
   try {
     const profile = await liff.getProfile();
     const { displayName, userId, pictureUrl, statusMessage } = profile;
 
-    Swal.fire({
-      title: `ยินดีต้อนรับคุณ\n${displayName}`,
-      html: `สถานะ : ${statusMessage}<br><br><strong>คุณต้องการเข้าสู่ระบบด้วยบัญชีไลน์นี้หรือไม่?</strong>`,
+    const result = await Swal.fire({
+      title: `ยินดีต้อนรับคุณ<br>${displayName}`,
+      html: `สถานะ : ${statusMessage || "-"}<br><br><strong>คุณต้องการเข้าสู่ระบบด้วยบัญชีไลน์นี้หรือไม่?</strong>`,
       imageUrl: pictureUrl,
       imageWidth: 150,
       imageHeight: 150,
@@ -151,19 +156,21 @@ async function getProfile() {
       confirmButtonColor: "#00B900",
       cancelButtonColor: "#d33",
       allowOutsideClick: false,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        getMember(userId, pictureUrl, displayName, "line");
-      } else {
-        Swal.fire({
-          icon: "info",
-          title: "คุณเลือกยกเลิกการเข้าสู่ระบบ",
-          confirmButtonColor: "#00B900",
-        });
-      }
     });
+
+    if (result.isConfirmed) {
+      getMember(userId, pictureUrl, displayName, "line");
+    } else {
+      Swal.fire({
+        icon: "info",
+        title: "คุณเลือกยกเลิกการเข้าสู่ระบบ",
+        confirmButtonColor: "#00B900",
+      });
+    }
+
   } catch (error) {
-    console.error("Error retrieving profile:", error);
+    console.error(error);
+
     Swal.fire({
       icon: "error",
       title: "เกิดข้อผิดพลาด",
@@ -174,38 +181,50 @@ async function getProfile() {
 }
 
 async function main() {
-  hideLoading();
- await liff.init({ liffId: "1654797991-pr0xKPxW" });
-//  await liff.init({ liffId: "1654797991-Xmxp3Gpj" }); // ทดสอบ
-  if (liff.isLoggedIn()) {
-    getProfile();
-  } else {
-    liff.login({ redirectUri: window.location.href });
-  }
-}
 
-async function telegramLogin() {
+  if (LIFF_READY) return; // กันเรียกซ้ำ
+  LIFF_READY = true;
 
-  if(!CONFIG){
-    await getConfig();
-  }
+  try {
 
-  const botUsername = CONFIG?.botName;
-  const botId = CONFIG?.botId;
+    await liff.init({
+      liffId: "1654797991-pr0xKPxW",
+    });
 
-  if(!botUsername || !botId){
+    if (!liff.isLoggedIn()) {
+      liff.login();
+      return;
+    }
+
+    await getProfile();
+
+  } catch (err) {
+
+    console.error(err);
+
     Swal.fire({
       icon: "error",
-      title: "Telegram Bot Error",
-      text: "ยังไม่ได้ตั้งค่า BotName หรือ BotId",
-      confirmButtonText: "ตกลง"
+      title: "LIFF Init Error",
+      text: err.message,
     });
-    return;
+
+  } finally {
+    hideLoading();
   }
 
-  const originUrl = "https://t-7k0.pages.dev/login.html";
-  const authUrl = `https://oauth.telegram.org/auth?bot_id=${botId}&origin=${originUrl}&embed=1`;
+}
 
+// document.addEventListener("DOMContentLoaded", main);
+
+
+const botUsername = CONFIG.botName;
+const botId = CONFIG.botId;
+
+
+function telegramLogin() {
+  const originUrl = "https://t-7k0.pages.dev/login.html";
+  // const originUrl = "https://1a52-125-24-90-98.ngrok-free.app/login.html"; // test telegram login
+  const authUrl = `https://oauth.telegram.org/auth?bot_id=${botId}&origin=${originUrl}&embed=1`;
   window.open(authUrl, "_self");
 }
 
@@ -776,6 +795,3 @@ function keylogin() {
   });
 
 }
-
-
-
