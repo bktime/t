@@ -326,15 +326,6 @@ async function handleTelegramCallback() {
 
     if (result.isConfirmed) {
 
-      Swal.fire({
-        title: "กำลังเข้าสู่ระบบ...",
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        didOpen: () => {
-          Swal.showLoading();
-        }
-      });
-
       await getMember(id, photo_url, username, "telegram");
 
     } else {
@@ -880,3 +871,4 @@ function keylogin() {
   });
 
 }
+
