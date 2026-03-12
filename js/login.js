@@ -272,10 +272,15 @@ async function confirmLogin(profile) {
 // document.addEventListener("DOMContentLoaded", main);
 
 
-const botUsername = CONFIG.botName;
-const botId = CONFIG.botId;
-
 function telegramLogin() {
+
+  if(!CONFIG){
+    location.reload(); // กัน CONFIG ยังไม่โหลด
+    return;
+  }
+
+  const botUsername = CONFIG.botName;
+  const botId = CONFIG.botId;
 
   const originUrl = window.location.origin + "/login.html";
 
@@ -719,11 +724,6 @@ function getSystemInfo() {
   }
 }
 
-const oauth2 = CONFIG.OAuth_gg_id;
-
-// OAuth 2.0
-let decodedClientId = atob(oauth2);
-
 // จัดการ Credential Response
 async function handleCredentialResponse(response) {
     const user = decodeJwtResponse(response.credential);
@@ -787,12 +787,17 @@ function decodeJwtResponse(token) {
     }
 }
 
-// โหลดระบบ Google Login
-window.onload = function () {
-    google.accounts.id.initialize({
-        client_id: decodedClientId,
-        callback: handleCredentialResponse
-    });
+window.onload = async function () {
+
+  await getConfig();   // โหลด config ก่อน
+
+  const decodedClientId = atob(CONFIG.OAuth_gg_id);
+
+  google.accounts.id.initialize({
+    client_id: decodedClientId,
+    callback: handleCredentialResponse
+  });
+
 };
 
 // แสดงปุ่มล็อกอิน Google ด้วย Swal
