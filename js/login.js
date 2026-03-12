@@ -176,9 +176,6 @@ const APP = {
 };
 
 async function main() {
-
-  showLoading();
-
   try {
 
     // init ครั้งเดียว
@@ -207,8 +204,6 @@ async function main() {
     });
 
   } finally {
-
-    hideLoading();
 
   }
 
