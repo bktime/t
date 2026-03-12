@@ -272,7 +272,6 @@ window.addEventListener("DOMContentLoaded", handleTelegramCallback);
 async function handleTelegramCallback() {
 
   const hash = window.location.hash;
-
   if (!hash.startsWith("#tgAuthResult=")) return;
 
   try {
@@ -281,15 +280,11 @@ async function handleTelegramCallback() {
       title: "กำลังตรวจสอบบัญชี Telegram...",
       allowOutsideClick: false,
       showConfirmButton: false,
-      didOpen: () => {
-        Swal.showLoading();
-      }
+      didOpen: () => Swal.showLoading()
     });
 
     const telegramDataBase64 = hash.replace("#tgAuthResult=", "");
-
     const telegramData = atob(telegramDataBase64);
-
     const user = JSON.parse(telegramData);
 
     const {
@@ -300,13 +295,15 @@ async function handleTelegramCallback() {
       username = ""
     } = user;
 
-    // ล้าง hash ทันที
     history.replaceState(null, null, window.location.pathname);
 
     Swal.close();
 
+    // รอ Swal ปิดก่อน
+    await new Promise(r => setTimeout(r,200));
+
     const result = await Swal.fire({
-      title: `ยินดีต้อนรับ`,
+      title: "ยินดีต้อนรับ",
       html: `
       <b>${first_name} ${last_name}</b><br><br>
       Telegram ID : ${id}<br>
@@ -326,16 +323,14 @@ async function handleTelegramCallback() {
 
     if (result.isConfirmed) {
 
-      await getMember(id, photo_url, username, "telegram");
-
-    } else {
-
       Swal.fire({
-        icon: "info",
-        title: "ยกเลิกการเข้าสู่ระบบ",
-        confirmButtonColor: "#24A1DE"
+        title: "กำลังเข้าสู่ระบบ...",
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => Swal.showLoading()
       });
 
+      await getMember(id, photo_url, username, "telegram");
     }
 
   } catch (err) {
@@ -345,14 +340,12 @@ async function handleTelegramCallback() {
     Swal.fire({
       icon: "error",
       title: "เข้าสู่ระบบ Telegram ไม่สำเร็จ",
-      text: "กรุณาลองใหม่อีกครั้ง",
-      confirmButtonColor: "#d33"
+      text: "กรุณาลองใหม่อีกครั้ง"
     });
 
   }
 
 }
-
 
 // เพิ่มไลน์ใหม่
 // ตรวจสอบเลขบัตร
@@ -871,4 +864,3 @@ function keylogin() {
   });
 
 }
-
