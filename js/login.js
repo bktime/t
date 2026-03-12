@@ -12,20 +12,54 @@ async function getConfig(){
     }
   });
 
-  const cache = localStorage.getItem("CONFIG");
+  // ถ้าเกิน 10 วิ ให้รีเฟรช
+  const reloadTimeout = setTimeout(() => {
+    location.reload();
+  }, 10000);
 
-  if(cache){
-    CONFIG = JSON.parse(cache);
-    Swal.close(); // ปิด swal
-    return;
+  try {
+
+    const cache = localStorage.getItem("CONFIG");
+
+    if (cache) {
+      CONFIG = JSON.parse(cache);
+      clearTimeout(reloadTimeout);
+      Swal.close();
+      return;
+    }
+
+    const controller = new AbortController();
+    const timeoutFetch = setTimeout(() => controller.abort(), 8000);
+
+    const res = await fetch("/config", {
+      signal: controller.signal
+    });
+
+    clearTimeout(timeoutFetch);
+
+    CONFIG = await res.json();
+
+    localStorage.setItem("CONFIG", JSON.stringify(CONFIG));
+
+    clearTimeout(reloadTimeout);
+    Swal.close();
+
+  } catch (err) {
+
+    console.error("โหลด CONFIG ไม่สำเร็จ", err);
+
+    Swal.fire({
+      icon: "error",
+      title: "โหลดข้อมูลไม่สำเร็จ",
+      text: "กำลังรีเฟรชหน้า...",
+      timer: 2000,
+      showConfirmButton: false
+    }).then(() => {
+      location.reload();
+    });
+
   }
 
-  const res = await fetch("/config");
-  CONFIG = await res.json();
-
-  localStorage.setItem("CONFIG", JSON.stringify(CONFIG));
-
-  Swal.close(); // ปิด swal
 }
 
 getConfig();
@@ -138,19 +172,20 @@ function hideLoading() {
 
 const APP = {
   liffId: "1654797991-pr0xKPxW",
-  init: false
+  ready: false
 };
 
 async function main() {
-
-  if (APP.init) return;
-  APP.init = true;
 
   showLoading();
 
   try {
 
-    await liff.init({ liffId: APP.liffId });
+    // init ครั้งเดียว
+    if (!APP.ready) {
+      await liff.init({ liffId: APP.liffId });
+      APP.ready = true;
+    }
 
     if (!liff.isLoggedIn()) {
       liff.login();
