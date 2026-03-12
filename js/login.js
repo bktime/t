@@ -269,22 +269,6 @@ async function confirmLogin(profile) {
 
 }
 
-function showLoading() {
-
-  Swal.fire({
-    title: "กำลังเข้าสู่ระบบ...",
-    allowOutsideClick: false,
-    didOpen: () => {
-      Swal.showLoading();
-    }
-  });
-
-}
-
-function hideLoading() {
-  Swal.close();
-}
-
 // document.addEventListener("DOMContentLoaded", main);
 
 
