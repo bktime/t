@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>กำลังเปลี่ยนเส้นทาง</title>
+</head>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+    // เมื่อหน้าเว็บโหลดเสร็จ
+    getgoogleform();
+});
+
+
+function getgoogleform() {
+        const uuid = localStorage.getItem("uuid");
+
+    if (!uuid) {
+        window.location.href = "../login.html";
+        return;
+    }
+
+    var userid = localStorage.getItem("userid");
+    var username = localStorage.getItem("name");
+    var office = localStorage.getItem("office");
+    var mainsub = localStorage.getItem("mainsub");
+   
+    window.location.replace(
+     `https://docs.google.com/forms/d/e/1FAIpQLSc1cimdHrA-g1eSPyYHz5oYDhyfnlOT49wyjIp_dryaX98RUQ/viewform?usp=pp_url
+     &entry.195620054=${new Date().toLocaleDateString('en-CA')}&entry.1595578753=${userid}&entry.1336093512=${username}&entry.1478752193=${office}&entry.2040396169=${mainsub}`
+     );
+  }
+
+  
+</script>
+<body>
+    
+</body>
+</html>

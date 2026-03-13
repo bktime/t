@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>กำลังเปลี่ยนเส้นทาง</title>
+</head>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+    // เมื่อหน้าเว็บโหลดเสร็จ
+    getgoogleform();
+});
+
+
+function getgoogleform() {
+    const uuid = localStorage.getItem("uuid");
+
+    if (!uuid) {
+        window.location.href = "../login.html";
+        return;
+    }
+    var userid = localStorage.getItem("userid");
+    var username = localStorage.getItem("name");
+    var office = localStorage.getItem("office");
+    var mainsub = localStorage.getItem("mainsub");
+
+   window.location.replace(
+     `https://docs.google.com/forms/d/e/1FAIpQLSf6IAMbEPFca0MNZwSWSzFPwq5K8VdbBdORgD-aU9OL9CutmA/viewform?usp=pp_url
+     &entry.1864249544=${new Date().toLocaleDateString('en-CA')}&entry.710264169=%E2%9C%94&entry.1699169076=%E2%9C%94&entry.464729016=%E2%9C%94&entry.515582501=%E2%9C%94&entry.156846111=%E2%9C%94&entry.2082119686=%E2%9C%94&entry.1410199305=%E2%9C%94&entry.583656275=%E2%9C%94&entry.1324490069=%E2%9C%94&entry.736879102=${userid}&entry.1081501922=${username}&entry.978684502=${office}&entry.196470207=${mainsub}`
+     );
+
+
+// window.location.replace(urlform);
+
+//   var urlform = `https://docs.google.com/forms/d/e/1FAIpQLSf6IAMbEPFca0MNZwSWSzFPwq5K8VdbBdORgD-aU9OL9CutmA/viewform?usp=pp_url
+//   &entry.1864249544=${new Date().toLocaleDateString('en-CA')}&entry.1085498395=%E0%B9%80%E0%B8%8A%E0%B9%89%E0%B8%B2&entry.2124045395=%E0%B8%AA%E0%B8%B8%E0%B8%82%E0%B8%B2%E0%B8%8A%E0%B8%B2%E0%B8%A2&entry.710264169=%E2%9C%94&entry.1699169076=%E2%9C%94&entry.464729016=%E2%9C%94&entry.515582501=%E2%9C%94&entry.156846111=%E2%9C%94&entry.2082119686=%E2%9C%94&entry.1410199305=%E2%9C%94&entry.583656275=%E2%9C%94&entry.1324490069=%E2%9C%94&entry.1081501922=${username}&entry.978684502=${office}&entry.196470207=${mainsub}&entry.736879102=${userid}`;
+
+}
+
+</script>
+<body>
+    
+</body>
+</html>
