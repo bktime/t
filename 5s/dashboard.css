@@ -1,458 +1,516 @@
-// ===============================
-// GLOBAL
-// ===============================
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap');
 
-let fridgeData = [];
-let tempChart = null;
+:root {
+  --sans-serif: "Sarabun", sans-serif;
+  --serif: "Tinos", serif;
 
+  --primary:#3b82f6;
+  --primary-dark:#2563eb;
 
-// ===============================
-// INIT
-// ===============================
+  --border:#eef0f3;
+  --text-muted:#6c757d;
+}
 
-document.addEventListener("DOMContentLoaded", () => {
+body{
+  font-family:var(--sans-serif);
+  font-size:.875rem;
+  background:#f5f7fb;
+  color:#333;
+}
 
-    const uuid = localStorage.getItem("uuid");
+/* =========================
+   ICON
+========================= */
 
-    if (!uuid) {
-        window.location.href = "../login.html";
-        return;
-    }
-
-    setDefaultDate();
-
-    loadFridgeData();
-
-});
-
-
-// ===============================
-// DEFAULT DATE
-// ===============================
-
-function setDefaultDate(){
-
-  const now = new Date();
-
-  const month = String(now.getMonth()+1).padStart(2,"0");
-  const year  = now.getFullYear();
-
-  document.getElementById("monthSelect").value = month;
-
-  const yearSelect = document.getElementById("yearSelect");
-
-  yearSelect.innerHTML = "";
-
-  [year,year-1].forEach(y=>{
-      const opt = document.createElement("option");
-      opt.value = y;
-      opt.textContent = y;
-      yearSelect.appendChild(opt);
-  });
-
-  yearSelect.value = year;
-
+.feather{
+  width:16px;
+  height:16px;
+  vertical-align:text-bottom;
 }
 
 
-// ===============================
-// LOAD DATA
-// ===============================
+/* =========================
+   SIDEBAR
+========================= */
 
-async function loadFridgeData(btn){
+.sidebar{
+  position:fixed;
+  top:0;
+  bottom:0;
+  left:0;
+  z-index:100;
+  padding:48px 0 0;
+  background:#ffffff;
 
-    if(btn && btn.dataset.loading==="1") return;
-    if(btn) btn.dataset.loading="1";
-
-    let timerInterval;
-    let startTime;
-
-    Swal.fire({
-        title:"กำลังดาวน์โหลด...",
-        html:'เวลา <b>0</b> วินาที',
-        allowOutsideClick:false,
-        showConfirmButton:false,
-
-        didOpen:()=>{
-
-            Swal.showLoading();
-
-            const timer=Swal.getHtmlContainer().querySelector("b");
-
-            startTime = Date.now();
-
-            timerInterval=setInterval(()=>{
-
-                const elapsed=Math.floor((Date.now()-startTime)/1000);
-
-                timer.textContent=elapsed;
-
-            },200);
-
-        },
-
-        willClose:()=>clearInterval(timerInterval)
-
-    });
-
-    try{
-
-        const month=document.getElementById("monthSelect").value;
-        const year=document.getElementById("yearSelect").value;
-
-        const office=localStorage.getItem("office");
-        const dept=localStorage.getItem("mainsub");
-
-        const params=new URLSearchParams({
-            office:office,
-            dept:dept,
-            month:month,
-            year:year
-        });
-
-        const api=
-        "https://script.google.com/macros/s/AKfycbwwtZZO2Yl_EWoq-_lr6ELmVYkzU60LUosmB3HLUESjqzWnYoAxVkQR6N1OLu5oJd4ERQ/exec?"
-        +params;
-
-        const res=await fetch(api,{cache:"no-store"});
-
-        const data=await res.json();
-
-        fridgeData = data.user || [];
-
-        populateFridgeSelect();
-
-        drawChart();
-
-        buildTable(fridgeData);
-
-        Swal.close();
-
-        Swal.fire({
-            icon:"success",
-            title:"ดาวน์โหลดสำเร็จ",
-            timer:1500,
-            showConfirmButton:false
-        });
-
-    }catch(err){
-
-        console.error(err);
-
-        Swal.fire({
-            icon:"error",
-            title:"โหลดข้อมูลไม่สำเร็จ"
-        });
-
-    }finally{
-
-        if(btn) btn.dataset.loading="0";
-
-    }
-
+  box-shadow:inset -1px 0 0 rgba(0,0,0,.05);
 }
 
-
-// ===============================
-// BUILD TABLE
-// ===============================
-
-function buildTable(data){
-
-$('#fridgeTable').DataTable({
-
-destroy:true,
-data:data,
-
-deferRender:true,
-
-columns:[
-{data:'date'},
-{data:'office'},
-{data:'range'},
-{data:'cool'},
-{data:'temp'},
-{data:'air'},
-{data:'opv'},
-{data:'temproom'},
-{data:'details'},
-{data:'name'},
-{data:'dupdate'},
-{data:'ref'}
-],
-
-order:[[11,'asc'],[2,'asc']],
-
-responsive:true,
-
-dom:'lBfrtip',
-
-lengthMenu:[
-[10,30,70,100,-1],
-[10,30,70,100,"ทั้งหมด"]
-],
-
-buttons:['excel','print'],
-
-pageLength:30,
-
-language:{
-url:'https://cdn.datatables.net/plug-ins/1.13.7/i18n/th.json'
-}
-
-});
-
-}
-
-
-// ===============================
-// FRIDGE SELECT
-// ===============================
-
-function populateFridgeSelect(){
-
-const select=document.getElementById("fridgeSelect");
-
-if(!select) return;
-
-select.innerHTML='<option value="all">ทุกตู้</option>';
-
-const fridges=[...new Set(fridgeData.map(e=>e.cool))];
-
-fridges.forEach(fridge=>{
-
-const opt=document.createElement("option");
-
-opt.value=fridge;
-opt.textContent=fridge;
-
-select.appendChild(opt);
-
-});
-
-}
-
-
-// ===============================
-// DRAW CHART
-// ===============================
-
-function drawChart(){
-
-const select=document.getElementById("fridgeSelect");
-
-if(!select) return;
-
-const fridge=select.value;
-
-let data=fridgeData;
-
-if(fridge!=="all"){
-data=data.filter(e=>e.cool===fridge);
-}
-
-const labels=[...new Set(data.map(e=>e.date))];
-
-const morning = labels.map(date=>{
-const item=data.find(e=>e.date===date && e.range==="09:00");
-return item?Number(item.temp):null;
-});
-
-const afternoon = labels.map(date=>{
-const item=data.find(e=>e.date===date && e.range==="15:00");
-return item?Number(item.temp):null;
-});
-
-const ctx=document.getElementById("tempChart");
-
-if(!ctx) return;
-
-if(tempChart){
-tempChart.destroy();
-}
-
-tempChart=new Chart(ctx,{
-
-type:"line",
-
-data:{
-labels:labels,
-
-datasets:[
-
-{
-label:"เช้า 09:00",
-data:morning,
-borderColor:"#007bff",
-backgroundColor:"#007bff",
-tension:0.3,
-pointRadius:5,
-
-pointBackgroundColor:(ctx)=>{
-const v=ctx.raw;
-if(v<2 || v>8) return "red";
-return "#007bff";
-}
-
-},
-
-{
-label:"บ่าย 15:00",
-data:afternoon,
-borderColor:"#dc3545",
-backgroundColor:"#dc3545",
-tension:0.3,
-pointRadius:5,
-
-pointBackgroundColor:(ctx)=>{
-const v=ctx.raw;
-if(v<2 || v>8) return "red";
-return "#dc3545";
-}
-
-},
-
-{
-label:"ต่ำสุด 2°C",
-data:labels.map(()=>2),
-borderColor:"green",
-borderDash:[6,6],
-pointRadius:0
-},
-
-{
-label:"สูงสุด 8°C",
-data:labels.map(()=>8),
-borderColor:"orange",
-borderDash:[6,6],
-pointRadius:0
-}
-
-]
-
-},
-
-plugins:[ChartDataLabels],
-
-options:{
-
-responsive:true,
-
-interaction:{
-mode:"index",
-intersect:false
-},
-
-
-plugins:{
-
-legend:{
-  position:"top",
-  labels:{
-   padding:5
+@media (max-width:767.98px){
+  .sidebar{
+    top:5rem;
   }
- }
-},
-
-layout:{
- padding:{
-  top:5
- },
-
-tooltip:{
-callbacks:{
-label:(ctx)=> ctx.dataset.label+" : "+ctx.raw+"°C"
-}
-},
-
-datalabels:{
-
-color:"#000",
-
-anchor:"end",
-align:"top",
-
-formatter:(value,context)=>{
-
-if(context.dataset.label.includes("ต่ำสุด") ||
-context.dataset.label.includes("สูงสุด")){
-return null;
 }
 
-return value;
-
+.sidebar-sticky{
+  position:relative;
+  top:0;
+  height:calc(100vh - 48px);
+  padding-top:.5rem;
+  overflow-x:hidden;
+  overflow-y:auto;
 }
 
+.sidebar .nav-link{
+
+  font-weight:500;
+  color:#444;
+
+  border-radius:8px;
+  margin:2px 10px;
+  padding:8px 12px;
+
+  transition:all .15s ease;
 }
 
+.sidebar .nav-link:hover{
+
+  background:#f1f5ff;
+  color:var(--primary);
 }
 
+.sidebar .nav-link.active{
+
+  background:#e8f0ff;
+  color:var(--primary);
 }
 
-});
-
+.sidebar .nav-link .feather{
+  margin-right:4px;
+  color:#727272;
 }
 
-
-// ===============================
-// EVENT
-// ===============================
-
-const fridgeSelect=document.getElementById("fridgeSelect");
-
-if(fridgeSelect){
-fridgeSelect.addEventListener("change",drawChart);
+.sidebar-heading{
+  font-size:.75rem;
+  text-transform:uppercase;
 }
 
 
-// ===============================
-// OPEN PAGE
-// ===============================
+/* =========================
+   NAVBAR
+========================= */
 
-function openWeb(){
+.navbar-brand{
+  padding-top:.75rem;
+  padding-bottom:.75rem;
+  font-size:1rem;
 
-Swal.fire({
-title:'ยืนยันการดำเนินการ',
-text:'เปิดหน้าบันทึกข้อมูล',
-icon:'question',
-showCancelButton:true,
-confirmButtonText:'ตกลง',
-cancelButtonText:'ยกเลิก'
-}).then((result)=>{
+  background:rgba(0,0,0,.25);
 
-if(result.isConfirmed){
-window.open('temp.html','_blank');
+  box-shadow:inset -1px 0 0 rgba(0,0,0,.25);
 }
 
-});
+.navbar{
+  box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
 
+.navbar .navbar-toggler{
+  top:.25rem;
+  right:1rem;
+}
+
+.navbar .form-control{
+  padding:.75rem 1rem;
+  border-width:0;
+  border-radius:0;
 }
 
 
-// ===============================
-// DASHBOARD
-// ===============================
+/* =========================
+   DARK SEARCH
+========================= */
 
-function opendash(){
+.form-control-dark{
 
-Swal.fire({
-title:'ยืนยันการดำเนินการ',
-text:'เปิด Dashboard',
-icon:'question',
-showCancelButton:true,
-confirmButtonText:'ตกลง',
-cancelButtonText:'ยกเลิก'
-}).then((result)=>{
-
-if(result.isConfirmed){
-
-window.open(
-'https://lookerstudio.google.com/reporting/f4108ec7-4b6c-42ed-a2ac-267f455e8d91',
-'_blank'
-);
+  color:#fff;
+  background-color:rgba(255,255,255,.1);
+  border-color:rgba(255,255,255,.1);
 
 }
 
-});
+.form-control-dark:focus{
+
+  border-color:transparent;
+
+  box-shadow:0 0 0 3px rgba(255,255,255,.25);
+
+}
+
+
+/* =========================
+   FILTER BOX
+========================= */
+
+.filter-box{
+
+  background:#ffffff;
+
+  border-radius:10px;
+
+  padding:16px 18px;
+
+  border:1px solid var(--border);
+
+  box-shadow:0 2px 10px rgba(0,0,0,.06);
+
+  display:flex;
+  gap:14px;
+  align-items:end;
+  flex-wrap:wrap;
+  justify-content:center;
+
+  margin-top:10px;
+}
+
+
+/* form group */
+
+.filter-box .form-group{
+
+  display:flex;
+  flex-direction:column;
+  min-width:160px;
+
+}
+
+/* label */
+
+.filter-box label{
+
+  font-size:13px;
+  font-weight:600;
+  color:var(--text-muted);
+  margin-bottom:4px;
+
+}
+
+/* select */
+
+.filter-box .form-control{
+
+  height:38px;
+
+  border-radius:8px;
+
+  border:1px solid #dfe3e8;
+
+  padding:6px 10px;
+
+  font-size:14px;
+
+  background:#fff;
+
+  transition:all .2s ease;
+
+}
+
+/* focus */
+
+.filter-box .form-control:focus{
+
+  border-color:var(--primary);
+
+  box-shadow:0 0 0 3px rgba(59,130,246,.15);
+
+  outline:none;
+
+}
+
+
+/* button */
+
+.filter-box .btn{
+
+  height:38px;
+
+  border-radius:8px;
+
+  padding:0 16px;
+
+  font-size:14px;
+
+  font-weight:600;
+
+  display:flex;
+  align-items:center;
+
+}
+
+/* load button */
+
+.btn-load{
+
+  background:var(--primary);
+  border:none;
+  color:white;
+
+  transition:.2s;
+
+}
+
+.btn-load:hover{
+
+  background:var(--primary-dark);
+
+}
+
+
+/* =========================
+   DASHBOARD CARD
+========================= */
+
+.card-dashboard{
+
+  background:#ffffff;
+
+  border-radius:12px;
+
+  padding:18px 20px;
+
+  margin-top:16px;
+
+  border:1px solid var(--border);
+
+  box-shadow:0 4px 14px rgba(0,0,0,.05);
+
+  transition:.2s;
+
+}
+
+.card-dashboard:hover{
+
+  transform:translateY(-2px);
+
+  box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+
+/* title */
+
+.card-title{
+
+  font-size:16px;
+
+  font-weight:700;
+
+  color:#344054;
+
+  margin-bottom:12px;
+
+}
+
+
+/* =========================
+   CHART BOX
+========================= */
+
+.chart-box{
+
+  width:100%;
+
+  max-width:1000px;
+
+  margin:auto;
+
+  background:#ffffff;
+
+  border-radius:12px;
+
+  padding:20px;
+
+  border:1px solid var(--border);
+
+  box-shadow:0 4px 14px rgba(0,0,0,.05);
+
+}
+
+
+/* =========================
+   DATATABLE
+========================= */
+
+.dataTables_wrapper .dataTables_filter input{
+
+  border-radius:8px;
+
+  border:1px solid #dfe3e8;
+
+  padding:6px 10px;
+
+}
+
+.dataTables_wrapper .dataTables_length select{
+
+  border-radius:8px;
+
+  border:1px solid #dfe3e8;
+
+}
+
+table.dataTable tbody tr:hover{
+
+  background:#f5f9ff;
+
+}
+
+
+/* =========================
+   TEMPERATURE COLOR
+========================= */
+
+.temp-normal{
+
+  color:#16a34a;
+
+  font-weight:600;
+
+}
+
+.temp-warning{
+
+  color:#f59e0b;
+
+  font-weight:600;
+
+}
+
+.temp-danger{
+
+  color:#ef4444;
+
+  font-weight:700;
+
+}
+
+
+/* =========================
+   PLACEHOLDER IMG
+========================= */
+
+.bd-placeholder-img{
+
+  font-size:1.125rem;
+
+  text-anchor:middle;
+
+  user-select:none;
+
+}
+
+@media (min-width:768px){
+
+  .bd-placeholder-img-lg{
+
+    font-size:3.5rem;
+
+  }
+
+}
+
+
+/* =========================
+   MOBILE OPTIMIZE
+========================= */
+
+@media (max-width:768px){
+
+  body{
+    font-size:14px;
+  }
+
+  /* ===== Sidebar ===== */
+
+  .sidebar{
+    position:fixed;
+    left:-260px;
+    width:260px;
+    transition:all .3s ease;
+    z-index:1050;
+  }
+
+  .sidebar.show{
+    left:0;
+  }
+
+  /* overlay */
+
+  .sidebar-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.3);
+    z-index:1040;
+    display:none;
+  }
+
+  .sidebar-overlay.show{
+    display:block;
+  }
+
+
+  /* ===== Filter Box ===== */
+
+  .filter-box{
+
+    flex-direction:column;
+    align-items:stretch;
+    gap:10px;
+    padding:14px;
+
+  }
+
+  .filter-box .form-group{
+
+    width:100%;
+    min-width:unset;
+
+  }
+
+  .filter-box .btn{
+
+    width:100%;
+    justify-content:center;
+
+  }
+
+
+  /* ===== Chart ===== */
+
+  .chart-box{
+
+    padding:12px;
+    border-radius:10px;
+
+  }
+
+
+  /* ===== Card ===== */
+
+  .card-dashboard{
+
+    padding:14px;
+  }
+
+
+  /* ===== Table Scroll ===== */
+
+  .table-responsive{
+
+    overflow-x:auto;
+
+  }
+
+  table{
+    min-width:600px;
+  }
 
 }
