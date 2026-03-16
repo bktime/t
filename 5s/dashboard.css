@@ -1,177 +1,458 @@
-@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300&display=swap');
+// ===============================
+// GLOBAL
+// ===============================
 
-:root {
-  /* Font Family */
-  --sans-serif: "Sarabun", sans-serif;
-  --serif: "Tinos", serif;
+let fridgeData = [];
+let tempChart = null;
+
+
+// ===============================
+// INIT
+// ===============================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const uuid = localStorage.getItem("uuid");
+
+    if (!uuid) {
+        window.location.href = "../login.html";
+        return;
+    }
+
+    setDefaultDate();
+
+    loadFridgeData();
+
+});
+
+
+// ===============================
+// DEFAULT DATE
+// ===============================
+
+function setDefaultDate(){
+
+  const now = new Date();
+
+  const month = String(now.getMonth()+1).padStart(2,"0");
+  const year  = now.getFullYear();
+
+  document.getElementById("monthSelect").value = month;
+
+  const yearSelect = document.getElementById("yearSelect");
+
+  yearSelect.innerHTML = "";
+
+  [year,year-1].forEach(y=>{
+      const opt = document.createElement("option");
+      opt.value = y;
+      opt.textContent = y;
+      yearSelect.appendChild(opt);
+  });
+
+  yearSelect.value = year;
+
 }
 
-body {
-  font-size: .875rem;
+
+// ===============================
+// LOAD DATA
+// ===============================
+
+async function loadFridgeData(btn){
+
+    if(btn && btn.dataset.loading==="1") return;
+    if(btn) btn.dataset.loading="1";
+
+    let timerInterval;
+    let startTime;
+
+    Swal.fire({
+        title:"กำลังดาวน์โหลด...",
+        html:'เวลา <b>0</b> วินาที',
+        allowOutsideClick:false,
+        showConfirmButton:false,
+
+        didOpen:()=>{
+
+            Swal.showLoading();
+
+            const timer=Swal.getHtmlContainer().querySelector("b");
+
+            startTime = Date.now();
+
+            timerInterval=setInterval(()=>{
+
+                const elapsed=Math.floor((Date.now()-startTime)/1000);
+
+                timer.textContent=elapsed;
+
+            },200);
+
+        },
+
+        willClose:()=>clearInterval(timerInterval)
+
+    });
+
+    try{
+
+        const month=document.getElementById("monthSelect").value;
+        const year=document.getElementById("yearSelect").value;
+
+        const office=localStorage.getItem("office");
+        const dept=localStorage.getItem("mainsub");
+
+        const params=new URLSearchParams({
+            office:office,
+            dept:dept,
+            month:month,
+            year:year
+        });
+
+        const api=
+        "https://script.google.com/macros/s/AKfycbwwtZZO2Yl_EWoq-_lr6ELmVYkzU60LUosmB3HLUESjqzWnYoAxVkQR6N1OLu5oJd4ERQ/exec?"
+        +params;
+
+        const res=await fetch(api,{cache:"no-store"});
+
+        const data=await res.json();
+
+        fridgeData = data.user || [];
+
+        populateFridgeSelect();
+
+        drawChart();
+
+        buildTable(fridgeData);
+
+        Swal.close();
+
+        Swal.fire({
+            icon:"success",
+            title:"ดาวน์โหลดสำเร็จ",
+            timer:1500,
+            showConfirmButton:false
+        });
+
+    }catch(err){
+
+        console.error(err);
+
+        Swal.fire({
+            icon:"error",
+            title:"โหลดข้อมูลไม่สำเร็จ"
+        });
+
+    }finally{
+
+        if(btn) btn.dataset.loading="0";
+
+    }
+
 }
 
-.feather {
-  width: 16px;
-  height: 16px;
-  vertical-align: text-bottom;
+
+// ===============================
+// BUILD TABLE
+// ===============================
+
+function buildTable(data){
+
+$('#fridgeTable').DataTable({
+
+destroy:true,
+data:data,
+
+deferRender:true,
+
+columns:[
+{data:'date'},
+{data:'office'},
+{data:'range'},
+{data:'cool'},
+{data:'temp'},
+{data:'air'},
+{data:'opv'},
+{data:'temproom'},
+{data:'details'},
+{data:'name'},
+{data:'dupdate'},
+{data:'ref'}
+],
+
+order:[[11,'asc'],[2,'asc']],
+
+responsive:true,
+
+dom:'lBfrtip',
+
+lengthMenu:[
+[10,30,70,100,-1],
+[10,30,70,100,"ทั้งหมด"]
+],
+
+buttons:['excel','print'],
+
+pageLength:30,
+
+language:{
+url:'https://cdn.datatables.net/plug-ins/1.13.7/i18n/th.json'
 }
 
-/*
- * Sidebar
- */
+});
 
-.sidebar {
-  position: fixed;
-  top: 0;
-  /* rtl:raw:
-  right: 0;
-  */
-  bottom: 0;
-  /* rtl:remove */
-  left: 0;
-  z-index: 100; /* Behind the navbar */
-  padding: 48px 0 0; /* Height of navbar */
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
 
-@media (max-width: 767.98px) {
-  .sidebar {
-    top: 5rem;
+
+// ===============================
+// FRIDGE SELECT
+// ===============================
+
+function populateFridgeSelect(){
+
+const select=document.getElementById("fridgeSelect");
+
+if(!select) return;
+
+select.innerHTML='<option value="all">ทุกตู้</option>';
+
+const fridges=[...new Set(fridgeData.map(e=>e.cool))];
+
+fridges.forEach(fridge=>{
+
+const opt=document.createElement("option");
+
+opt.value=fridge;
+opt.textContent=fridge;
+
+select.appendChild(opt);
+
+});
+
+}
+
+
+// ===============================
+// DRAW CHART
+// ===============================
+
+function drawChart(){
+
+const select=document.getElementById("fridgeSelect");
+
+if(!select) return;
+
+const fridge=select.value;
+
+let data=fridgeData;
+
+if(fridge!=="all"){
+data=data.filter(e=>e.cool===fridge);
+}
+
+const labels=[...new Set(data.map(e=>e.date))];
+
+const morning = labels.map(date=>{
+const item=data.find(e=>e.date===date && e.range==="09:00");
+return item?Number(item.temp):null;
+});
+
+const afternoon = labels.map(date=>{
+const item=data.find(e=>e.date===date && e.range==="15:00");
+return item?Number(item.temp):null;
+});
+
+const ctx=document.getElementById("tempChart");
+
+if(!ctx) return;
+
+if(tempChart){
+tempChart.destroy();
+}
+
+tempChart=new Chart(ctx,{
+
+type:"line",
+
+data:{
+labels:labels,
+
+datasets:[
+
+{
+label:"เช้า 09:00",
+data:morning,
+borderColor:"#007bff",
+backgroundColor:"#007bff",
+tension:0.3,
+pointRadius:5,
+
+pointBackgroundColor:(ctx)=>{
+const v=ctx.raw;
+if(v<2 || v>8) return "red";
+return "#007bff";
+}
+
+},
+
+{
+label:"บ่าย 15:00",
+data:afternoon,
+borderColor:"#dc3545",
+backgroundColor:"#dc3545",
+tension:0.3,
+pointRadius:5,
+
+pointBackgroundColor:(ctx)=>{
+const v=ctx.raw;
+if(v<2 || v>8) return "red";
+return "#dc3545";
+}
+
+},
+
+{
+label:"ต่ำสุด 2°C",
+data:labels.map(()=>2),
+borderColor:"green",
+borderDash:[6,6],
+pointRadius:0
+},
+
+{
+label:"สูงสุด 8°C",
+data:labels.map(()=>8),
+borderColor:"orange",
+borderDash:[6,6],
+pointRadius:0
+}
+
+]
+
+},
+
+plugins:[ChartDataLabels],
+
+options:{
+
+responsive:true,
+
+interaction:{
+mode:"index",
+intersect:false
+},
+
+
+plugins:{
+
+legend:{
+  position:"top",
+  labels:{
+   padding:5
   }
+ }
+},
+
+layout:{
+ padding:{
+  top:5
+ },
+
+tooltip:{
+callbacks:{
+label:(ctx)=> ctx.dataset.label+" : "+ctx.raw+"°C"
+}
+},
+
+datalabels:{
+
+color:"#000",
+
+anchor:"end",
+align:"top",
+
+formatter:(value,context)=>{
+
+if(context.dataset.label.includes("ต่ำสุด") ||
+context.dataset.label.includes("สูงสุด")){
+return null;
 }
 
-.sidebar-sticky {
-  position: relative;
-  top: 0;
-  height: calc(100vh - 48px);
-  padding-top: .5rem;
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+return value;
+
 }
 
-.sidebar .nav-link {
-  font-weight: 500;
-  color: #333;
 }
 
-.sidebar .nav-link .feather {
-  margin-right: 4px;
-  color: #727272;
 }
 
-.sidebar .nav-link.active {
-  color: #2470dc;
 }
 
-.sidebar .nav-link:hover .feather,
-.sidebar .nav-link.active .feather {
-  color: inherit;
-}
+});
 
-.sidebar-heading {
-  font-size: .75rem;
-  text-transform: uppercase;
-}
-
-/*
- * Navbar
- */
-
-.navbar-brand {
-  padding-top: .75rem;
-  padding-bottom: .75rem;
-  font-size: 1rem;
-  background-color: rgba(0, 0, 0, .25);
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
-}
-
-.navbar .navbar-toggler {
-  top: .25rem;
-  right: 1rem;
-}
-
-.navbar .form-control {
-  padding: .75rem 1rem;
-  border-width: 0;
-  border-radius: 0;
-}
-
-.form-control-dark {
-  color: #fff;
-  background-color: rgba(255, 255, 255, .1);
-  border-color: rgba(255, 255, 255, .1);
-}
-
-.form-control-dark:focus {
-  border-color: transparent;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
 }
 
 
-/* กล่อง filter */
-.filter-box{
-  background:#ffffff;
-  border-radius:10px;
-  padding:16px 18px;
-  box-shadow:0 2px 10px rgba(0,0,0,0.06);
-  border:1px solid #eef0f3;
-  display:flex;
-  gap:14px;
-  align-items:end;
-  flex-wrap:wrap;
+// ===============================
+// EVENT
+// ===============================
+
+const fridgeSelect=document.getElementById("fridgeSelect");
+
+if(fridgeSelect){
+fridgeSelect.addEventListener("change",drawChart);
 }
 
-/* form group */
-.filter-box .form-group{
-  display:flex;
-  flex-direction:column;
-  min-width:160px;
+
+// ===============================
+// OPEN PAGE
+// ===============================
+
+function openWeb(){
+
+Swal.fire({
+title:'ยืนยันการดำเนินการ',
+text:'เปิดหน้าบันทึกข้อมูล',
+icon:'question',
+showCancelButton:true,
+confirmButtonText:'ตกลง',
+cancelButtonText:'ยกเลิก'
+}).then((result)=>{
+
+if(result.isConfirmed){
+window.open('temp.html','_blank');
 }
 
-/* label */
-.filter-box label{
-  font-size:13px;
-  font-weight:600;
-  color:#6c757d;
-  margin-bottom:4px;
+});
+
 }
 
-/* select */
-.filter-box .form-control{
-  height:38px;
-  border-radius:8px;
-  border:1px solid #dfe3e8;
-  padding:6px 10px;
-  font-size:14px;
-  background:#fff;
-  transition:all .2s ease;
+
+// ===============================
+// DASHBOARD
+// ===============================
+
+function opendash(){
+
+Swal.fire({
+title:'ยืนยันการดำเนินการ',
+text:'เปิด Dashboard',
+icon:'question',
+showCancelButton:true,
+confirmButtonText:'ตกลง',
+cancelButtonText:'ยกเลิก'
+}).then((result)=>{
+
+if(result.isConfirmed){
+
+window.open(
+'https://lookerstudio.google.com/reporting/f4108ec7-4b6c-42ed-a2ac-267f455e8d91',
+'_blank'
+);
+
 }
 
-/* focus */
-.filter-box .form-control:focus{
-  border-color:#3b82f6;
-  box-shadow:0 0 0 3px rgba(59,130,246,0.15);
-  outline:none;
-}
+});
 
-/* ปุ่ม */
-.filter-box .btn{
-  height:38px;
-  border-radius:8px;
-  padding:0 16px;
-  font-size:14px;
-  font-weight:600;
-  display:flex;
-  align-items:center;
-}
-
-/* ปุ่มโหลด */
-.btn-load{
-  background:#3b82f6;
-  border:none;
-  color:white;
-}
-
-.btn-load:hover{
-  background:#2563eb;
 }
