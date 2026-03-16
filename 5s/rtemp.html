@@ -1,234 +1,458 @@
-<!doctype html>
-<html lang="en">
+// ===============================
+// GLOBAL
+// ===============================
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-  <meta name="generator" content="Hugo 0.84.0">
-  <title>รายงานการบันทึกอุณหภูมิตู้เย็น</title>
-
-  <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
+let fridgeData = [];
+let tempChart = null;
 
 
+// ===============================
+// INIT
+// ===============================
 
-  <!-- Bootstrap core CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+document.addEventListener("DOMContentLoaded", () => {
 
-      <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    const uuid = localStorage.getItem("uuid");
 
-  <!-- jQuery UI -->
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-
-  <style>
-    .bd-placeholder-img {
-      font-size: 1.125rem;
-      text-anchor: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      user-select: none;
+    if (!uuid) {
+        window.location.href = "../login.html";
+        return;
     }
 
-    @media (min-width: 768px) {
-      .bd-placeholder-img-lg {
-        font-size: 3.5rem;
-      }
+    setDefaultDate();
+
+    loadFridgeData();
+
+});
+
+
+// ===============================
+// DEFAULT DATE
+// ===============================
+
+function setDefaultDate(){
+
+  const now = new Date();
+
+  const month = String(now.getMonth()+1).padStart(2,"0");
+  const year  = now.getFullYear();
+
+  document.getElementById("monthSelect").value = month;
+
+  const yearSelect = document.getElementById("yearSelect");
+
+  yearSelect.innerHTML = "";
+
+  [year,year-1].forEach(y=>{
+      const opt = document.createElement("option");
+      opt.value = y;
+      opt.textContent = y;
+      yearSelect.appendChild(opt);
+  });
+
+  yearSelect.value = year;
+
+}
+
+
+// ===============================
+// LOAD DATA
+// ===============================
+
+async function loadFridgeData(btn){
+
+    if(btn && btn.dataset.loading==="1") return;
+    if(btn) btn.dataset.loading="1";
+
+    let timerInterval;
+    let startTime;
+
+    Swal.fire({
+        title:"กำลังดาวน์โหลด...",
+        html:'เวลา <b>0</b> วินาที',
+        allowOutsideClick:false,
+        showConfirmButton:false,
+
+        didOpen:()=>{
+
+            Swal.showLoading();
+
+            const timer=Swal.getHtmlContainer().querySelector("b");
+
+            startTime = Date.now();
+
+            timerInterval=setInterval(()=>{
+
+                const elapsed=Math.floor((Date.now()-startTime)/1000);
+
+                timer.textContent=elapsed;
+
+            },200);
+
+        },
+
+        willClose:()=>clearInterval(timerInterval)
+
+    });
+
+    try{
+
+        const month=document.getElementById("monthSelect").value;
+        const year=document.getElementById("yearSelect").value;
+
+        const office=localStorage.getItem("office");
+        const dept=localStorage.getItem("mainsub");
+
+        const params=new URLSearchParams({
+            office:office,
+            dept:dept,
+            month:month,
+            year:year
+        });
+
+        const api=
+        "https://script.google.com/macros/s/AKfycbwwtZZO2Yl_EWoq-_lr6ELmVYkzU60LUosmB3HLUESjqzWnYoAxVkQR6N1OLu5oJd4ERQ/exec?"
+        +params;
+
+        const res=await fetch(api,{cache:"no-store"});
+
+        const data=await res.json();
+
+        fridgeData = data.user || [];
+
+        populateFridgeSelect();
+
+        drawChart();
+
+        buildTable(fridgeData);
+
+        Swal.close();
+
+        Swal.fire({
+            icon:"success",
+            title:"ดาวน์โหลดสำเร็จ",
+            timer:1500,
+            showConfirmButton:false
+        });
+
+    }catch(err){
+
+        console.error(err);
+
+        Swal.fire({
+            icon:"error",
+            title:"โหลดข้อมูลไม่สำเร็จ"
+        });
+
+    }finally{
+
+        if(btn) btn.dataset.loading="0";
+
     }
-  </style>
+
+}
 
 
-  <!-- Custom styles for this template -->
-  <link href="dashboard.css" rel="stylesheet">
-</head>
+// ===============================
+// BUILD TABLE
+// ===============================
 
-<body>
+function buildTable(data){
 
-  <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">รายงาน</a>
-    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
-      data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-    <div class="navbar-nav">
-      <div class="nav-item text-nowrap">
-        <a class="nav-link px-3" href="#">Sign out</a>
-      </div>
-    </div> -->
-  </header>
+$('#fridgeTable').DataTable({
 
-  <div class="container-fluid">
-    <div class="row">
-      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-        <div class="position-sticky pt-3">
-          <ul class="nav flex-column">
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="index.html">
-                <span data-feather="users"></span>
-                การทำความสะอาดห้องน้ำ
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="#">
-                <span data-feather="thermometer"></span>
-                การบันทึกอุณหภูมิตู้เย็น
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="rfire.html">
-                <span data-feather="wind"></span>
-                การตรวจสอบถังดับเพลิง
-              </a>
-            </li>
+destroy:true,
+data:data,
 
-          </ul>
-        </div>
-      </nav>
+deferRender:true,
 
-      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        <div
-          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">รายงานการบันทึกอุณหภูมิตู้เย็น</h1>
-          <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="btn-group me-2">
-              <button type="button" class="btn btn-sm btn-outline-secondary" onclick="openWeb()">บันทึกอุณหภูมิตู้เย็น</button>
-              <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Export</button> -->
-             
-            </div>
-             <button type="button" class="btn btn-sm btn-outline-secondary" onclick="opendash()">รายงานเพิ่มเติม</button>
-            <!-- <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <span data-feather="calendar"></span>
-            เดือน
-          </button> -->
-          </div>
-        </div>
+columns:[
+{data:'date'},
+{data:'office'},
+{data:'range'},
+{data:'cool'},
+{data:'temp'},
+{data:'air'},
+{data:'opv'},
+{data:'temproom'},
+{data:'details'},
+{data:'name'},
+{data:'dupdate'},
+{data:'ref'}
+],
 
-        <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
-<div class="filter-box">
+order:[[11,'asc'],[2,'asc']],
 
-  <div class="form-group">
-    <label for="monthSelect">เลือกเดือน</label>
-    <select class="form-control" id="monthSelect">
-      <option value="01">มกราคม</option>
-      <option value="02">กุมภาพันธ์</option>
-      <option value="03">มีนาคม</option>
-      <option value="04">เมษายน</option>
-      <option value="05">พฤษภาคม</option>
-      <option value="06">มิถุนายน</option>
-      <option value="07">กรกฎาคม</option>
-      <option value="08">สิงหาคม</option>
-      <option value="09">กันยายน</option>
-      <option value="10">ตุลาคม</option>
-      <option value="11">พฤศจิกายน</option>
-      <option value="12">ธันวาคม</option>
-    </select>
-  </div>
+responsive:true,
 
-<div class="form-group">
-  <label for="yearSelect">เลือกปี</label>
-  <select class="form-control" id="yearSelect"></select>
-</div>
+dom:'lBfrtip',
 
-  <button type="button" class="btn btn-load" onclick="loadFridgeData()">
-    โหลดข้อมูล
-  </button>
+lengthMenu:[
+[10,30,70,100,-1],
+[10,30,70,100,"ทั้งหมด"]
+],
 
-</div>
+buttons:['excel','print'],
 
-        <!-- <h2>Section title</h2> -->
-        <div class="table-responsive">
-<table id="fridgeTable" class="display nowrap" style="width:100%">
-<thead>
-<tr>
-<th>วันที่</th>
-<th>หน่วยงาน</th>
-<th>ช่วงเวลา</th>
-<th>ตู้เย็น</th>
-<th>อุณหภูมิ</th>
-<th>ความชื้น</th>
-<th>OPV</th>
-<th>อุณหภูมิห้อง</th>
-<th>รายละเอียด</th>
-<th>ผู้บันทึก</th>
-<th>เวลา</th>
-<th>ref</th>
-</tr>
-</thead>
-</table>
+pageLength:30,
 
-        </div>
-      </main>
-    </div>
-  </div>
-  <script src="rtemp.js"></script>
+language:{
+url:'https://cdn.datatables.net/plug-ins/1.13.7/i18n/th.json'
+}
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
-    integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
-    integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
-    crossorigin="anonymous"></script>
-  <!-- <script src="dashboard.js"></script> -->
-   <!-- Sweetalert -->
-  <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4/bootstrap-4.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+});
 
- <!-- Datatable 5 
- <link rel="stylesheet" href="" />
-<script type="text/javascript" src=""></script>
-<script type="text/javascript" src=""></script>
- -->
-
- <!-- Boostrap & fontawesome js-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
- <!-- Datatable jquery -->
- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
-<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/dataTables.dataTables.min.js"></script>
-
-<!-- Datatable ป้อนอัตโนมัติ  -->
- <!-- <link rel="stylesheet" href="https://cdn.datatables.net/autofill/2.6.0/css/autoFill.dataTables.min.css" />
-<script type="text/javascript" src="https://cdn.datatables.net/autofill/2.6.0/js/dataTables.autoFill.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/autofill/2.6.0/js/autoFill.dataTables.min.js"></script> -->
-
-<!-- Datatable ปุ่ม  -->
- <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css" />
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.dataTables.min.js"></script>
-<!-- การควบคุมการมองเห็นคอลัมน์: -->
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
-<!-- ปุ่มพิมพ์: -->
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-<!-- ปุ่มส่งออก HTML5: -->
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-<!-- ปุ่มส่งออก exel -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script> 
+}
 
 
+// ===============================
+// FRIDGE SELECT
+// ===============================
 
-<!-- Datatable ColReorder  -->
- <link rel="stylesheet" href="https://cdn.datatables.net/colreorder/1.7.0/css/colReorder.dataTables.min.css" />
-<script type="text/javascript" src="https://cdn.datatables.net/colreorder/1.7.0/js/dataTables.colReorder.min.js"></script>
+function populateFridgeSelect(){
 
- <!-- Datatable แสดงผลตามขนาดหน้าจอ ปุ่มซ่อน -->
- <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" />
-<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+const select=document.getElementById("fridgeSelect");
 
-<!-- Datatable ส่วนหัวคงที่ -->
- <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.4.0/css/fixedHeader.dataTables.min.css" />
-<script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+if(!select) return;
+
+select.innerHTML='<option value="all">ทุกตู้</option>';
+
+const fridges=[...new Set(fridgeData.map(e=>e.cool))];
+
+fridges.forEach(fridge=>{
+
+const opt=document.createElement("option");
+
+opt.value=fridge;
+opt.textContent=fridge;
+
+select.appendChild(opt);
+
+});
+
+}
 
 
+// ===============================
+// DRAW CHART
+// ===============================
 
-</body>
+function drawChart(){
 
-</html>
+const select=document.getElementById("fridgeSelect");
+
+if(!select) return;
+
+const fridge=select.value;
+
+let data=fridgeData;
+
+if(fridge!=="all"){
+data=data.filter(e=>e.cool===fridge);
+}
+
+const labels=[...new Set(data.map(e=>e.date))];
+
+const morning = labels.map(date=>{
+const item=data.find(e=>e.date===date && e.range==="09:00");
+return item?Number(item.temp):null;
+});
+
+const afternoon = labels.map(date=>{
+const item=data.find(e=>e.date===date && e.range==="15:00");
+return item?Number(item.temp):null;
+});
+
+const ctx=document.getElementById("tempChart");
+
+if(!ctx) return;
+
+if(tempChart){
+tempChart.destroy();
+}
+
+tempChart=new Chart(ctx,{
+
+type:"line",
+
+data:{
+labels:labels,
+
+datasets:[
+
+{
+label:"เช้า 09:00",
+data:morning,
+borderColor:"#007bff",
+backgroundColor:"#007bff",
+tension:0.3,
+pointRadius:5,
+
+pointBackgroundColor:(ctx)=>{
+const v=ctx.raw;
+if(v<2 || v>8) return "red";
+return "#007bff";
+}
+
+},
+
+{
+label:"บ่าย 15:00",
+data:afternoon,
+borderColor:"#dc3545",
+backgroundColor:"#dc3545",
+tension:0.3,
+pointRadius:5,
+
+pointBackgroundColor:(ctx)=>{
+const v=ctx.raw;
+if(v<2 || v>8) return "red";
+return "#dc3545";
+}
+
+},
+
+{
+label:"ต่ำสุด 2°C",
+data:labels.map(()=>2),
+borderColor:"green",
+borderDash:[6,6],
+pointRadius:0
+},
+
+{
+label:"สูงสุด 8°C",
+data:labels.map(()=>8),
+borderColor:"orange",
+borderDash:[6,6],
+pointRadius:0
+}
+
+]
+
+},
+
+plugins:[ChartDataLabels],
+
+options:{
+
+responsive:true,
+
+interaction:{
+mode:"index",
+intersect:false
+},
+
+
+plugins:{
+
+legend:{
+  position:"top",
+  labels:{
+   padding:5
+  }
+ }
+},
+
+layout:{
+ padding:{
+  top:5
+ },
+
+tooltip:{
+callbacks:{
+label:(ctx)=> ctx.dataset.label+" : "+ctx.raw+"°C"
+}
+},
+
+datalabels:{
+
+color:"#000",
+
+anchor:"end",
+align:"top",
+
+formatter:(value,context)=>{
+
+if(context.dataset.label.includes("ต่ำสุด") ||
+context.dataset.label.includes("สูงสุด")){
+return null;
+}
+
+return value;
+
+}
+
+}
+
+}
+
+}
+
+});
+
+}
+
+
+// ===============================
+// EVENT
+// ===============================
+
+const fridgeSelect=document.getElementById("fridgeSelect");
+
+if(fridgeSelect){
+fridgeSelect.addEventListener("change",drawChart);
+}
+
+
+// ===============================
+// OPEN PAGE
+// ===============================
+
+function openWeb(){
+
+Swal.fire({
+title:'ยืนยันการดำเนินการ',
+text:'เปิดหน้าบันทึกข้อมูล',
+icon:'question',
+showCancelButton:true,
+confirmButtonText:'ตกลง',
+cancelButtonText:'ยกเลิก'
+}).then((result)=>{
+
+if(result.isConfirmed){
+window.open('temp.html','_blank');
+}
+
+});
+
+}
+
+
+// ===============================
+// DASHBOARD
+// ===============================
+
+function opendash(){
+
+Swal.fire({
+title:'ยืนยันการดำเนินการ',
+text:'เปิด Dashboard',
+icon:'question',
+showCancelButton:true,
+confirmButtonText:'ตกลง',
+cancelButtonText:'ยกเลิก'
+}).then((result)=>{
+
+if(result.isConfirmed){
+
+window.open(
+'https://lookerstudio.google.com/reporting/f4108ec7-4b6c-42ed-a2ac-267f455e8d91',
+'_blank'
+);
+
+}
+
+});
+
+}
