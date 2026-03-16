@@ -143,20 +143,36 @@ function buildTable(data) {
 
     deferRender: true,
 
-    columns: [
-      { data: "date" },
-      { data: "office" },
-      { data: "range" },
-      { data: "cool" },
-      { data: "temp" },
-      { data: "air" },
-      { data: "opv" },
-      { data: "temproom" },
-      { data: "details" },
-      { data: "name" },
-      { data: "dupdate" },
-      { data: "ref" },
-    ],
+columns: [
+  { data: "date" },
+  { data: "office" },
+  { data: "range" },
+  { data: "cool" },
+  {
+    data: "temp",
+    render: function (data, type, row) {
+      if (data === null || data === "") return "";
+      return data + " °C";
+    }
+  },
+  { data: "air" },
+  { data: "opv",
+        render: function (data, type, row) {
+      if (data === null || data === "") return "";
+      return data + " °C";
+    }
+   },
+  { data: "temproom",
+        render: function (data, type, row) {
+      if (data === null || data === "") return "";
+      return data + " °C";
+    }
+   },
+  { data: "details" },
+  { data: "name" },
+  { data: "dupdate" },
+  { data: "ref" },
+],
 
     order: [
       [11, "asc"],
@@ -250,7 +266,7 @@ function drawChart() {
 
       datasets: [
         {
-          label: "เช้า 09:00",
+          label: "เช้า",
           data: morning,
           borderColor: "#007bff",
           backgroundColor: "#007bff",
@@ -265,7 +281,7 @@ function drawChart() {
         },
 
         {
-          label: "บ่าย 15:00",
+          label: "บ่าย",
           data: afternoon,
           borderColor: "#dc3545",
           backgroundColor: "#dc3545",
