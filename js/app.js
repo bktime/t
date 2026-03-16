@@ -2016,17 +2016,60 @@ async function inputcid() {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          // แจ้งเตือนเมื่อสำเร็จ แบบเน้นรหัสเข้าระบบให้ชัดเจน
+          // ---------- สร้าง QR Code ด้วย qrcodejs ----------
+          const loginUrl = `https://t-7k0.pages.dev/userloginbydev?userId=${data.code}`;
+          let qrDataURL = '';
+
+          // ตรวจสอบว่าไลบรารี QRCode พร้อมใช้งาน (โหลดจาก CDN แล้ว)
+          if (typeof QRCode !== 'undefined') {
+            try {
+              // สร้าง container ชั่วคราว (ซ่อนไว้)
+              const tempDiv = document.createElement('div');
+              tempDiv.style.display = 'none';
+              document.body.appendChild(tempDiv);
+
+              // สร้าง QR Code ลงใน container (ใช้ canvas โดยปริยาย)
+              const qrcode = new QRCode(tempDiv, {
+                text: loginUrl,
+                width: 200,
+                height: 200,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H   // ใช้ level H ทนทานที่สุด
+              });
+
+              // ดึง canvas ที่ qrcodejs สร้างขึ้น
+              const canvas = tempDiv.querySelector('canvas');
+              if (canvas) {
+                qrDataURL = canvas.toDataURL('image/png');
+              }
+
+              // ลบ container ทิ้ง
+              document.body.removeChild(tempDiv);
+            } catch (e) {
+              console.error('QR generation error', e);
+            }
+          } else {
+            console.warn('QRCode library not loaded – QR code will not be displayed');
+          }
+          // ------------------------------------------------
+
+          // สร้าง HTML สำหรับแสดงใน SweetAlert2
+          const successHtml = `
+            <p style="color: #0656a0ff; font-size: 1.2rem; margin-bottom: 8px;">${data.fullname}</p>
+            <p style="color: #ee5454ff; font-size: 0.9rem; margin-bottom: 10px;">รหัสเข้าระบบใช้ได้ครั้งเดียว<br>(กรุณาเก็บเป็นความลับ)</p>
+            ${qrDataURL ? `<div style="margin: 15px 0;"><img src="${qrDataURL}" alt="QR Code" style="width: 200px; height: 200px; border: 1px solid #ddd; border-radius: 8px;"></div>` : ''}
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border: 2px dashed #007bff; display: inline-block;">
+              <span style="font-size: 2.2rem; font-weight: bold; color: #007bff; letter-spacing: 3px;">
+                ${data.code}
+              </span>
+            </div>
+            ${qrDataURL ? '<p style="margin-top: 15px; font-size: 0.9rem; color: #6c757d;">หรือสแกน QR Code เพื่อเข้าสู่ระบบ</p>' : ''}
+          `;
+
           Swal.fire({
             title: '<i class="fa-solid fa-circle-check" style="color: #28a745;"></i><br>สำเร็จ',
-            html: `
-              <p style="color: #555; margin-bottom: 10px;">รหัสเข้าระบบ (กรุณาเก็บเป็นความลับ)</p>
-              <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border: 2px dashed #007bff; display: inline-block;">
-                <span style="font-size: 2.2rem; font-weight: bold; color: #007bff; letter-spacing: 3px;">
-                  ${data.code}
-                </span>
-              </div>
-            `,
+            html: successHtml,
             confirmButtonText: '<i class="fa-solid fa-door-open"></i> ตกลง',
             confirmButtonColor: '#007bff',
             allowOutsideClick: false
