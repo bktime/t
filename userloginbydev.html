@@ -423,15 +423,15 @@ function handleQrScan(text) {
   if (modal) modal.hide();
 
   // พยายามดึง userId จาก URL ที่สแกนได้
-  // คาดว่ารูปแบบ: https://t-7k0.pages.dev/userloginbydev?userId=XXXX
   try {
     const url = new URL(text);
     const userId = url.searchParams.get('userId');
     if (userId && /^\d{6}$/.test(userId)) {
       document.getElementById('userId').value = userId;
-      setStatus('สแกนสำเร็จ พร้อมเข้าสู่ระบบ', 'success');
-      // กดปุ่มเข้าสู่ระบบอัตโนมัติ (หรือไม่ก็ได้)
-      // loadData(); // ถ้าต้องการให้ login ทันที ปลดคอมเมนต์บรรทัดนี้
+      setStatus('สแกนสำเร็จ กำลังเข้าสู่ระบบ...', 'success');
+
+      // ✅ เข้าสู่ระบบอัตโนมัติทันที
+      loadData();
     } else {
       setStatus('QR Code ไม่มีรหัสผู้ใช้งานที่ถูกต้อง', 'warning');
     }
