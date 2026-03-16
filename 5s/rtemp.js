@@ -1,19 +1,36 @@
+// ===============================
+// GLOBAL
+// ===============================
+
+let fridgeData = [];
+let tempChart = null;
+
+// ===============================
+// INIT
+// ===============================
+
 document.addEventListener("DOMContentLoaded", () => {
-    const uuid = localStorage.getItem("uuid");
-    if (!uuid) {
-        // ถ้าไม่มี uuid ให้ login
-        window.location.href = "../login.html";
-    }
+  const uuid = localStorage.getItem("uuid");
+
+  if (!uuid) {
+    window.location.href = "../login.html";
+    return;
+  }
+
   setDefaultDate();
+
+  loadFridgeData();
 });
 
+// ===============================
+// DEFAULT DATE
+// ===============================
 
-function setDefaultDate(){
-
+function setDefaultDate() {
   const now = new Date();
 
-  const month = String(now.getMonth()+1).padStart(2,"0");
-  const year  = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const year = now.getFullYear();
 
   document.getElementById("monthSelect").value = month;
 
@@ -21,197 +38,364 @@ function setDefaultDate(){
 
   yearSelect.innerHTML = "";
 
-  const years = [year, year-1];
-
-  years.forEach(y=>{
-      const opt = document.createElement("option");
-      opt.value = y;
-      opt.textContent = y;
-      yearSelect.appendChild(opt);
+  [year, year - 1].forEach((y) => {
+    const opt = document.createElement("option");
+    opt.value = y;
+    opt.textContent = y;
+    yearSelect.appendChild(opt);
   });
 
   yearSelect.value = year;
-
 }
 
-async function loadFridgeData(btn){
+// ===============================
+// LOAD DATA
+// ===============================
 
-    if(btn && btn.dataset.loading === "1") return;
-    if(btn) btn.dataset.loading = "1";
+async function loadFridgeData(btn) {
+  if (btn && btn.dataset.loading === "1") return;
+  if (btn) btn.dataset.loading = "1";
 
-let timerInterval;
-    let startTime;
+  let timerInterval;
+  let startTime;
 
-    Swal.fire({
-        title: "กำลังดาวน์โหลด...",
-        html: 'เวลา <b>0</b> วินาที',
-        allowOutsideClick:false,
-        showConfirmButton:false,
-        didOpen: () => {
+  Swal.fire({
+    title: "กำลังดาวน์โหลด...",
+    html: "เวลา <b>0</b> วินาที",
+    allowOutsideClick: false,
+    showConfirmButton: false,
 
-            Swal.showLoading();
+    didOpen: () => {
+      Swal.showLoading();
 
-            const timer = Swal.getHtmlContainer().querySelector("b");
-            startTime = Date.now();
+      const timer = Swal.getHtmlContainer().querySelector("b");
 
-            timerInterval = setInterval(() => {
+      startTime = Date.now();
 
-                const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
-                timer.textContent = elapsedTime;
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
 
-            },200);
+        timer.textContent = elapsed;
+      }, 200);
+    },
 
-        },
-        willClose: () => {
-            clearInterval(timerInterval);
-        }
+    willClose: () => clearInterval(timerInterval),
+  });
+
+  try {
+    const month = document.getElementById("monthSelect").value;
+    const year = document.getElementById("yearSelect").value;
+
+    const office = localStorage.getItem("office");
+    const dept = localStorage.getItem("mainsub");
+
+    const params = new URLSearchParams({
+      office: office,
+      dept: dept,
+      month: month,
+      year: year,
     });
 
-    try{
+    const api =
+      "https://script.google.com/macros/s/AKfycbwwtZZO2Yl_EWoq-_lr6ELmVYkzU60LUosmB3HLUESjqzWnYoAxVkQR6N1OLu5oJd4ERQ/exec?" +
+      params;
 
-        const month = document.getElementById("monthSelect").value;
-        const year  = document.getElementById("yearSelect").value;
+    const res = await fetch(api, { cache: "no-store" });
 
-        const office  = localStorage.getItem("office");
-        const mainsub = localStorage.getItem("mainsub");
+    const data = await res.json();
 
-        const params = new URLSearchParams({
-            office:office,
-            dept:mainsub,
-            month:month,
-            year:year
-        });
+    fridgeData = data.user || [];
 
-        const api =
-        "https://script.google.com/macros/s/AKfycbwwtZZO2Yl_EWoq-_lr6ELmVYkzU60LUosmB3HLUESjqzWnYoAxVkQR6N1OLu5oJd4ERQ/exec?"
-        + params;
+    populateFridgeSelect();
 
-        console.log("API:",api);
+    drawChart();
 
-        const response = await fetch(api,{
-            method:"GET",
-            cache:"no-store"
-        });
+    buildTable(fridgeData);
 
-        const data = await response.json();
+    Swal.close();
 
-        console.log(data);
+    Swal.fire({
+      icon: "success",
+      title: "ดาวน์โหลดสำเร็จ",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  } catch (err) {
+    console.error(err);
 
-        $('#fridgeTable').DataTable({
+    Swal.fire({
+      icon: "error",
+      title: "โหลดข้อมูลไม่สำเร็จ",
+    });
+  } finally {
+    if (btn) btn.dataset.loading = "0";
+  }
+}
 
-            destroy:true,
-            data:data.user,
+// ===============================
+// BUILD TABLE
+// ===============================
 
-            columns:[
-                {data:'date'},
-                {data:'office'},
-                {data:'range'},
-                {data:'cool'},
-                {data:'temp'},
-                {data:'air'},
-                {data:'opv'},
-                {data:'temproom'},
-                {data:'details'},
-                {data:'name'},
-                {data:'dupdate'},
-                {data:'ref'}
-            ],
+function buildTable(data) {
+  $("#fridgeTable").DataTable({
+    destroy: true,
+    data: data,
 
-            processing:true,
-            responsive:true,
+    deferRender: true,
 
-            order:[[11,'asc'],[2,'asc']],
+    columns: [
+      { data: "date" },
+      { data: "office" },
+      { data: "range" },
+      { data: "cool" },
+      { data: "temp" },
+      { data: "air" },
+      { data: "opv" },
+      { data: "temproom" },
+      { data: "details" },
+      { data: "name" },
+      { data: "dupdate" },
+      { data: "ref" },
+    ],
 
-            dom:'lBfrtip',
+    order: [
+      [11, "asc"],
+      [2, "asc"],
+    ],
 
-            lengthMenu:[
-                [10,30,70,100,-1],
-                [10,30,70,100,"ทั้งหมด"]
-            ],
+    responsive: true,
 
-            buttons:[
-                'excel',
-                'print'
-            ],
+    dom: "lBfrtip",
 
-            pageLength:30,
+    lengthMenu: [
+      [10, 30, 70, 100, -1],
+      [10, 30, 70, 100, "ทั้งหมด"],
+    ],
 
-            language:{
-                url:'https://cdn.datatables.net/plug-ins/1.13.7/i18n/th.json'
+    buttons: ["excel", "print"],
+
+    pageLength: 30,
+
+    language: {
+      url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/th.json",
+    },
+  });
+}
+
+// ===============================
+// FRIDGE SELECT
+// ===============================
+
+function populateFridgeSelect() {
+  const select = document.getElementById("fridgeSelect");
+
+  if (!select) return;
+
+  select.innerHTML = '<option value="all">ทุกตู้</option>';
+
+  const fridges = [...new Set(fridgeData.map((e) => e.cool))];
+
+  fridges.forEach((fridge) => {
+    const opt = document.createElement("option");
+
+    opt.value = fridge;
+    opt.textContent = fridge;
+
+    select.appendChild(opt);
+  });
+}
+
+// ===============================
+// DRAW CHART
+// ===============================
+
+function drawChart() {
+  const select = document.getElementById("fridgeSelect");
+
+  if (!select) return;
+
+  const fridge = select.value;
+
+  let data = fridgeData;
+
+  if (fridge !== "all") {
+    data = data.filter((e) => e.cool === fridge);
+  }
+
+  const labels = [...new Set(data.map((e) => e.date))];
+
+  const morning = labels.map((date) => {
+    const item = data.find((e) => e.date === date && e.range === "09:00");
+    return item ? Number(item.temp) : null;
+  });
+
+  const afternoon = labels.map((date) => {
+    const item = data.find((e) => e.date === date && e.range === "15:00");
+    return item ? Number(item.temp) : null;
+  });
+
+  const ctx = document.getElementById("tempChart");
+
+  if (!ctx) return;
+
+  if (tempChart) {
+    tempChart.destroy();
+  }
+
+  tempChart = new Chart(ctx, {
+    type: "line",
+
+    data: {
+      labels: labels,
+
+      datasets: [
+        {
+          label: "เช้า 09:00",
+          data: morning,
+          borderColor: "#007bff",
+          backgroundColor: "#007bff",
+          tension: 0.3,
+          pointRadius: 5,
+
+          pointBackgroundColor: (ctx) => {
+            const v = ctx.raw;
+            if (v < 2 || v > 8) return "red";
+            return "#007bff";
+          },
+        },
+
+        {
+          label: "บ่าย 15:00",
+          data: afternoon,
+          borderColor: "#dc3545",
+          backgroundColor: "#dc3545",
+          tension: 0.3,
+          pointRadius: 5,
+
+          pointBackgroundColor: (ctx) => {
+            const v = ctx.raw;
+            if (v < 2 || v > 8) return "red";
+            return "#dc3545";
+          },
+        },
+
+        {
+          label: "ต่ำสุด 2°C",
+          data: labels.map(() => 2),
+          borderColor: "green",
+          borderDash: [6, 6],
+          pointRadius: 0,
+        },
+
+        {
+          label: "สูงสุด 8°C",
+          data: labels.map(() => 8),
+          borderColor: "orange",
+          borderDash: [6, 6],
+          pointRadius: 0,
+        },
+      ],
+    },
+
+    plugins: [ChartDataLabels],
+
+    options: {
+      responsive: true,
+
+      interaction: {
+        mode: "index",
+        intersect: false,
+      },
+
+      plugins: {
+        legend: {
+          position: "top",
+          labels: {
+            padding: 5,
+          },
+        },
+      },
+
+      layout: {
+        padding: {
+          top: 5,
+        },
+
+        tooltip: {
+          callbacks: {
+            label: (ctx) => ctx.dataset.label + " : " + ctx.raw + "°C",
+          },
+        },
+
+        datalabels: {
+          color: "#000",
+
+          anchor: "end",
+          align: "top",
+
+          formatter: (value, context) => {
+            if (
+              context.dataset.label.includes("ต่ำสุด") ||
+              context.dataset.label.includes("สูงสุด")
+            ) {
+              return null;
             }
 
-        });
-
-                Swal.close();
-
-        Swal.fire({
-            icon:"success",
-            title:"ดาวน์โหลดสำเร็จ",
-            timer:2000,
-            showConfirmButton:false
-        });
-
-    }catch(err){
-
-        console.error(err);
-        alert("โหลดข้อมูลไม่สำเร็จ");
-
-    }finally{
-
-        if(btn) btn.dataset.loading = "0";
-
-    }
-
+            return value;
+          },
+        },
+      },
+    },
+  });
 }
+
+// ===============================
+// EVENT
+// ===============================
+
+const fridgeSelect = document.getElementById("fridgeSelect");
+
+if (fridgeSelect) {
+  fridgeSelect.addEventListener("change", drawChart);
+}
+
+// ===============================
+// OPEN PAGE
+// ===============================
 
 function openWeb() {
   Swal.fire({
-      title: 'ยืนยันการดำเนินการ',
-      text: 'คลิก "ตกลง" เพื่อเปิดหน้าบันทึกข้อมูล',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'ตกลง',
-      cancelButtonText: 'ยกเลิก',
+    title: "ยืนยันการดำเนินการ",
+    text: "เปิดหน้าบันทึกข้อมูล",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "ตกลง",
+    cancelButtonText: "ยกเลิก",
   }).then((result) => {
-      if (result.isConfirmed) {
-          window.open('temp.html', '_blank');
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-          Swal.fire('การดำเนินการถูกยกเลิก', '', 'info');
-      }
+    if (result.isConfirmed) {
+      window.open("temp.html", "_blank");
+    }
   });
 }
 
-function opendash() {
-  Swal.fire({
-      title: 'ยืนยันการดำเนินการ',
-      text: 'คลิก "ตกลง" เพื่อเปิดหน้าบันทึกข้อมูล',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'ตกลง',
-      cancelButtonText: 'ยกเลิก',
-  }).then((result) => {
-      if (result.isConfirmed) {
-          window.open('temp.html', '_blank');
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-          Swal.fire('การดำเนินการถูกยกเลิก', '', 'info');
-      }
-  });
-}
+// ===============================
+// DASHBOARD
+// ===============================
 
-// ตู้เย็น
 function opendash() {
   Swal.fire({
-      title: 'ยืนยันการดำเนินการ',
-      text: 'คลิก "ตกลง" เพื่อเปิดหน้าแสดงข้อมูล',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'ตกลง',
-      cancelButtonText: 'ยกเลิก',
+    title: "ยืนยันการดำเนินการ",
+    text: "เปิด Dashboard",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "ตกลง",
+    cancelButtonText: "ยกเลิก",
   }).then((result) => {
-      if (result.isConfirmed) {
-          window.open('https://lookerstudio.google.com/reporting/f4108ec7-4b6c-42ed-a2ac-267f455e8d91', '_blank');
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-          Swal.fire('การดำเนินการถูกยกเลิก', '', 'info');
-      }
+    if (result.isConfirmed) {
+      window.open(
+        "https://lookerstudio.google.com/reporting/f4108ec7-4b6c-42ed-a2ac-267f455e8d91",
+        "_blank",
+      );
+    }
   });
 }
