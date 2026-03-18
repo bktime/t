@@ -654,7 +654,7 @@ async function submitOTEntry({ startTime, endTime, autoClosed = false, note = ""
     const otbank = localStorage.getItem("otbank") || "-";
 
     const now = new Date();
-    const ref = generateReference(now);
+    const ref = generateReference(startTime);
 
     if (isDuplicateOT(ref)) {
         resetOTState();
@@ -810,7 +810,7 @@ html: `
             note: note || (autoClosed ? "ส่งโดยระบบ (Auto)" : "ส่งโดยผู้ใช้"),
             reference: ref
         });
-
+        otDurationText.textContent = durationStr;
         saveOtEntries();
         updateOtReport();
 
@@ -1255,8 +1255,6 @@ if (durationHrs < hourslimit) {
         }).then(({ isConfirmed }) => {
             if (!isConfirmed) return;
             otEntries.length = 0;
-            saveOtEntries();
-            updateOtReport();
 
             localStorage.removeItem("otStartData");
             otStartTime = null;
@@ -1274,7 +1272,6 @@ if (durationHrs < hourslimit) {
         });
     });
 
-    updateOtReport();
 });
 
 
