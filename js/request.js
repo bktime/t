@@ -1728,6 +1728,7 @@ async function saveOffDayToGAS(payload) {
   payload.date        = date;
   payload.timeStr     = timeStr;
   payload.timeEnd     = timeEnd;
+  payload.signatureUrl = (localStorage.getItem("signature_url") || "").trim();
 
   // ================== ตรวจอัตรา OT ==================
   if (!payload.otRateDay) {
