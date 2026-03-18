@@ -213,177 +213,305 @@ function cropCanvas(canvas){
 }
 
 
-/* save */
 document.getElementById("save").onclick = async () => {
 
- if(signaturePad.isEmpty()){
-  Swal.fire({
-   icon:"warning",
-   title:"ยังไม่ได้เซ็นชื่อ",
-   text:"กรุณาเซ็นชื่อก่อน"
-  });
-  return;
- }
-
- const oldSignature = localStorage.getItem("signature_url");
-
- /* ถ้ามีลายเซ็นเดิม */
-
- if(oldSignature){
-
-  const confirm = await Swal.fire({
-
-   title:"มีลายเซ็นเดิมอยู่",
-   html:`
-   <img src="${oldSignature}" style="max-width:200px;border-radius:8px">
-   <br><br>
-   ต้องการเซ็นใหม่และทับลายเซ็นเดิมหรือไม่ ?
-   `,
-   icon:"question",
-   showCancelButton:true,
-   confirmButtonText:"เซ็นใหม่",
-   cancelButtonText:"ยกเลิก",
-   confirmButtonColor:"#198754",
-   cancelButtonColor:"#6c757d"
-
-  });
-
-  if(!confirm.isConfirmed){
-   return;
+  if(signaturePad.isEmpty()){
+    return Swal.fire({
+      icon:"warning",
+      title:"ยังไม่ได้เซ็นชื่อ",
+      text:"กรุณาเซ็นชื่อก่อน"
+    });
   }
 
- }
+  const oldSignature = localStorage.getItem("signature_url");
 
- /* เริ่ม upload */
+  if(oldSignature){
+    const confirm = await Swal.fire({
+      title:"มีลายเซ็นเดิมอยู่",
+      html:`
+        <img src="${oldSignature}" style="max-width:200px;border-radius:8px">
+        <br><br>ต้องการเซ็นใหม่หรือไม่?
+      `,
+      icon:"question",
+      showCancelButton:true,
+      confirmButtonText:"เซ็นใหม่",
+      cancelButtonText:"ยกเลิก"
+    });
 
- Swal.fire({
-  title:"กำลังบันทึก...",
-  allowOutsideClick:false,
-  didOpen:()=>Swal.showLoading()
- });
-
- try{
-
-  const cropped = cropCanvas(canvas);
-
-  const blob = await new Promise(resolve=>{
-   cropped.toBlob(resolve,"image/png",0.9);
-  });
-
-  if(blob.size > 256000){
-   Swal.fire({
-    icon:"error",
-    title:"ไฟล์ใหญ่เกิน 256KB"
-   });
-   return;
+    if(!confirm.isConfirmed) return;
   }
 
-const cidhash = localStorage.getItem("cidhash") || "signature";
-
-const sign = await fetch(`/upload-signature?id=${cidhash}`,{
- cache:"no-store"
-});
-
-  if(!sign.ok) throw new Error("API signature ใช้งานไม่ได้");
-
-  const sig = await sign.json();
-
-  const form = new FormData();
-
-form.append("file", blob);
-
-form.append("folder", sig.folder);
-form.append("public_id", sig.public_id);
-
-form.append("api_key", sig.apiKey);
-form.append("timestamp", sig.timestamp);
-form.append("signature", sig.signature);
-
-  const res = await fetch(
-   `https://api.cloudinary.com/v1_1/${sig.cloudName}/image/upload`,
-   {
-    method:"POST",
-    body:form
-   }
-  );
-
-  if(!res.ok) throw new Error("Cloudinary API error");
-
-  const data = await res.json();
-
-  localStorage.setItem("signature_url",data.secure_url);
-
-Swal.fire({
- icon:"info",
- title:"กำลังบันทึกลายเซ็น...",
- allowOutsideClick: false
-
-}).then(()=>{
-  SignatureToSheet(data.secure_url);
- signaturePad.clear();
-
-const section = document.getElementById("signSection");
-section.style.transition = "all 0.3s ease";
-section.style.opacity = "0";
-
-setTimeout(() => {
-  section.style.display = "none";
-}, 300);
-
-});
-
-  document.getElementById("result").innerHTML=`
-
-  <img src="${data.secure_url}" class="img-fluid mb-2">
-
-  <input class="form-control" value="${data.secure_url}">
-  `;
-
- }catch(err){
-
   Swal.fire({
-   icon:"error",
-   title:"บันทึกไม่สำเร็จ",
-   text:err.message
+    title:"กำลังบันทึก...",
+    allowOutsideClick:false,
+    didOpen:()=>Swal.showLoading()
   });
 
- }
+  try{
 
+    const cropped = cropCanvas(canvas);
+
+    const blob = await new Promise(resolve=>{
+      cropped.toBlob(resolve,"image/png",0.9);
+    });
+
+    if(blob.size > 256000){
+      throw new Error("ไฟล์ใหญ่เกิน 256KB");
+    }
+
+    const cidhash = localStorage.getItem("cidhash") || "signature";
+
+    const sign = await fetch(`/upload-signature?id=${cidhash}`);
+    if(!sign.ok) throw new Error("API signature ใช้งานไม่ได้");
+
+    const sig = await sign.json();
+
+    const form = new FormData();
+    form.append("file", blob);
+    form.append("folder", sig.folder);
+    form.append("public_id", sig.public_id);
+    form.append("api_key", sig.apiKey);
+    form.append("timestamp", sig.timestamp);
+    form.append("signature", sig.signature);
+
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${sig.cloudName}/image/upload`,
+      { method:"POST", body:form }
+    );
+
+    if(!res.ok) throw new Error("Cloudinary API error");
+
+    const data = await res.json();
+
+    // 👉 เก็บ local
+    localStorage.setItem("signature_url", data.secure_url);
+
+    // 👉 บันทึกลง Sheet (รอให้เสร็จ)
+    await SignatureToSheet(data.secure_url);
+
+    // 👉 ซ่อน section
+    const section = document.getElementById("signSection");
+    section.style.transition = "all 0.3s ease";
+    section.style.opacity = "0";
+    setTimeout(()=> section.style.display="none",300);
+
+    // 👉 แสดงผล
+    document.getElementById("result").innerHTML = `
+      <img src="${data.secure_url}" class="img-fluid mb-2">
+    `;
+
+    // ✅ success ตัวเดียวจบ
+    Swal.fire({
+      icon:"success",
+      title:"บันทึกลายเซ็นสำเร็จ",
+      text:"ระบบพร้อมใช้งานแล้ว",
+      confirmButtonText:"กลับหน้าหลัก"
+    }).then(()=>{
+      window.location.href = "/"; // 🔥 กลับ root
+    });
+
+  }catch(err){
+    Swal.fire({
+      icon:"error",
+      title:"บันทึกไม่สำเร็จ",
+      text:err.message
+    });
+  }
 };
 
 async function SignatureToSheet(signatureUrl){
-    const uuid = localStorage.getItem("uuid");
+
+  const uuid = localStorage.getItem("uuid");
+
   if (!uuid) {
-    Swal.fire({
-      title: "เกิดข้อผิดพลาด",
-      text: "ไม่พบข้อมูล UUID",
-      icon: "error",
-    });
-    return;
+    throw new Error("ไม่พบข้อมูล UUID");
   }
 
-  let gas_sign_url = `https://script.google.com/macros/s/AKfycbwZLIcXfwvcumqXV4jzGShsyT1M_rR0dYPp71Y57MCjjYAfuWbSdHym3Hr0SCF8Fis/exec`;
-  let data_sign = `?id=${uuid}&signature=${encodeURIComponent(signatureUrl)}`;
+  const url = `https://script.google.com/macros/s/AKfycbwZLIcXfwvcumqXV4jzGShsyT1M_rR0dYPp71Y57MCjjYAfuWbSdHym3Hr0SCF8Fis/exec?id=${uuid}&signature=${encodeURIComponent(signatureUrl)}`;
 
-    fetch(gas_sign_url + data_sign)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.json();
-    })
-     .then((data) => {
-      Swal.fire({
-        title: "บันทึกสำเร็จ",
-        text: "ลายเซ็นของคุณถูกบันทึกเรียบร้อยแล้ว",
-        icon: "success"
-      });
-    })
-    .catch((error) => {
-      Swal.fire({
-        title: "เกิดข้อผิดพลาด",
-        text: error.message,
-        icon: "error"
-      });
-    });
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    throw new Error(`Sheet error: ${res.status}`);
+  }
+
+  return await res.json();
 }
+
+
+// /* save */
+// document.getElementById("save").onclick = async () => {
+
+//  if(signaturePad.isEmpty()){
+//   Swal.fire({
+//    icon:"warning",
+//    title:"ยังไม่ได้เซ็นชื่อ",
+//    text:"กรุณาเซ็นชื่อก่อน"
+//   });
+//   return;
+//  }
+
+//  const oldSignature = localStorage.getItem("signature_url");
+
+//  /* ถ้ามีลายเซ็นเดิม */
+
+//  if(oldSignature){
+
+//   const confirm = await Swal.fire({
+
+//    title:"มีลายเซ็นเดิมอยู่",
+//    html:`
+//    <img src="${oldSignature}" style="max-width:200px;border-radius:8px">
+//    <br><br>
+//    ต้องการเซ็นใหม่และทับลายเซ็นเดิมหรือไม่ ?
+//    `,
+//    icon:"question",
+//    showCancelButton:true,
+//    confirmButtonText:"เซ็นใหม่",
+//    cancelButtonText:"ยกเลิก",
+//    confirmButtonColor:"#198754",
+//    cancelButtonColor:"#6c757d"
+
+//   });
+
+//   if(!confirm.isConfirmed){
+//    return;
+//   }
+
+//  }
+
+//  /* เริ่ม upload */
+
+//  Swal.fire({
+//   title:"กำลังบันทึก...",
+//   allowOutsideClick:false,
+//   didOpen:()=>Swal.showLoading()
+//  });
+
+//  try{
+
+//   const cropped = cropCanvas(canvas);
+
+//   const blob = await new Promise(resolve=>{
+//    cropped.toBlob(resolve,"image/png",0.9);
+//   });
+
+//   if(blob.size > 256000){
+//    Swal.fire({
+//     icon:"error",
+//     title:"ไฟล์ใหญ่เกิน 256KB"
+//    });
+//    return;
+//   }
+
+// const cidhash = localStorage.getItem("cidhash") || "signature";
+
+// const sign = await fetch(`/upload-signature?id=${cidhash}`,{
+//  cache:"no-store"
+// });
+
+//   if(!sign.ok) throw new Error("API signature ใช้งานไม่ได้");
+
+//   const sig = await sign.json();
+
+//   const form = new FormData();
+
+// form.append("file", blob);
+
+// form.append("folder", sig.folder);
+// form.append("public_id", sig.public_id);
+
+// form.append("api_key", sig.apiKey);
+// form.append("timestamp", sig.timestamp);
+// form.append("signature", sig.signature);
+
+//   const res = await fetch(
+//    `https://api.cloudinary.com/v1_1/${sig.cloudName}/image/upload`,
+//    {
+//     method:"POST",
+//     body:form
+//    }
+//   );
+
+//   if(!res.ok) throw new Error("Cloudinary API error");
+
+//   const data = await res.json();
+
+//   localStorage.setItem("signature_url",data.secure_url);
+
+// Swal.fire({
+//  icon:"info",
+//  title:"กำลังบันทึกลายเซ็น...",
+//  allowOutsideClick: false
+
+// }).then(()=>{
+//   SignatureToSheet(data.secure_url);
+//  signaturePad.clear();
+
+// const section = document.getElementById("signSection");
+// section.style.transition = "all 0.3s ease";
+// section.style.opacity = "0";
+
+// setTimeout(() => {
+//   section.style.display = "none";
+// }, 300);
+
+// });
+
+//   document.getElementById("result").innerHTML=`
+
+//   <img src="${data.secure_url}" class="img-fluid mb-2">
+
+//   <input class="form-control" value="${data.secure_url}">
+//   `;
+
+//  }catch(err){
+
+//   Swal.fire({
+//    icon:"error",
+//    title:"บันทึกไม่สำเร็จ",
+//    text:err.message
+//   });
+
+//  }
+
+// };
+
+// async function SignatureToSheet(signatureUrl){
+//     const uuid = localStorage.getItem("uuid");
+//   if (!uuid) {
+//     Swal.fire({
+//       title: "เกิดข้อผิดพลาด",
+//       text: "ไม่พบข้อมูล UUID",
+//       icon: "error",
+//     });
+//     return;
+//   }
+
+//   let gas_sign_url = `https://script.google.com/macros/s/AKfycbwZLIcXfwvcumqXV4jzGShsyT1M_rR0dYPp71Y57MCjjYAfuWbSdHym3Hr0SCF8Fis/exec`;
+//   let data_sign = `?id=${uuid}&signature=${encodeURIComponent(signatureUrl)}`;
+
+//     fetch(gas_sign_url + data_sign)
+//     .then((response) => {
+//       if (!response.ok) {
+//         throw new Error(`HTTP error! Status: ${response.status}`);
+//       }
+//       return response.json();
+//     })
+//      .then((data) => {
+//       Swal.fire({
+//         title: "บันทึกสำเร็จ",
+//         text: "ลายเซ็นของคุณถูกบันทึกเรียบร้อยแล้ว",
+//         icon: "success"
+//       });
+//     })
+//     .catch((error) => {
+//       Swal.fire({
+//         title: "เกิดข้อผิดพลาด",
+//         text: error.message,
+//         icon: "error"
+//       });
+//     });
+// }
+
+
