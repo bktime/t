@@ -2005,12 +2005,12 @@ async function inputcid() {
       allowEscapeKey: false
     });
 
-    // สมมติว่ามีฟังก์ชัน md5 ถูกประกาศไว้แล้ว
     const cid_hash = md5(cid); 
+    const mycid = localStorage.getItem("cidhash");
     const uuid = localStorage.getItem("uuid");
 
     const scriptUrl = 'https://script.google.com/macros/s/AKfycbwbCOnjdHjd8dVgU67PDTWgfsc6haIQEX6cp_cVIJjO3dKgfcVumojl_dfwTGPniIQ/exec';
-    const fullUrl = `${scriptUrl}?admin_uuid=${uuid}&refid=${cid_hash}`;
+    const fullUrl = `${scriptUrl}?admin_uuid=${uuid}&refid=${cid_hash}&mycid=${mycid}`;
 
     fetch(fullUrl)
       .then((response) => response.json())
@@ -2056,7 +2056,7 @@ async function inputcid() {
 
           // สร้าง HTML สำหรับแสดงใน SweetAlert2
           const successHtml = `
-            <p style="color: #0656a0ff; font-size: 1.2rem; margin-bottom: 8px;">${data.fullname}</p>
+            <p style=" background-color: #f8f9fa; color: #043e74ff; font-size: 1.2rem; margin-bottom: 8px;">${data.fullname}</p>
             <p style="color: #ee5454ff; font-size: 0.9rem; margin-bottom: 10px;">รหัสเข้าระบบใช้ได้ครั้งเดียว<br>(กรุณาเก็บเป็นความลับ)</p>
             ${qrDataURL ? `<div style="margin: 15px 0;"><img src="${qrDataURL}" alt="QR Code" style="width: 200px; height: 200px; border: 1px solid #ddd; border-radius: 8px;"></div>` : ''}
             <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border: 2px dashed #007bff; display: inline-block;">
@@ -2079,7 +2079,7 @@ async function inputcid() {
           Swal.fire({
             title: '<i class="fa-solid fa-circle-xmark" style="color: #dc3545;"></i><br>ผิดพลาด',
             text: data.error || "ไม่สามารถเข้าสู่ระบบได้",
-            confirmButtonText: '<i class="fa-solid fa-rotate-right"></i> ลองใหม่',
+            confirmButtonText: '<i class="fa-solid fa-rotate-right"></i> ตกลง',
             confirmButtonColor: '#dc3545'
           });
         }
