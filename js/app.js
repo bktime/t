@@ -2095,3 +2095,68 @@ async function inputcid() {
       });
   }
 }
+
+
+// ตรวจสอบลายเซ็นในระบบ
+function checkSignature() {
+  const signature = localStorage.getItem("signature_url");
+
+  if (signature) {
+    const html = `
+      <div style="text-align:center;">
+        
+        <div style="font-size:1.1rem; color:#28a745; font-weight:600; margin-bottom:10px;">
+          <i class="fa-solid fa-circle-check"></i> พบลายเซ็นของคุณ
+        </div>
+
+        <div style="
+          border:2px dashed #28a745;
+          border-radius:12px;
+          padding:15px;
+          background:#f8fff9;
+          display:inline-block;
+          box-shadow:0 4px 12px rgba(0,0,0,0.08);
+        ">
+          <img src="${signature}" 
+               alt="Signature" 
+               style="max-width:100%; height:auto; border-radius:8px;">
+        </div>
+
+        <div style="margin-top:12px; font-size:0.85rem; color:#6c757d;">
+          คุณสามารถใช้งาน หรือเซ็นใหม่ได้
+        </div>
+
+      </div>
+    `;
+
+    Swal.fire({
+      html: html,
+      showCancelButton: true,
+      confirmButtonText: '<i class="fa-solid fa-check"></i> ใช้งาน',
+      cancelButtonText: '<i class="fa-solid fa-pen"></i> เซ็นใหม่',
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#ffc107',
+      width: 420,
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // ใช้งานลายเซ็นเดิม
+        console.log("ใช้ลายเซ็นเดิม");
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        // ไปหน้าเซ็นใหม่
+        window.location.href = "/sign";
+      }
+    });
+
+  } else {
+    Swal.fire({
+      icon: 'warning',
+      title: 'ยังไม่มีลายเซ็น',
+      text: 'กรุณาสร้างลายเซ็นก่อนใช้งาน',
+      confirmButtonText: 'ไปหน้าสร้างลายเซ็น',
+      confirmButtonColor: '#dc3545'
+    }).then(() => {
+      window.location.href = "/sign";
+    });
+  }
+}
