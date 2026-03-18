@@ -1045,6 +1045,8 @@ setTimeout(restoreOTFromStorage, 12000);
                 text: `ไม่พบข้อมูลตำแหน่งปัจจุบัน กรุณาเปิดใช้งาน GPS และตรวจสอบสิทธิ์การเข้าถึงตำแหน่ง`,
                 icon: "info",
                 allowOutsideClick: false
+            }).then(() => {
+                window.location.reload();
             });
         }
 
