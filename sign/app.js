@@ -314,8 +314,8 @@ form.append("signature", sig.signature);
   localStorage.setItem("signature_url",data.secure_url);
 
 Swal.fire({
- icon:"success",
- title:"บันทึกลายเซ็นสำเร็จ",
+ icon:"info",
+ title:"กำลังบันทึกลายเซ็น...",
  allowOutsideClick: false
 
 }).then(()=>{
