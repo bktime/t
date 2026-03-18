@@ -656,6 +656,9 @@ async function submitOTEntry({ startTime, endTime, autoClosed = false, note = ""
     const now = new Date();
     const ref = generateReference(startTime);
 
+    const lat = localStorage.getItem("mylat") || "";
+    const lon = localStorage.getItem("mylon") || "";
+
     if (isDuplicateOT(ref)) {
         resetOTState();
         Swal.fire("แจ้งเตือน", "มีการลงเวลานอกเวลาซ้ำแล้ว", "warning");
@@ -792,7 +795,9 @@ html: `
         otapprover: selectedApprover,
         otpayer,
         otbank,
-        signatureUrl
+        signatureUrl,
+        lat,
+        lon
     };
 
     try {
