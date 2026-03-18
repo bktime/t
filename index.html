@@ -89,7 +89,7 @@
       <a href="javascript:void(0);" onclick="googlelogin()"><i class="fa-brands fa-google"></i> เชื่อมต่อ Google</a>
       <a href="javascript:void(0);" onclick="uploadImage()"><i class="fa-solid fa-gear"></i> ตั้งค่าภาพพื้นหลัง</a>
       <a href="javascript:void(0);" onclick="aboutme()"><i class="fas fa-user"></i> ฉัน</a>
-      <a href="sign/index.html"><i class="fa-solid fa-signature"></i> ลายเซ็น</a>
+      <a href="javascript:void(0);" onclick="checkSignature()"><i class="fa-solid fa-signature"></i> ลายเซ็น</a>
       <a href="javascript:void(0);" onclick="editpic()"><i class="fas fa-image"></i> รูปโปรไฟล์</a>
       <a href="javascript:void(0);" onclick="requestReceive()"><i class="fa-regular fa-file-lines"></i> คำขอกู้คืน</a>
       <a href="javascript:void(0);" onclick="inputcid()"><i class="fas fa-id-card"></i> รหัสเข้าระบบ</a>
@@ -162,6 +162,7 @@
             <option value="นอกสถานที่">ออกปฏิบัติงานนอกสถานที่</option>
             <option value="วันหยุด">ปฏิบัติงานในวันหยุด (เสาร์-อาทิตย์ หรือวันหยุดราชการ)</option>
             <option value="ไปราชการ">ไปราชการ (เช่น ประชุม อบรม ฯลฯ)</option>
+            <option value="ทำงานที่บ้าน">ปฏิบัติงานจากที่บ้าน (Work From Home)</option>
             <option value="อื่นๆ">อื่นๆ (โปรดระบุรายละเอียด)</option>
           </select>
 
@@ -173,11 +174,18 @@
             <datalist id="other-suggestions">
 
               <!-- ปกติ -->
-              <option value="ปฏิบัติงานประจำที่สำนักงาน/หน่วยงาน">
+              <!-- <option value="ปฏิบัติงานประจำที่สำนักงาน/หน่วยงาน">
               <option value="ทำงานเอกสาร/จัดทำรายงาน">
               <option value="ประชุมภายในหน่วยงาน">
               <option value="ประสานงานกับทีม/เจ้าหน้าที่อื่น">
-              <option value="ตรวจสอบข้อมูลและสถิติ">
+              <option value="ตรวจสอบข้อมูลและสถิติ"> -->
+
+              <!-- Work From Home -->
+              <option value="ปฏิบัติงานจากที่บ้าน (Work From Home)">
+              <option value="ประชุมออนไลน์ผ่านระบบ (Zoom / Google Meet)">
+              <option value="จัดทำรายงาน/เอกสารจากที่บ้าน">
+              <option value="ประสานงานผ่านโทรศัพท์/ออนไลน์">
+              <option value="ติดตามงานและรายงานผลผ่านระบบออนไลน์">
 
                 <!-- นอกสถานที่ -->
               <option value="ลงพื้นที่ชุมชน/บ้านผู้ป่วย">
@@ -982,7 +990,6 @@
           } else {
             trackerBar.style.display = "flex"; // รีเซ็ตค่าให้ถูกต้อง
           }
-
           // ตรวจสอบว่าเป็นแท็บ #srqrcode หรือไม่
           if (target === "#srqrcode") {
             startScan();
@@ -994,6 +1001,7 @@
           } else {
           }
           if (target === "#Overtime") {
+            checkSignatureAndRedirect();
             loadOffDayTable();
           }
         });
