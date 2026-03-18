@@ -69,28 +69,30 @@ border-radius:10px;
 
 <div class="card-body">
 
-<h4 class="text-center mb-4">
+<div id="signSection">
 
-<i class="fa-solid fa-signature text-primary"></i>
-บันทึกลายเซ็น
+  <h4 class="text-center mb-4">
+    <i class="fa-solid fa-signature text-primary"></i>
+    บันทึกลายเซ็น
+  </h4>
 
-</h4>
+  <canvas id="signature"></canvas>
 
-<canvas id="signature"></canvas>
+  <div class="text-center mt-3">
 
-<div class="text-center mt-3">
+    <button class="btn btn-warning" id="undo">
+      <i class="fa-solid fa-rotate-left"></i> Undo
+    </button>
 
-<button class="btn btn-warning" id="undo">
-<i class="fa-solid fa-rotate-left"></i> Undo
-</button>
+    <button class="btn btn-secondary" id="clear">
+      <i class="fa-solid fa-trash"></i> เซ็นใหม่
+    </button>
 
-<button class="btn btn-secondary" id="clear">
-<i class="fa-solid fa-trash"></i> เซ็นใหม่
-</button>
+    <button class="btn btn-success" id="save">
+      <i class="fa-solid fa-cloud-arrow-up"></i> บันทึก
+    </button>
 
-<button class="btn btn-success" id="save">
-<i class="fa-solid fa-cloud-arrow-up"></i> บันทึก
-</button>
+  </div>
 
 </div>
 
@@ -103,6 +105,8 @@ border-radius:10px;
 </div>
 
 </div>
+
+
 </div>
 
 </div>
