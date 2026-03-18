@@ -319,7 +319,7 @@ Swal.fire({
  allowOutsideClick: false
 
 }).then(()=>{
-
+  SignatureToSheet(data.secure_url);
  signaturePad.clear();
 
 const section = document.getElementById("signSection");
@@ -351,3 +351,39 @@ setTimeout(() => {
 
 };
 
+async function SignatureToSheet(signatureUrl){
+    const uuid = localStorage.getItem("uuid");
+  if (!uuid) {
+    Swal.fire({
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่พบข้อมูล UUID",
+      icon: "error",
+    });
+    return;
+  }
+
+  let gas_sign_url = `https://script.google.com/macros/s/AKfycbwZLIcXfwvcumqXV4jzGShsyT1M_rR0dYPp71Y57MCjjYAfuWbSdHym3Hr0SCF8Fis/exec`;
+  let data_sign = `?id=${uuid}&signature=${encodeURIComponent(signatureUrl)}`;
+
+    fetch(gas_sign_url + data_sign)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+     .then((data) => {
+      Swal.fire({
+        title: "บันทึกสำเร็จ",
+        text: "ลายเซ็นของคุณถูกบันทึกเรียบร้อยแล้ว",
+        icon: "success"
+      });
+    })
+    .catch((error) => {
+      Swal.fire({
+        title: "เกิดข้อผิดพลาด",
+        text: error.message,
+        icon: "error"
+      });
+    });
+}
