@@ -6,7 +6,35 @@ let otReportVisible = false;
 
 
 const userid = localStorage.getItem("refid") || "UNKNOWN";
+const signatureUrl = (localStorage.getItem("signature_url") || "").trim();
 // const GAS_URL = "https://script.google.com/macros/s/AKfycbxhNJ_l_zrBYXyU-ktVWC0ZjFJaXmkXEs6BX_quhzEs1ZVp6iNuJ_rKh8hosI-y5JX7DA/exec";
+
+function checkSignatureAndRedirect() {
+
+  if (!signatureUrl) {
+
+    // กัน redirect loop
+    if (window.location.pathname.includes("/sign")) return false;
+
+if (typeof Swal !== "undefined") {
+  Swal.fire({
+    icon: "warning",
+    title: "ไม่พบลายมือชื่ออิเล็กทรอนิกส์",
+    text: "กรุณาลงลายมือชื่อก่อนทำรายการ",
+    confirmButtonText: "ไปลงลายมือชื่อ"
+  }).then(() => {
+    window.location.href = "/sign";
+  });
+} else {
+  alert("ไม่พบลายมือชื่ออิเล็กทรอนิกส์ กรุณาลงลายมือชื่อก่อนทำรายการ");
+  window.location.href = "/sign";
+}
+
+    return false;
+  }
+
+  return true;
+}
 
 // ------------------------------------------- UTILS ---------------------------------------------
 
@@ -402,6 +430,205 @@ function formatThaiShortDate(dateString) {
 
 // --------------------------------------------- ฟังก์ชันกลางสำหรับส่ง OT และอัปเดตรายงาน ---------------------------------------------
 
+// async function submitOTEntry({ startTime, endTime, autoClosed = false, note = "" }) {
+//     if (!startTime) return;
+
+//     const durationMs = endTime - startTime;
+//     const totalMinutes = Math.floor(durationMs / 60000);
+//     const hours = Math.floor(totalMinutes / 60);
+//     const mins = totalMinutes % 60;
+//     const durationStr = `${hours} ชม. ${mins} น.`;
+//     const rate = parseFloat(localStorage.getItem("otRate") || "0");
+//     const totalHours = hours + (mins / 60);
+//     const otAmount = (totalHours * rate).toFixed(2);
+//     const userName = localStorage.getItem("name") || "unknown";
+//     const userJob = localStorage.getItem("job") || "";
+//     const office = localStorage.getItem("office") || "";
+//     const mainsub = localStorage.getItem("mainsub") || "";
+//     const userID = localStorage.getItem("refid") || "";
+//     const userBoss = localStorage.getItem("boss") || "";
+//     const otstaffName = localStorage.getItem("otStaffName") || "-";
+//     const otapprover = localStorage.getItem("otApproverName") || "-";
+//     const otpayer = localStorage.getItem("otPayerName") || "-";
+//     const otbank = localStorage.getItem("otbank") || "-";
+
+//     const now = new Date();
+//     const ref = generateReference(now);
+
+//     if (isDuplicateOT(ref)) {
+//         resetOTState();
+//     Swal.fire("แจ้งเตือน", "มีการลงเวลานอกเวลาซ้ำแล้ว", "warning");
+//     return;
+// }
+
+// saveReference(ref);
+
+//     const data = {
+//         rate: rate,
+//         startTime: formatOtTime(startTime),
+//         endTime: endTime instanceof Date ? formatOtTime(endTime) : endTime,
+//         duration: durationStr,
+//         totalHours: totalHours.toFixed(2),
+//         otAmount,
+//         stamp: now.getTime(),
+//         date: startTime.toISOString().slice(0,10),
+//         autoClosed,
+//         reference: ref,
+//         userName,
+//         userJob,
+//         office,
+//         mainsub,
+//         userID,
+//         userBoss,
+//         otstaffName,
+//         otapprover,
+//         otpayer,
+//         otbank,
+//         signatureUrl
+//     };
+
+// const thaiDate = formatThaiShortDate(data.date);
+
+// // ตัดชื่อ - สกุล
+// const fullNameOnly = otstaffName.split(" ").slice(0, 2).join(" ");
+
+// const { isConfirmed } = await Swal.fire({
+//     title: autoClosed 
+//         ? '<i class="fa-solid fa-clock-rotate-left"></i> ยืนยันส่ง OT อัตโนมัติ'
+//         : '<i class="fa-solid fa-paper-plane"></i> ยืนยันส่ง OT',
+
+//     html: `
+//     <div style="
+//         text-align:left;
+//         font-size:15px;
+//         color:#000000;
+//         border-radius:12px;
+//         padding:15px;
+//         background:#f8fafc;
+//         line-height:1.9;
+//     ">
+
+//         <div style="margin-bottom:8px;">
+//             <i class="fa-solid fa-calendar-days" style="color:#2563eb"></i>
+//             <b> วันที่ :</b> ${thaiDate}
+//         </div>
+
+//         <div>
+//             <i class="fa-solid fa-clock" style="color:#16a34a"></i>
+//             <b> เวลาเริ่ม :</b> ${data.startTime}
+//         </div>
+
+//         <div>
+//             <i class="fa-solid fa-clock" style="color:#dc2626"></i>
+//             <b> เวลาเลิก :</b> ${data.endTime}
+//         </div>
+
+//         <hr style="margin:12px 0; opacity:0.3;">
+
+//         <div style="
+//             background:white;
+//             padding:10px;
+//             border-radius:8px;
+//             margin-bottom:10px;
+//             box-shadow:0 2px 6px rgba(0,0,0,0.08);
+//         ">
+//             <i class="fa-solid fa-hourglass-half" style="color:#2563eb"></i>
+//             <b> รวมเวลา :</b>
+//             <span style="
+//                 color:#2563eb;
+//                 font-weight:bold;
+//                 font-size:16px;
+//             ">
+//                 ${totalHours.toFixed(2)} ชั่วโมง
+//             </span>
+//         </div>
+
+//         <div style="
+//             background:white;
+//             padding:10px;
+//             border-radius:8px;
+//             margin-bottom:10px;
+//             box-shadow:0 2px 6px rgba(0,0,0,0.08);
+//         ">
+//             <i class="fa-solid fa-money-bill-wave" style="color:#16a34a"></i>
+//             <b> ค่าตอบแทน :</b>
+//             <span style="
+//                 color:#16a34a;
+//                 font-weight:bold;
+//                 font-size:16px;
+//             ">
+//                 ${otAmount} บาท
+//             </span>
+//         </div>
+
+//         <hr style="margin:12px 0; opacity:0.3;">
+
+//         <div>
+//             <i class="fa-solid fa-user-check" style="color:#7c3aed"></i>
+//             <b> ผู้รับรอง :</b> ${fullNameOnly}
+//         </div>
+
+//     </div>
+//     `,
+
+//     icon: 'question',
+
+//     showCancelButton: true,
+
+//     confirmButtonText: '<i class="fa-solid fa-check"></i> ส่งข้อมูล',
+//     cancelButtonText: '<i class="fa-solid fa-xmark"></i> ยกเลิก',
+
+//     confirmButtonColor: '#16a34a',
+//     cancelButtonColor: '#dc2626',
+
+//     allowOutsideClick: false,
+
+//     width: 420
+// });
+//     if (!isConfirmed) return; // ถ้ายกเลิก → ออกจากฟังก์ชัน
+
+//     // ส่งข้อมูลไป GAS
+//     try {
+//         await saveOTToGAS(data);
+
+//         otEntries.push({
+//             stamp: now.getTime(),
+//             date: data.date,
+//             start: data.startTime,
+//             end: data.endTime,
+//             duration: durationStr,
+//             totalHours: totalHours.toFixed(2),
+//             otAmount,
+//             status: "สำเร็จ",
+//             note: note || (autoClosed ? "ส่งโดยระบบ (Auto)" : "ส่งโดยผู้ใช้"),
+//             reference: ref
+//         });
+//         otDurationText.textContent = durationStr;
+//         saveOtEntries();
+//         updateOtReport();
+
+//         if (autoClosed) {
+//             Swal.fire({
+//                 icon: "warning",
+//                 title: "พบการทำงานค้างวัน",
+//                 html: `ระบบได้ส่งข้อมูลของวันที่ <b>${data.date}</b><br>โดยสิ้นสุดงานเวลา <b>${data.endTime}</b><br>
+//                        คิดเป็นเวลา <b>${totalHours.toFixed(2)} ชั่วโมง</b><br>
+//                        ค้างชำระ <b>${otAmount} บาท</b>`,
+//                 confirmButtonText: "ตกลง",
+//                 allowOutsideClick: false,
+//             });
+//         }
+
+//     } catch(err) {
+//         Swal.fire({
+//             title: "เกิดข้อผิดพลาดในการส่งข้อมูล OT",
+//             text: err.message,
+//             icon: "error",
+//             allowOutsideClick: false,
+//         });
+//     }
+// }
+
 async function submitOTEntry({ startTime, endTime, autoClosed = false, note = "" }) {
     if (!startTime) return;
 
@@ -410,17 +637,19 @@ async function submitOTEntry({ startTime, endTime, autoClosed = false, note = ""
     const hours = Math.floor(totalMinutes / 60);
     const mins = totalMinutes % 60;
     const durationStr = `${hours} ชม. ${mins} น.`;
+
     const rate = parseFloat(localStorage.getItem("otRate") || "0");
     const totalHours = hours + (mins / 60);
     const otAmount = (totalHours * rate).toFixed(2);
+
     const userName = localStorage.getItem("name") || "unknown";
     const userJob = localStorage.getItem("job") || "";
     const office = localStorage.getItem("office") || "";
     const mainsub = localStorage.getItem("mainsub") || "";
     const userID = localStorage.getItem("refid") || "";
     const userBoss = localStorage.getItem("boss") || "";
-    const otstaffName = localStorage.getItem("otStaffName") || "-";
-    const otapprover = localStorage.getItem("otApproverName") || "-";
+
+    const otstaffName = localStorage.getItem("otStaffName") || "";
     const otpayer = localStorage.getItem("otPayerName") || "-";
     const otbank = localStorage.getItem("otbank") || "-";
 
@@ -429,16 +658,123 @@ async function submitOTEntry({ startTime, endTime, autoClosed = false, note = ""
 
     if (isDuplicateOT(ref)) {
         resetOTState();
-    Swal.fire("แจ้งเตือน", "มีการลงเวลานอกเวลาซ้ำแล้ว", "warning");
-    return;
-}
+        Swal.fire("แจ้งเตือน", "มีการลงเวลานอกเวลาซ้ำแล้ว", "warning");
+        return;
+    }
 
-saveReference(ref);
+    saveReference(ref);
 
+    const thaiDate = formatThaiShortDate(startTime.toISOString().slice(0,10));
+
+    // ✅ โหลด employees
+    const employees = JSON.parse(localStorage.getItem("employees")) || { role: [] };
+
+    // ✅ ค่าเริ่มต้น = otstaffName
+    const defaultApprover = otstaffName;
+
+    // ✅ เช็คว่ามีอยู่ใน list ไหม
+    const exists = employees.role.some(emp => emp.name === defaultApprover);
+    const finalDefault = exists ? defaultApprover : "";
+
+    // ✅ สร้าง options
+    let empOptions = "";
+
+    if (employees.role && employees.role.length > 0) {
+        // 👉 มีข้อมูล employees
+        empOptions = employees.role.map(emp => {
+            const selected = emp.name === otstaffName ? "selected" : "";
+            return `<option value="${emp.name}" ${selected}>${emp.name}</option>`;
+        }).join("");
+
+    } else {
+        // 👉 fallback ใช้ otstaffName
+        empOptions = `<option value="${otstaffName}" selected>${otstaffName}</option>`;
+    }
+
+    // ✅ Swal
+    const { isConfirmed, value: selectedApprover } = await Swal.fire({
+        title: autoClosed 
+            ? '<i class="fa-solid fa-clock-rotate-left"></i> ยืนยันส่ง OT อัตโนมัติ'
+            : '<i class="fa-solid fa-paper-plane"></i> ยืนยันส่ง OT',
+
+html: `
+<div style="text-align:left;font-size:15px;color:#000;border-radius:12px;padding:15px;background:#f8fafc;line-height:1.9;">
+
+    <div>
+        <i class="fa-solid fa-calendar-days" style="color:#2563eb;margin-right:6px;"></i>
+        <b>วันที่ :</b> ${thaiDate}
+    </div>
+
+    <div>
+        <i class="fa-solid fa-clock" style="color:#16a34a;margin-right:6px;"></i>
+        <b>เวลาเริ่ม :</b> ${formatOtTime(startTime)}
+    </div>
+
+    <div>
+        <i class="fa-solid fa-clock" style="color:#dc2626;margin-right:6px;"></i>
+        <b>เวลาเลิก :</b> ${formatOtTime(endTime)}
+    </div>
+
+    <hr style="margin:12px 0; opacity:0.3;">
+
+    <div>
+        <i class="fa-solid fa-hourglass-half" style="color:#9333ea;margin-right:6px;"></i>
+        <b>รวมเวลา :</b> ${totalHours.toFixed(2)} ชั่วโมง
+    </div>
+
+    <div>
+        <i class="fa-solid fa-money-bill-wave" style="color:#f59e0b;margin-right:6px;"></i>
+        <b>ค่าตอบแทน :</b> ${otAmount} บาท
+    </div>
+
+    <hr style="margin:12px 0; opacity:0.3;">
+
+    <div>
+        <i class="fa-solid fa-user-check" style="color:#0ea5e9;margin-right:6px;"></i>
+        <b>ผู้รับรอง :</b>
+        <select id="approverSelect" style="width:100%;margin-top:6px;padding:8px;border-radius:6px;border:1px solid #ccc;">
+            <option value="">-- เลือกผู้รับรอง --</option>
+            ${empOptions}
+        </select>
+    </div>
+
+</div>
+`,
+
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'ส่งข้อมูล',
+        cancelButtonText: 'ยกเลิก',
+        confirmButtonColor: '#16a34a',
+        cancelButtonColor: '#dc2626',
+        allowOutsideClick: false,
+
+        didOpen: () => {
+            if (finalDefault) {
+                document.getElementById("approverSelect").value = finalDefault;
+            }
+        },
+
+        preConfirm: () => {
+            const val = document.getElementById("approverSelect").value;
+            if (!val) {
+                Swal.showValidationMessage("กรุณาเลือกผู้รับรอง");
+                return false;
+            }
+            return val;
+        }
+    });
+
+    if (!isConfirmed) return;
+
+    // 👉 แยกชื่อ-นามสกุล (ถ้าจะใช้แสดง)
+    const fullNameOnly = selectedApprover.split(" ").slice(0, 2).join(" ");
+
+    // ✅ เตรียม data
     const data = {
-        rate: rate,
+        rate,
         startTime: formatOtTime(startTime),
-        endTime: endTime instanceof Date ? formatOtTime(endTime) : endTime,
+        endTime: formatOtTime(endTime),
         duration: durationStr,
         totalHours: totalHours.toFixed(2),
         otAmount,
@@ -453,111 +789,12 @@ saveReference(ref);
         userID,
         userBoss,
         otstaffName,
-        otapprover,
+        otapprover: selectedApprover,
         otpayer,
-        otbank
+        otbank,
+        signatureUrl
     };
 
-const thaiDate = formatThaiShortDate(data.date);
-
-// ตัดชื่อ - สกุล
-const fullNameOnly = otstaffName.split(" ").slice(0, 2).join(" ");
-
-const { isConfirmed } = await Swal.fire({
-    title: autoClosed 
-        ? '<i class="fa-solid fa-clock-rotate-left"></i> ยืนยันส่ง OT อัตโนมัติ'
-        : '<i class="fa-solid fa-paper-plane"></i> ยืนยันส่ง OT',
-
-    html: `
-    <div style="
-        text-align:left;
-        font-size:15px;
-        border-radius:12px;
-        padding:15px;
-        background:#f8fafc;
-        line-height:1.9;
-    ">
-
-        <div style="margin-bottom:8px;">
-            <i class="fa-solid fa-calendar-days" style="color:#2563eb"></i>
-            <b> วันที่ :</b> ${thaiDate}
-        </div>
-
-        <div>
-            <i class="fa-solid fa-clock" style="color:#16a34a"></i>
-            <b> เวลาเริ่ม :</b> ${data.startTime}
-        </div>
-
-        <div>
-            <i class="fa-solid fa-clock" style="color:#dc2626"></i>
-            <b> เวลาเลิก :</b> ${data.endTime}
-        </div>
-
-        <hr style="margin:12px 0; opacity:0.3;">
-
-        <div style="
-            background:white;
-            padding:10px;
-            border-radius:8px;
-            margin-bottom:10px;
-            box-shadow:0 2px 6px rgba(0,0,0,0.08);
-        ">
-            <i class="fa-solid fa-hourglass-half" style="color:#2563eb"></i>
-            <b> รวมเวลา :</b>
-            <span style="
-                color:#2563eb;
-                font-weight:bold;
-                font-size:16px;
-            ">
-                ${totalHours.toFixed(2)} ชั่วโมง
-            </span>
-        </div>
-
-        <div style="
-            background:white;
-            padding:10px;
-            border-radius:8px;
-            margin-bottom:10px;
-            box-shadow:0 2px 6px rgba(0,0,0,0.08);
-        ">
-            <i class="fa-solid fa-money-bill-wave" style="color:#16a34a"></i>
-            <b> ค่าตอบแทน :</b>
-            <span style="
-                color:#16a34a;
-                font-weight:bold;
-                font-size:16px;
-            ">
-                ${otAmount} บาท
-            </span>
-        </div>
-
-        <hr style="margin:12px 0; opacity:0.3;">
-
-        <div>
-            <i class="fa-solid fa-user-check" style="color:#7c3aed"></i>
-            <b> ผู้รับรอง :</b> ${fullNameOnly}
-        </div>
-
-    </div>
-    `,
-
-    icon: 'question',
-
-    showCancelButton: true,
-
-    confirmButtonText: '<i class="fa-solid fa-check"></i> ส่งข้อมูล',
-    cancelButtonText: '<i class="fa-solid fa-xmark"></i> ยกเลิก',
-
-    confirmButtonColor: '#16a34a',
-    cancelButtonColor: '#dc2626',
-
-    allowOutsideClick: false,
-
-    width: 420
-});
-    if (!isConfirmed) return; // ถ้ายกเลิก → ออกจากฟังก์ชัน
-
-    // ส่งข้อมูลไป GAS
     try {
         await saveOTToGAS(data);
 
@@ -573,32 +810,16 @@ const { isConfirmed } = await Swal.fire({
             note: note || (autoClosed ? "ส่งโดยระบบ (Auto)" : "ส่งโดยผู้ใช้"),
             reference: ref
         });
-        otDurationText.textContent = durationStr;
+
         saveOtEntries();
         updateOtReport();
 
-        if (autoClosed) {
-            Swal.fire({
-                icon: "warning",
-                title: "พบการทำงานค้างวัน",
-                html: `ระบบได้ส่งข้อมูลของวันที่ <b>${data.date}</b><br>โดยสิ้นสุดงานเวลา <b>${data.endTime}</b><br>
-                       คิดเป็นเวลา <b>${totalHours.toFixed(2)} ชั่วโมง</b><br>
-                       ค้างชำระ <b>${otAmount} บาท</b>`,
-                confirmButtonText: "ตกลง",
-                allowOutsideClick: false,
-            });
-        }
+        Swal.fire("สำเร็จ", "บันทึก OT เรียบร้อย", "success");
 
     } catch(err) {
-        Swal.fire({
-            title: "เกิดข้อผิดพลาดในการส่งข้อมูล OT",
-            text: err.message,
-            icon: "error",
-            allowOutsideClick: false,
-        });
+        Swal.fire("ผิดพลาด", err.message, "error");
     }
 }
-
 
 
 // ------------------------------------------- AUTO SEND ---------------------------------------------
@@ -1092,6 +1313,9 @@ async function displayStaffGeneric(selectId, storageKey, placeholderText) {
         const response = await fetch(url);
         const data = await response.json();
         Swal.close();
+
+        localStorage.setItem("employees", JSON.stringify(data));
+
 
         // ล้าง dropdown และสร้าง placeholder
         staffSelect.innerHTML = "";
