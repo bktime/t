@@ -322,6 +322,14 @@ Swal.fire({
 
  signaturePad.clear();
 
+const section = document.getElementById("signSection");
+section.style.transition = "all 0.3s ease";
+section.style.opacity = "0";
+
+setTimeout(() => {
+  section.style.display = "none";
+}, 300);
+
 });
 
   document.getElementById("result").innerHTML=`
@@ -342,3 +350,4 @@ Swal.fire({
  }
 
 };
+
