@@ -2429,6 +2429,7 @@ async function saveOffDayToGAS(payload) {
   payload.date        = date;
   payload.timeStr     = timeStr;
   payload.timeEnd     = timeEnd;
+  payload.signatureUrl = (localStorage.getItem("signature_url") || "").trim();
 
   // ================== ตรวจอัตรา OT ==================
   if (!payload.otRateDay) {
@@ -2440,6 +2441,18 @@ async function saveOffDayToGAS(payload) {
       new bootstrap.Modal(
         document.getElementById("otConfigModal")
       ).show();
+    });
+    return;
+  }
+
+  // ตรวจสอบลายเซ็น
+  if (!payload.signatureUrl) {
+    Swal.fire({
+      title: "กรุณาลงลายมือชื่อ",
+      icon: "warning",
+      confirmButtonText: "ตกลง"
+    }).then(() => {
+      window.location.href = "/sign";
     });
     return;
   }
