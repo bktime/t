@@ -1504,42 +1504,82 @@ function checkinfo() {
 }
 
 
-
 function alertUpdate() {
-  // ตรวจสอบค่าใน local storage
-  const logUpdate = localStorage.getItem("logUpdate");
- // console.log("logUpdate from localStorage:", logUpdate); // ตรวจสอบค่าใน console
 
-  // หากค่า logUpdate ไม่เท่ากับ 1 หรือไม่มี logUpdate
-  // if (logUpdate !== "1" || !logUpdate) {
-  // //  console.log("ข้อมูลยังไม่ได้รับการอัปเดต"); // ตรวจสอบว่าผ่านเงื่อนไขนี้หรือไม่
+  Swal.fire({
+    icon: "warning",
+    title: "ประกาศแจ้งเปลี่ยนระบบลงเวลา",
+    html: `
+      <div style="text-align:left; line-height:1.9;">
 
-  //   // แสดง Swal.fire
-  //   Swal.fire({
-  //     title: "แจ้งเตือนการปรับปรุง",
-  //     html: `<div style="text-align: left;">
-  //     <ol style="padding-left: 20px; line-height: 1.8;">
-  //       <li>สามารถเปลี่ยนสีธีมได้ โดยกดปุ่ม <i class="fa-solid fa-sun"></i> ข้างปุ่ม <i class="fa-solid fa-bars"></i></li>
-  //       <li>กำหนดภาพพื้นหลังได้ โดยกดปุ่ม <i class="fa-solid fa-bars"></i> เลือกเมนู <i class="fa-solid fa-gear"></i> ตั้งค่าภาพพื้นหลัง</li>
-  //       <li>สามารถย่อหรือแสดงส่วนแสดงแผนที่ได้</li>
-  //     </ol>
-  //   </div>
-    
-  //   `,
-  //     input: "checkbox", // ตัวเลือกแสดง checkbox
-  //     inputPlaceholder: "ไม่ต้องแสดงอีก", // ข้อความใน input
-  //     confirmButtonText: "รับทราบ",
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       // เมื่อผู้ใช้กดรับทราบ ให้บันทึกค่า logUpdate = 1
-  //       if (result.value) {
-  //         // ถ้าเลือกไม่ให้แสดงอีก
-  //         localStorage.setItem("logUpdate", "1");
-  //       //  console.log("logUpdate set to 1"); // ตรวจสอบว่าได้ตั้งค่าแล้ว
-  //       }
-  //     }
-  //   });
-  // }
+        <p>
+          เนื่องด้วยระบบลงเวลาเดิม ได้มีการปรับปรุงและพัฒนาเป็นระบบเวอร์ชันใหม่
+          เพื่อเพิ่มประสิทธิภาพ ความปลอดภัย และรองรับการใช้งานในอนาคต
+        </p>
+
+        <p>
+          จึงขอแจ้งให้ผู้ใช้งานทุกท่าน
+          ดำเนินการสมัครสมาชิกและเข้าใช้งานผ่าน
+          <strong>ระบบลงเวลาเวอร์ชัน 2</strong>
+          ตามลิงก์ด้านล่างนี้
+        </p>
+
+        <div style="
+          background:#f5f5f5;
+          padding:14px;
+          border-radius:10px;
+          margin:14px 0;
+          text-align:center;
+          font-weight:bold;
+        ">
+          <a href="https://t-app-5x4.pages.dev"
+             target="_blank"
+             style="font-size:16px;">
+            https://t-app-5x4.pages.dev
+          </a>
+        </div>
+
+        <div style="
+          background:rgba(255,0,0,0.08);
+          border-left:4px solid #d33;
+          padding:12px;
+          border-radius:8px;
+          margin-top:14px;
+        ">
+          <p style="margin:0;">
+            <strong>กำหนดการเปลี่ยนระบบ</strong>
+          </p>
+
+          <ul style="margin-top:8px; padding-left:20px;">
+            <li>
+              ระบบลงเวลาเวอร์ชันเดิม จะปิดให้บริการในวันที่
+              <strong>31 พฤษภาคม 2569</strong>
+            </li>
+
+            <li>
+              ระบบลงเวลาเวอร์ชัน 2 จะเริ่มเปิดใช้งานอย่างเป็นทางการในวันที่
+              <strong>1 มิถุนายน 2569</strong>
+            </li>
+          </ul>
+        </div>
+
+        <p style="margin-top:16px; color:#d33; font-weight:600;">
+          กรุณาดำเนินการสมัครสมาชิกใหม่ก่อนวันปิดระบบ
+          เพื่อป้องกันผลกระทบต่อการเข้าใช้งาน
+        </p>
+
+        <p>
+          ขออภัยในความไม่สะดวก
+          และขอขอบคุณทุกท่านที่ให้ความร่วมมือ
+        </p>
+
+      </div>
+    `,
+    confirmButtonText: "รับทราบ",
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+  });
+
 }
 
 // สร้าง QR-code
