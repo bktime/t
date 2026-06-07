@@ -1,271 +1,418 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="th">
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  
-  <!-- ✅ PWA Support -->
-  <meta name="theme-color" content="#1f293a">
-  <meta name="msapplication-navbutton-color" content="#1f293a">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="ระบบลงเวลาปฏิบัติงาน">
-  <meta name="application-name" content="ระบบลงเวลาปฏิบัติงาน">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="2;url=https://t-app-5x4.pages.dev/?openExternalBrowser=1">
+  <title>T-App — กำลังเชื่อมต่อ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --surface: #111827;
+      --border: rgba(99,179,237,0.15);
+      --accent: #63b3ed;
+      --accent2: #4fd1c5;
+      --text: #e2e8f0;
+      --muted: #718096;
+      --success: #68d391;
+      --logo-glow: rgba(99,179,237,0.35);
+    }
 
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" sizes="180x180" href="https://lh5.googleusercontent.com/d/15oBJkXkg-WVElsZb6a-BlRx8CyPP0_Q5">
-  <link rel="shortcut icon" href="https://lh5.googleusercontent.com/d/15oBJkXkg-WVElsZb6a-BlRx8CyPP0_Q5">
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/request.css" />
-  <link rel="stylesheet" href="css/loading.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-wordpress-admin/wordpress-admin.css" />
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Sarabun', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
 
-  <title>บันทึกคำขอลงเวลาปฏิบัติงาน</title>
+    /* Subtle grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(99,179,237,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99,179,237,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    /* Ambient glow blobs */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    .blob-1 {
+      width: 400px; height: 400px;
+      background: rgba(99,179,237,0.08);
+      top: -100px; left: -100px;
+    }
+    .blob-2 {
+      width: 300px; height: 300px;
+      background: rgba(79,209,197,0.06);
+      bottom: -50px; right: -50px;
+      animation-delay: -6s;
+    }
+    @keyframes drift {
+      from { transform: translate(0,0) scale(1); }
+      to   { transform: translate(30px,20px) scale(1.05); }
+    }
+
+    /* Card */
+    .card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 52px 44px;
+      width: min(440px, 92vw);
+      text-align: center;
+      box-shadow:
+        0 0 0 1px rgba(99,179,237,0.06),
+        0 24px 64px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+      animation: appear 0.5s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Top shine line */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 20%; right: 20%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      border-radius: 1px;
+    }
+
+    /* Logo mark */
+    .logo-wrap {
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-mark {
+      position: relative;
+      width: 72px; height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1.5px solid rgba(99,179,237,0.3);
+      animation: spin-ring 8s linear infinite;
+    }
+    .logo-ring::before {
+      content: '';
+      position: absolute;
+      top: -2px; left: 50%;
+      transform: translateX(-50%);
+      width: 5px; height: 5px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent);
+    }
+    .logo-ring-2 {
+      position: absolute;
+      inset: 8px;
+      border-radius: 50%;
+      border: 1px solid rgba(79,209,197,0.2);
+      animation: spin-ring 5s linear infinite reverse;
+    }
+    @keyframes spin-ring {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .logo-core {
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 24px var(--logo-glow), 0 4px 16px rgba(0,0,0,0.4);
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 500;
+      font-size: 15px;
+      color: #0b0f1a;
+      letter-spacing: -0.5px;
+    }
+
+    /* Govt badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(99,179,237,0.08);
+      border: 1px solid rgba(99,179,237,0.18);
+      border-radius: 99px;
+      padding: 4px 12px 4px 8px;
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.3px;
+      margin-bottom: 20px;
+    }
+    .badge-dot {
+      width: 6px; height: 6px;
+      background: var(--accent2);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--accent2);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.6; transform: scale(0.7); }
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: -0.3px;
+    }
+    .subtitle {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    /* Progress track */
+    .progress-wrap {
+      margin-bottom: 28px;
+    }
+    .progress-track {
+      height: 3px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 99px;
+      box-shadow: 0 0 10px rgba(99,179,237,0.5);
+      animation: fill-bar 2s cubic-bezier(0.4,0,0.2,1) forwards;
+    }
+    @keyframes fill-bar {
+      0%   { width: 0%; }
+      20%  { width: 25%; }
+      60%  { width: 70%; }
+      90%  { width: 90%; }
+      100% { width: 100%; }
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--muted);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .progress-status {
+      color: var(--accent2);
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0; }
+    }
+
+    /* Steps */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 32px;
+      text-align: left;
+    }
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--muted);
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+    .step.show {
+      animation: step-in 0.4s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    @keyframes step-in {
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .step-icon {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(99,179,237,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 10px;
+      transition: all 0.3s;
+    }
+    .step.done .step-icon {
+      background: rgba(104,211,145,0.15);
+      border-color: var(--success);
+      color: var(--success);
+    }
+    .step.done .step-text { color: var(--text); }
+
+    /* CTA button */
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #0b0f1a;
+      font-family: 'Sarabun', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 12px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(99,179,237,0.3);
+      transition: all 0.2s;
+      letter-spacing: 0.2px;
+    }
+    .cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 28px rgba(99,179,237,0.45);
+    }
+    .cta svg { width: 14px; height: 14px; }
+
+    /* Footer */
+    .footer {
+      margin-top: 28px;
+      font-size: 11px;
+      color: rgba(113,128,150,0.6);
+      letter-spacing: 0.2px;
+    }
+    .footer a {
+      color: rgba(99,179,237,0.5);
+      text-decoration: none;
+    }
+    .footer a:hover { color: var(--accent); }
+  </style>
 </head>
-
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-xs navbar-dark fixed-top">
-    <button type="button" class="navbar-toggler mr-auto" data-toggle="collapse" data-target="#collapsibleNavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
 
-    <a class="navbar-brand" href="javascript:void(0);" onclick="editpic()">
-      <img src="default-avatar.png" alt="ลงเวลา" id="avatar" class="d-inline-block align-top" />
+  <div class="card">
+    <div class="logo-wrap">
+      <div class="logo-mark">
+        <div class="logo-ring"></div>
+        <div class="logo-ring-2"></div>
+        <div class="logo-core">T</div>
+      </div>
+    </div>
+
+    <div class="badge">
+      <div class="badge-dot"></div>
+      สสอ.เซกา · สสจ.บึงกาฬ
+    </div>
+
+    <h1>T-App ระบบบริหารงานบุคลากร</h1>
+    <p class="subtitle">กำลังเชื่อมต่อไปยังระบบ<br>โปรดรอสักครู่…</p>
+
+    <div class="progress-wrap">
+      <div class="progress-track">
+        <div class="progress-bar"></div>
+      </div>
+      <div class="progress-label">
+        <span id="pct">0%</span>
+        <span class="progress-status" id="status-text">กำลังตรวจสอบ</span>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step" id="s1">
+        <div class="step-icon">✓</div>
+        <span class="step-text">ตรวจสอบการเชื่อมต่อ</span>
+      </div>
+      <div class="step" id="s2">
+        <div class="step-icon">✓</div>
+        <span class="step-text">ยืนยันความปลอดภัย SSL</span>
+      </div>
+      <div class="step" id="s3">
+        <div class="step-icon">→</div>
+        <span class="step-text">กำลังนำทางไปยังระบบ</span>
+      </div>
+    </div>
+
+    <a class="cta" href="https://t-app-5x4.pages.dev/?openExternalBrowser=1" id="manual-btn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 8h10M9 4l4 4-4 4"/>
+      </svg>
+      เข้าสู่ระบบเลย
     </a>
 
-    <div class="collapse navbar-collapse" id="collapsibleNavbar">
-      <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link" href="javascript:void(0);" onclick="checkMap()"><i class="fas fa-map-marker-alt"></i> ตรวจสอบพิกัด</a></li>
-        <li class="nav-item"><a class="nav-link" href="javascript:void(0);" onclick="canceltoday()"><i class="fas fa-xmark"></i> ยกเลิกการลงเวลาในวันนี้</a></li>
-        <li class="nav-item"><a class="nav-link" href="javascript:void(0);" onclick="openWebAdmin()"><i class="fas fa-chart-bar"></i> รายงานและการจัดการ</a></li>
-        <li class="nav-item"><a class="nav-link" href="authen.html"><i class="fab fa-telegram"></i> เชื่อมต่อ Telegram</a></li>
-        <li class="nav-item"><a class="nav-link" href="javascript:void(0);" onclick="openWeb5s()"><i class="fas fa-folder"></i> งาน 5ส.</a></li>
-        <li class="nav-item"><a class="nav-link" href="javascript:void(0);" onclick="aboutme()"><i class="fas fa-user"></i> ข้อมูลส่วนตัว</a></li>
-        <li class="nav-item"><a class="nav-link" href="javascript:void(0);" onclick="editpic()"><i class="fas fa-image"></i> อัปเดตโปรไฟล์</a></li>
-        <li class="nav-item"><a class="nav-link" href="javascript:void(0);" onclick="clearLocal()"><i class="fas fa-sync-alt"></i> ออกจากระบบ</a></li>
-      </ul>
-    </div>
-  </nav>
-
-  <!-- Main Content -->
-  <div class="container">
-    <div class="login-box">
-      <h3>คำขอลงเวลาปฏิบัติงาน</h3>
-      <form>
-        <div class="text-center">
-          <input type="datetime-local" id="daytime" class="daytime" name="daytime" required>
-        </div>
-
-        <select id="typea" class="btn2">
-          <option value="ปกติ">ปฏิบัติงานตามปกติ</option>
-          <option value="นอกสถานที่">ปฏิบัติงานนอกสถานที่</option>
-          <option value="วันหยุด">ปฏิบัติงานในวันหยุดเสาร์ อาทิตย์ และวันหยุดราชการ</option>
-          <option value="ไปราชการ">ไปราชการ (ประชุม อบรมฯ)</option>
-          <option value="ทำงานที่บ้าน">ปฏิบัติงานจากที่บ้าน (Work From Home)</option>
-          <option value="อื่นๆ">อื่นๆ โปรดระบุเพิ่มเติม</option>
-        </select>
-
-    <div class="input-box">
-  <input id="nte" name="nte" type="text" placeholder="รายละเอียด" list="nte-suggestions" autofocus>
-  <label>บันทึกเพิ่มเติม</label>
-</div>
-
-<datalist id="nte-suggestions">
-                <!-- Work From Home -->
-              <option value="ปฏิบัติงานจากที่บ้าน (Work From Home)">
-              <option value="ประชุมออนไลน์ผ่านระบบ (Zoom / Google Meet)">
-              <option value="จัดทำรายงาน/เอกสารจากที่บ้าน">
-              <option value="ประสานงานผ่านโทรศัพท์/ออนไลน์">
-              <option value="ติดตามงานและรายงานผลผ่านระบบออนไลน์">
-                
-  <!-- หมวด: สุขภาพส่วนตัว -->
-  <option value="ป่วยกะทันหัน">
-  <option value="ออกไปพบแพทย์/ตรวจสุขภาพ">
-  <option value="มีอาการข้างเคียงหลังการฉีดวัคซีน">
-
-  <!-- หมวด: ครอบครัว/ส่วนตัว -->
-  <option value="ต้องดูแลเด็ก/ผู้สูงอายุ">
-  <option value="มีเหตุการณ์ครอบครัวฉุกเฉิน">
-  <option value="ต้องพาเด็กไปโรงพยาบาล/รับส่งโรงเรียนฉุกเฉิน">
-  <option value="ต้องดูแลสัตว์เลี้ยงฉุกเฉิน">
-  <option value="เข้าร่วมพิธีศพหรืองานสำคัญครอบครัว">
-  <option value="มีเหตุการณ์ส่วนตัวฉุกเฉิน">
-    <option value="ต้องดูแลผู้ป่วย/ผู้สูงอายุ"> 
-
-  <!-- หมวด: การเดินทาง/ระบบขนส่ง -->
-  <option value="ตื่นสาย">
-  <option value="รถติด/ระบบขนส่งล่าช้า">
-  <option value="ยานพาหนะเสียกลางทาง">
-  <option value="ยางแตก/แบตเตอรี่รถหมด">
-  <option value="หลงทาง/สับสนเส้นทาง">
-  <option value="ปัญหาเกี่ยวกับการเดินทางสาธารณะ (ยกเลิก/ประท้วง)">
-  <option value="การจราจรจากเหตุการณ์ฉุกเฉินบนถนน">
-  <option value="สภาพอากาศไม่เอื้ออำนวย">
-
-  <!-- หมวด: ระบบ/เทคนิค -->
-  <option value="ระบบลงเวลาไม่ทำงาน">
-  <option value="ปัญหาเทคนิคกับคอมพิวเตอร์หรือโทรศัพท์">
-  <option value="ลืมโทรศัพท์ที่บ้าน">
-  <option value="มาออกจากบ้านแล้วลืมของไว้ที่บ้าน">
-  <option value="กลับไปเอาของที่บ้าน"> 
-  <option value="โทรศัพท์แบตหมด/เครื่องรวน">
-  <option value="แอปลงเวลาขัดข้อง/อัปเดตระบบ">
-  <option value="ลืมรหัสผ่าน/ล็อกอินไม่ได้">
-  <option value="ปัญหาเครือข่ายอินเทอร์เน็ต">
-  <option value="ปัญหาเกี่ยวกับการเชื่อมต่อ VPN">
-  <option value="ไม่มีสัญญาณโทรศัพท์">
-  <option value="เชื่อมต่ออินเทอร์เน็ตไม่ได้">
-
-  <!-- หมวด: งานด่วน/ภารกิจ -->
-  <option value="ติดงานเอกสารหรือรายงาน">
-  <option value="ประชุมต่อเนื่อง">
-  <option value="งานด่วนหรือภารกิจเร่งด่วน">
-  <option value="ต้องรอการอนุมัติการลา/เปลี่ยนกะที่ยังไม่เสร็จ">
-  <option value="ลืมเวลาลงเวลาปฏิบัติงาน">
-  <option value="กลับบ้านช้า">
-
-  <!-- หมวด: งานสาธารณสุข (เฉพาะเจ้าหน้าที่สาธารณสุข) -->
-  <option value="ออกปฏิบัติงานนอกสถานที่ (ลงพื้นที่ชุมชน)">
-  <option value="ไปตรวจเยี่ยมผู้ป่วยที่บ้าน/ติดตามอาการ">
-  <option value="ให้บริการฉีดวัคซีน/ตรวจสุขภาพประชาชน">
-  <option value="ร่วมงานรณรงค์สุขภาพ/โครงการสาธารณสุข">
-  <option value="เข้าร่วมปฏิบัติการควบคุมโรคระบาด">
-  <option value="ต้องปฏิบัติหน้าที่ฉุกเฉินในโรงพยาบาล/ศูนย์สุขภาพ">
-  <option value="ติดภารกิจช่วยเหลือผู้ป่วยฉุกเฉิน">
-  <option value="เข้าร่วมประชุม/สัมมนาสุขภาพด่วน">
-  <option value="ตรวจสอบ/รายงานข้อมูลผู้ป่วยและสถิติสุขภาพ">
-  <option value="ลงพื้นที่ฉีดวัคซีน/แจกเวชภัณฑ์ฉุกเฉิน">
-  <option value="ต้องรายงานเหตุการณ์สุขภาพฉุกเฉินต่อหัวหน้า">
-  <option value="ติดภารกิจอบรม/ฝึกซ้อมสถานการณ์ฉุกเฉิน">
-  <option value="ติดตามผู้ป่วยหรือผู้สูงอายุที่อยู่บ้าน">
-  <option value="ช่วยเหลือประชาชนในกรณีภัยพิบัติ/อุบัติเหตุหมู่">
-  <option value="ปฏิบัติหน้าที่เวร On-call ในชุมชน/โรงพยาบาล">
-  <option value="ปฏิบัติงานร่วมกับหน่วยงานอื่นเพื่อแก้ปัญหาสุขภาพ">
-
-    <!-- หมวด: ชายแดน/พื้นที่ห่างไกล -->
-  <option value="ออกปฏิบัติงานพื้นที่ชายแดน/หมู่บ้านห่างไกล">
-  <option value="ตรวจสอบสุขภาพประชาชนในพื้นที่ชายแดน">
-  <option value="ให้บริการฉีดวัคซีน/เวชภัณฑ์ในพื้นที่ชายแดน">
-  <option value="ร่วมปฏิบัติการควบคุมโรคในพื้นที่ชายแดน">
-  <option value="ช่วยเหลือเหตุฉุกเฉินหรือภัยพิบัติพื้นที่ชายแดน">
-  <option value="รายงานสถานการณ์สุขภาพ/โรคระบาดชายแดน">
-
-</datalist>
-
-
-        <div class="forgot-pass">
-          <h4 id='dispDistance'>กำลังคำนวนระยะห่าง...</h4>
-        </div>
-
-        <button id="cin" type="button" class="btn btn-success" onclick="checkin()">ยื่นคำขอลงเวลามา</button>
-        <button id="cout" type="button" class="btn btn-danger" onclick="checkout()">ยื่นคำขอลงเวลากลับ</button>
-
-        <div class="signup-link mt-2">
-          <h4 id="utimeline"></h4>
-          <button id="ExitBtn" type="button" onclick="backtoindex()"><i class="fa-solid fa-circle-xmark"></i> ปิด</button>
-        </div>
-
-        <div class="text-center">
-          <p id="demo" style="font-size:1px; color:#E0FFFF;"></p>
-        </div>
-      </form>
-    </div>
-
-    <!-- Animated spans -->
-    <div id="span-container"></div>
-  </div>
-
-  <!-- Loading Modal -->
-  <div class="modal" id="loadingModal" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-body text-center">
-          <div class="loading-spinner mb-2"></div>
-          <h6 id="latlong">รับค่าพิกัด : กรุณาตรวจสอบการเปิดตำแหน่ง</h6>
-        </div>
-      </div>
+    <div class="footer">
+      สำนักงานสาธารณสุขอำเภอเซกา · สำนักงานสาธารณสุขจังหวัดบึงกาฬ<br>
+      หากไม่ถูกนำทางอัตโนมัติ กรุณาคลิกปุ่มด้านบน ·
+      <a href="https://t-app-5x4.pages.dev/?openExternalBrowser=1">t-app-5x4.pages.dev</a>
     </div>
   </div>
 
-  <!-- Modal-in -->
-  <div class="modal fade" id="inModal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">กรุณาตรวจสอบพิกัดและกดยืนยันการลงเวลาปฏิบัติงาน</h5>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <div class="modal-body"><p id="indemo">กำลังโหลดข้อมูล...</p></div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success" onclick="checkin()">ยืนยันการลงเวลาปฏิบัติงาน</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal-out -->
-  <div class="modal fade" id="outModal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">กรุณาตรวจสอบพิกัดและกดยืนยันการลงเวลากลับ</h5>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <div class="modal-body"><p id="outdemo">กำลังโหลดข้อมูล...</p></div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" onclick="getLocationOut()">ยืนยันการลงเวลากลับ</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Scripts -->
-  <script src="js/request.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // ตั้งค่า datetime-local
-      const inputDate = document.getElementById("daytime");
-      const now = new Date();
-      const isoDate = now.toISOString().slice(0, 10); // YYYY-MM-DD
-      const minDate = new Date(now);
-      minDate.setDate(now.getDate() - 14);
-      const isoMinDate = minDate.toISOString().slice(0, 10);
+    const TARGET = 'https://t-app-5x4.pages.dev/?openExternalBrowser=1';
 
-      inputDate.value = `${isoDate}T08:30`;
-      inputDate.min = `${isoMinDate}T08:30`;
-      inputDate.max = `${isoDate}T16:30`;
-
-      // กำหนดค่า typea วันหยุด
-      const day = now.getDay();
-      if (day === 0 || day === 6) document.getElementById("typea").value = "วันหยุด";
-
-      // ดึงรูป avatar จาก localStorage
-      const avatarSrc = localStorage.getItem("upic");
-      document.getElementById("avatar").src = avatarSrc || "default-avatar.png";
-
-      // สร้าง span animation แบบ loop
-      const spanContainer = document.getElementById('span-container');
-      for (let i = 0; i < 50; i++) {
-        const span = document.createElement('span');
-        span.style.setProperty('--i', i);
-        spanContainer.appendChild(span);
+    // Animate percentage counter
+    const pct = document.getElementById('pct');
+    const statusText = document.getElementById('status-text');
+    const statuses = ['กำลังตรวจสอบ', 'เชื่อมต่อแล้ว', 'พร้อม!'];
+    let val = 0;
+    const timer = setInterval(() => {
+      if (val < 100) {
+        val = Math.min(val + (val < 70 ? 2 : val < 90 ? 1 : 0.5), 100);
+        pct.textContent = Math.floor(val) + '%';
+        if (val >= 30 && val < 31) statusText.textContent = statuses[1];
+        if (val >= 90) statusText.textContent = statuses[2];
+      } else {
+        clearInterval(timer);
       }
-    });
+    }, 30);
+
+    // Animate steps
+    function showStep(id, delay, done) {
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        el.classList.add('show');
+        if (done) setTimeout(() => el.classList.add('done'), 300);
+      }, delay);
+    }
+    showStep('s1', 200, true);
+    showStep('s2', 600, true);
+    showStep('s3', 1000, false);
+
+    // Redirect
+    setTimeout(() => {
+      window.location.href = TARGET;
+    }, 2000);
   </script>
-
-  <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.min.js"></script>
 </body>
-
 </html>
